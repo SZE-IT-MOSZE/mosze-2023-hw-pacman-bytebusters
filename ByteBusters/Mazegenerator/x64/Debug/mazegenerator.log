@@ -1,0 +1,5 @@
+﻿  main.cpp
+D:\Sulesz\Mosze\Maze\mazegenerator\mazegenerator\main.cpp(17,29): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Sulesz\Mosze\Maze\mazegenerator\mazegenerator\main.cpp(47,13): error C2065: 'filename': undeclared identifier
+D:\Sulesz\Mosze\Maze\mazegenerator\mazegenerator\main.cpp(48,35): error C2065: 'filename': undeclared identifier
+D:\Sulesz\Mosze\Maze\mazegenerator\mazegenerator\main.cpp(49,62): error C2065: 'filename': undeclared identifier
