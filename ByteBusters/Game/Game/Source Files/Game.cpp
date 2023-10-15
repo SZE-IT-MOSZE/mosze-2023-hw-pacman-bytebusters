@@ -1,8 +1,13 @@
 #include "Game.h"
 #include <iostream>
+#include "TextureManager.h"
+#include "GameObject.h"
+#include "Map.h"
 
-SDL_Texture* playerTexture;
+GameObject* player;
+Map* map;
 
+SDL_Renderer* Game::renderer = nullptr;
 
 Game::Game() {
 
@@ -12,8 +17,11 @@ Game::~Game() {
 
 }
 
-void Game::init(const char* title, int xPos, int yPos, int width, int height, bool fullscreen)
-{
+void Game::Init(const char* title, int xPos, int yPos, int w, int h, bool fullscreen)
+{	
+	height = h;
+	width = w;
+
 	int flags = 0;
 	if (fullscreen)
 	{
@@ -42,29 +50,30 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		isRunning = false;
 	}
 
-	SDL_Surface* tmpSurface = IMG_Load("Assets/MensTherapyHotline.jpg");
-	playerTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
+	player = new GameObject("Assets/Deerly.png", 0, 0);
+	map = new Map(64, 16);
 
 }
 
-void Game::update()
+void Game::Update()
 {
-
+	player->Update();
 }
 
-void Game::render()
+void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
 	//stuff to render
-	SDL_RenderCopy(renderer, playerTexture, NULL, NULL);
+	map->DrawMap();
+
+	player->Render();
 
 
 	SDL_RenderPresent(renderer);
 }
 
-void Game::clean()
+void Game::Clean()
 {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
@@ -72,7 +81,7 @@ void Game::clean()
 	std::cout << "Game Cleaned" << std::endl;
 }
 
-void Game::handleEvents()
+void Game::HandleEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);

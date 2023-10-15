@@ -20,10 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Source Files\Game.cpp" />
+    <ClCompile Include="Game\Source Files\GameObject.cpp" />
     <ClCompile Include="Game\Source Files\main.cpp" />
+    <ClCompile Include="Game\Source Files\Map.cpp" />
+    <ClCompile Include="Game\Source Files\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Source Files\Game.h" />
+    <ClInclude Include="Game\Source Files\GameObject.h" />
+    <ClInclude Include="Game\Source Files\Map.h" />
+    <ClInclude Include="Game\Source Files\TextureManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -111,12 +117,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Dependencies\SDL2_image-2.6.3\include;C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Dependencies\SDL2-2.28.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL2_image-2.6.3\include;$(ProjectDir)Dependencies\SDL2-2.28.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Dependencies\SDL2_image-2.6.3\lib\x64;C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Dependencies\SDL2-2.28.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL2_image-2.6.3\lib\x64;$(ProjectDir)Dependencies\SDL2-2.28.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
