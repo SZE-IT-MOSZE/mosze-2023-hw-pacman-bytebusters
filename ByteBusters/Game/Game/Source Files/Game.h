@@ -12,7 +12,7 @@ public:
 	Game();
 	~Game();
 
-	void Init(const char* title, int xPos, int yPos, int width, int height, bool fullscreen);
+	void Init(const char* title, int xPos, int yPos, int width, int height, int tileRes, bool fullscreen);
 	void Update();
 	void Render();
 	void Clean();
@@ -26,8 +26,9 @@ public:
 
 private:
 
-	int height = 600;
-	int width = 800;
+	int height = 480; // default is smallest res
+	int width = 640;
+	int tileRes = 32;
 	bool isRunning;
 	SDL_Window* window;
 

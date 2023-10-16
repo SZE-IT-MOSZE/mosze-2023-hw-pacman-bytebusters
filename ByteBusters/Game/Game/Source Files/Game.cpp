@@ -17,10 +17,11 @@ Game::~Game() {
 
 }
 
-void Game::Init(const char* title, int xPos, int yPos, int w, int h, bool fullscreen)
+void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
 {	
 	height = h;
 	width = w;
+	tileRes = tR;
 
 	int flags = 0;
 	if (fullscreen)
@@ -50,8 +51,8 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, bool fullsc
 		isRunning = false;
 	}
 
-	player = new GameObject("Assets/Deerly.png", 0, 0);
-	map = new Map(64, 16);
+	player = new GameObject("Assets/Deerly.png", 0, 0); //tileRes needs to be included
+	map = new Map(tileRes, 16);
 
 }
 
@@ -94,3 +95,11 @@ void Game::HandleEvents()
 		break;
 	}
 }
+
+//read velocity everyy frame in a separete function
+//set velocity based on keyevents
+//handle collisions based in velocity->new position every frame
+//this way the inputs and the collision detection is separated
+//same will be true for enemies and other game object
+//only their velocity will be set and thir position updated every frame based on that
+// !!! framerate independent velocity ???
