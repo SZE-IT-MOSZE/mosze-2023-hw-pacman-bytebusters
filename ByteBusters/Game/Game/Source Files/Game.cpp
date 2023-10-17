@@ -3,18 +3,26 @@
 #include "TextureManager.h"
 #include "GameObject.h"
 #include "Map.h"
+#include <thread>
 
+
+SDL_Renderer* Game::renderer;
 GameObject* player;
 Map* map;
-
-SDL_Renderer* Game::renderer = nullptr;
+std::set<GameObject*> gameObjects;
 
 Game::Game() {
+	height = 480; // default is smallest res
+	width = 640;
+	tileRes = 32;
+	isRunning = false;
+	window = nullptr;
+
 
 }
 
 Game::~Game() {
-
+	//looks too empty, youre forgetting things
 }
 
 void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
@@ -31,7 +39,7 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		std::cout << "Subsystem: !!!" << std::endl;
+		std::cout << "Subsystem:" << std::endl;
 
 		window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
 		if (window)
@@ -51,25 +59,25 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 		isRunning = false;
 	}
 
-	player = new GameObject("Assets/Deerly.png", 0, 0); //tileRes needs to be included
+	player = new GameObject("Assets/Deerly.png", 0, 0, 64, 64, tileRes, tileRes); //texture, startX, startY, sourceResX, sourceResY, targetResX, targetResY
 	map = new Map(tileRes, 16);
 
 }
-
+/*
 void Game::Update()
 {
 	player->Update();
 }
+*/
+
 
 void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	//stuff to render
 	map->DrawMap();
-
-	player->Render();
-
+	player->Render(); 
+	//gameobj array
 
 	SDL_RenderPresent(renderer);
 }
@@ -88,13 +96,82 @@ void Game::HandleEvents()
 	SDL_PollEvent(&event);
 	switch (event.type)
 	{
+	case SDL_KEYDOWN:
+		switch (event.key.keysym.sym) {
+		case SDLK_LEFT:
+			player->SetVelX(-1);
+			break;
+		case SDLK_RIGHT:
+			player->SetVelX(1);
+			break;
+		case SDLK_UP:
+			player->SetVelY(-1);
+			break;
+		case SDLK_DOWN:
+			player->SetVelY(1);
+			break;
+		default:
+			break;
+		}
+		break;
+
+	case SDL_KEYUP:
+		switch (event.key.keysym.sym) {
+		case SDLK_LEFT:
+			player->SetVelX(0);
+			break;
+		case SDLK_RIGHT:
+			player->SetVelX(0);
+			break;
+		case SDLK_UP:
+			player->SetVelY(0);
+			break;
+		case SDLK_DOWN:
+			player->SetVelY(0);
+			break;
+		default:
+			break;
+		}
+		break;
+
+
 	case SDL_QUIT:
+		
 		isRunning = false;
 		break;
 	default:
 		break;
 	}
 }
+
+void Game::UpdateThread() {
+	std::cout << "Thread Created" << std::endl;
+
+	const int UPS = 240;
+	const int frameDelay = 1000 / UPS;
+
+	Uint32 frameStart;
+	int frameTime;
+
+	while (isRunning)
+	{
+		frameStart = SDL_GetTicks();
+
+		player->Update();
+
+		frameTime = SDL_GetTicks() - frameStart;
+
+		if (frameDelay > frameTime)
+		{
+			SDL_Delay(frameDelay - frameTime);
+		}
+	}
+
+	std::cout << "Thread Finished" << std::endl;
+
+}
+
+
 
 //read velocity everyy frame in a separete function
 //set velocity based on keyevents

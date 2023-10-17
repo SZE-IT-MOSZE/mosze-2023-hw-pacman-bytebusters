@@ -1,6 +1,7 @@
 #include "SDL.h"
 #include "Game.h"
 #include <iostream>
+#include <thread>
 
 Game* game = nullptr;
 
@@ -60,7 +61,7 @@ int main(int argc, char* argv[]) {
 
 	//return 0;
 
-	const int FPS = 30;
+	const int FPS = 60;
 	const int frameDelay = 1000 / FPS;
 
 	Uint32 frameStart;
@@ -69,13 +70,15 @@ int main(int argc, char* argv[]) {
 	game = new Game();
 
 	game->Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false);
+	
+	std::thread gameUpdates(&Game::UpdateThread, game); ///////////////////////////////////////////
 
 	while (game->Running())
 	{
 		frameStart = SDL_GetTicks();
 
 		game->HandleEvents();
-		game->Update();
+		//game->Update(); //placed on other thread
 		game->Render();
 
 		frameTime = SDL_GetTicks() - frameStart;
@@ -86,6 +89,8 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
+
+	gameUpdates.join();
 
 	game->Clean();
 

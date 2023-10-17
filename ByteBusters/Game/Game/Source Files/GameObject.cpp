@@ -1,26 +1,38 @@
 #include "GameObject.h"
 #include "TextureManager.h"
 
-GameObject::GameObject(const char* textureSheet, int x, int y) {
+GameObject::GameObject(const char* textureSheet, int startX, int startY, int sourceResX, int sourceResY, int targetResX, int targetResY) {
 	objTexture = TextureManager::LoadTexture(textureSheet);
 
-	xpos = x;
-	ypos = y;
+	srcRect.x = 0;
+	srcRect.y = 0;
+	srcRect.h = sourceResX;
+	srcRect.w = sourceResY;
+
+	destRect.x = startX;
+	destRect.y = startY;
+	destRect.w = targetResX;
+	destRect.h = targetResY;
+
+	xvel = 0;
+	yvel = 0;
 }
 
 void GameObject::Update(){
 
-	srcRect.h = 64;
-	srcRect.w = 64;
-	srcRect.x = 0;
-	srcRect.y = 0;
-
-	destRect.x = xpos;
-	destRect.y = ypos;
-	destRect.w = srcRect.w;
-	destRect.h = srcRect.h;
+	destRect.x += xvel;
+	destRect.y += yvel;
+	
 }
 
 void GameObject::Render() {
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+}
+
+void GameObject::SetVelX(int vel) {
+	xvel = vel;
+}
+
+void GameObject::SetVelY(int vel) {
+	yvel = vel;
 }
