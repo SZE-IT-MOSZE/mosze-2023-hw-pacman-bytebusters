@@ -10,7 +10,7 @@
 #include "placeTwos.cpp"
 
 int main() {
-    std::string folderPath = "D:/Sulesz/Mosze/ByteBusters/Game/Mazegenerator/Fields";
+    std::string folderPath = "Fields/";
     int files = 1;
     int a = 35; 
     int b = 28;
