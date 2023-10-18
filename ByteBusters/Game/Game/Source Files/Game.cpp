@@ -7,9 +7,7 @@
 
 
 SDL_Renderer* Game::renderer;
-GameObject* player;
-Map* map;
-std::set<GameObject*> gameObjects;
+
 
 Game::Game() {
 	height = 480; // default is smallest res

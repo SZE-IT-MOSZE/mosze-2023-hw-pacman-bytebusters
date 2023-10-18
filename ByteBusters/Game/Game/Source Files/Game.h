@@ -1,12 +1,9 @@
 #pragma once
 
-#ifndef Game_h
-#define Game_h
-
 #include "SDL.h"
 #include "SDL_image.h"
-#include "Map.h"
 #include "GameObject.h"
+#include "Map.h"
 #include <set>
 
 class Game {
@@ -32,7 +29,11 @@ private:
 
 	SDL_Window* window;
 
-	
+	Map* map;
+
+	GameObject* player;
+
+	std::set<GameObject*> gameObjects;
 
 	int height; // default is smallest res
 	int width;
@@ -41,5 +42,3 @@ private:
 	
 
 };
-
-#endif /* Game_h */
