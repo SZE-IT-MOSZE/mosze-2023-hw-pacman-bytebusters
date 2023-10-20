@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include <string>
+#include <set>
 
 class Map {
 
@@ -13,13 +14,18 @@ public:
 	void LoadMap(int lvl);	//takes in the level number (whyat file to load)
 
 	void DrawMap();
+	static std::set<SDL_Rect*> mapWalls;
+	std::set<SDL_Rect*> GetWalls() { return mapWalls; };
 
 private:
 
 	std::string pathToFields;
 	std::string pathToTextures;
 
-	SDL_Rect src, dest;
+	SDL_Rect* srcRect;
+	SDL_Rect* destRectDraw;
+	std::set<SDL_Rect*> mapPaths;
+	
 
 	SDL_Texture* path;
 	SDL_Texture* wall;

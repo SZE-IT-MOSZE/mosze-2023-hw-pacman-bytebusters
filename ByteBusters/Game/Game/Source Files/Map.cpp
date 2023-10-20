@@ -4,6 +4,8 @@
 #include <fstream>
 #include <string>
 
+std::set<SDL_Rect*> Map::mapWalls;
+
 Map::Map(int size, int res) {
 
 	tileResolution = res;	//may not need to keep this in the future
@@ -19,11 +21,16 @@ Map::Map(int size, int res) {
 	water		= TextureManager::LoadTexture("Assets/water.png");
 	err_		= TextureManager::LoadTexture("Assets/err_.png");
 
-	src.w = src.h = tileResolution;
-	src.x = src.y = 0;
-	dest.w = dest.h = tileSize;
-	dest.x = dest.y = 0;
+	srcRect = new SDL_Rect;
 	
+	srcRect->w = srcRect->h = tileResolution;
+	srcRect->x = srcRect->y = 0;
+
+	destRectDraw = new SDL_Rect;
+	
+	destRectDraw->w = destRectDraw->h = tileSize;
+	destRectDraw->x = destRectDraw->y = 0;
+
 	LoadMap(17); // loadmap wont stay here i guess
 }
 
@@ -87,6 +94,32 @@ void Map::LoadMap(int lvl) {
 
 	ReadLevel.close();
 
+	for (int r = 0; r < mapRows; r++)
+	{
+		for (int c = 0; c < mapCols; c++)
+		{
+			SDL_Rect* destRect = new SDL_Rect;
+			destRect->w = tileSize;
+			destRect->h = tileSize;
+			destRect->x = c * tileSize;
+			destRect->y = r * tileSize;
+
+			switch (map[r][c])
+			{
+			case 0:
+				mapPaths.insert(destRect);
+				break;
+			case 1:
+				mapWalls.insert(destRect);
+				break;
+			default:
+				mapPaths.insert(destRect);
+				break;
+			}
+
+		}
+	}
+
 	switch (lvl)	// technically i didnt do anything wrong
 	{				// this is NOT a programming war crime
 	case 1:
@@ -134,20 +167,19 @@ void Map::DrawMap() {
 	{
 		for (int c = 0; c < mapCols; c++)
 		{
+			destRectDraw->x = c * tileSize;
+			destRectDraw->y = r * tileSize;
 
-			dest.x = c * tileSize;
-			dest.y = r * tileSize;
-			
 			switch (map[r][c])
 			{
 			case 0:
-				TextureManager::Draw(path, src, dest);
+				TextureManager::Draw(path, srcRect, destRectDraw);
 				break;
 			case 1:
-				TextureManager::Draw(wall, src, dest);
+				TextureManager::Draw(wall, srcRect, destRectDraw);
 				break;
 			default:
-				TextureManager::Draw(err_, src, dest);
+				TextureManager::Draw(err_, srcRect, destRectDraw);
 				break;
 			}
 

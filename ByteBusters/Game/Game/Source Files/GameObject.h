@@ -16,7 +16,8 @@ public:
 private:
 	int xvel, yvel;
 	SDL_Texture* objTexture;
-	SDL_Rect srcRect, destRect;
+	SDL_Rect* srcRect;
+	SDL_Rect* destRect;
 
 
 };

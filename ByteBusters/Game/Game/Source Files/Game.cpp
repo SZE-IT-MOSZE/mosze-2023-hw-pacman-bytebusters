@@ -57,7 +57,7 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 		isRunning = false;
 	}
 
-	player = new GameObject("Assets/Deerly.png", 0, 0, 64, 64, tileRes, tileRes); //texture, startX, startY, sourceResX, sourceResY, targetResX, targetResY
+	player = new GameObject("Assets/Deerly.png", tileRes, tileRes, 64, 64, tileRes, tileRes); //texture, startX, startY, sourceResX, sourceResY, targetResX, targetResY
 	map = new Map(tileRes, 16);
 
 }
