@@ -13,7 +13,7 @@ public:
 	~Game();
 
 	void Init(const char* title, int xPos, int yPos, int width, int height, int tileRes, bool fullscreen);
-	//void Update();
+	void Update();
 	void Render();
 	void Clean();
 	void HandleEvents();

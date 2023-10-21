@@ -23,12 +23,14 @@
     <ClCompile Include="Game\Source Files\GameObject.cpp" />
     <ClCompile Include="Game\Source Files\main.cpp" />
     <ClCompile Include="Game\Source Files\Map.cpp" />
+    <ClCompile Include="Game\Source Files\Player.cpp" />
     <ClCompile Include="Game\Source Files\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Source Files\Game.h" />
     <ClInclude Include="Game\Source Files\GameObject.h" />
     <ClInclude Include="Game\Source Files\Map.h" />
+    <ClInclude Include="Game\Source Files\Player.h" />
     <ClInclude Include="Game\Source Files\TextureManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -4,20 +4,18 @@
 class GameObject {
 
 public:
-	GameObject(const char* textureSheet, int startX, int startY, int sourceResX, int sourceResY, int targetResX, int targetResY);
+	GameObject();
+	GameObject(int startX, int startY, int targetResW, int targetResH);
 	~GameObject();
 
-	void Update();
+	virtual void Update();
+
+	virtual void SetVelX(int vel);
+	virtual void SetVelY(int vel);
+
 	void Render();
 
-	void SetVelX(int vel);
-	void SetVelY(int vel);
-
-private:
-	int xvel, yvel;
-	SDL_Texture* objTexture;
-	SDL_Rect* srcRect;
+protected:
 	SDL_Rect* destRect;
-
-
+	SDL_Texture* objTexture;
 };

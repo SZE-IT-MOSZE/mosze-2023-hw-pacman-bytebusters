@@ -67,6 +67,7 @@ int main(int argc, char* argv[]) {
 	Uint32 frameStart;
 	int frameTime;
 
+	
 	game = new Game();
 
 	game->Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false);
@@ -93,6 +94,8 @@ int main(int argc, char* argv[]) {
 	gameUpdates.join();
 
 	game->Clean();
+
+	delete game;
 
 	return 0;
 }

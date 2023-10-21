@@ -34,6 +34,11 @@ Map::Map(int size, int res) {
 	LoadMap(17); // loadmap wont stay here i guess
 }
 
+Map::~Map() {
+	delete srcRect;
+	delete destRectDraw;
+}
+
 void Map::LoadMap(int lvl) {
 
 	std::ifstream ReadLevel(pathToFields + std::to_string(lvl) + ".txt"); // open the level file

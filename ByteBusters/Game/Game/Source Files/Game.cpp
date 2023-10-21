@@ -2,8 +2,8 @@
 #include <iostream>
 #include "TextureManager.h"
 #include "GameObject.h"
-#include "Map.h"
 #include <thread>
+#include "Player.h"
 
 
 SDL_Renderer* Game::renderer;
@@ -16,11 +16,11 @@ Game::Game() {
 	isRunning = false;
 	window = nullptr;
 
-
 }
 
 Game::~Game() {
 	//looks too empty, youre forgetting things
+	delete map;
 }
 
 void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
@@ -57,25 +57,18 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 		isRunning = false;
 	}
 
-	player = new GameObject("Assets/Deerly.png", tileRes, tileRes, 64, 64, tileRes, tileRes); //texture, startX, startY, sourceResX, sourceResY, targetResX, targetResY
+	TextureManager::LoadAllTextures();
 	map = new Map(tileRes, 16);
-
+	player = new Player(tileRes, tileRes, tileRes, tileRes);
+	
 }
-/*
-void Game::Update()
-{
-	player->Update();
-}
-*/
-
 
 void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
 	map->DrawMap();
-	player->Render(); 
-	//gameobj array
+	player->Render(),
 
 	SDL_RenderPresent(renderer);
 }
@@ -155,7 +148,7 @@ void Game::UpdateThread() {
 	{
 		frameStart = SDL_GetTicks();
 
-		player->Update();
+		player->Update(); ////////////////////////////////////////
 
 		frameTime = SDL_GetTicks() - frameStart;
 
