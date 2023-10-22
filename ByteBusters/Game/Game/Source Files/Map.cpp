@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "GameObjectManager.h"
 
 std::set<SDL_Rect*> Map::mapWalls;
 
@@ -12,14 +13,6 @@ Map::Map(int size, int res) {
 	tileSize = size;		//may not need to keep this in the future
 
 	pathToFields = "Fields/";
-
-	concrete01	= TextureManager::LoadTexture("Assets/concrete01.png");
-	concrete02	= TextureManager::LoadTexture("Assets/concrete02.png");
-	dirt		= TextureManager::LoadTexture("Assets/dirt.png");
-	jungle		= TextureManager::LoadTexture("Assets/jungle.png");
-	lava		= TextureManager::LoadTexture("Assets/lava.png");
-	water		= TextureManager::LoadTexture("Assets/water.png");
-	err_		= TextureManager::LoadTexture("Assets/err_.png");
 
 	srcRect = new SDL_Rect;
 	
@@ -116,6 +109,7 @@ void Map::LoadMap(int lvl) {
 				break;
 			case 1:
 				mapWalls.insert(destRect);
+				GameObjectManager::CreateGameObject(GameObjectManager::lava, c * tileSize, r * tileSize);
 				break;
 			default:
 				mapPaths.insert(destRect);
@@ -132,32 +126,32 @@ void Map::LoadMap(int lvl) {
 	case 3:
 	case 4:
 	case 5:
-		path = dirt;
-		wall = concrete02;
+		path = TextureManager::dirt;
+		wall = TextureManager::concrete02;
 		break;
 	case 6:
 	case 7:
 	case 8:
 	case 9:
 	case 10:
-		path = jungle;
-		wall = water;
+		path = TextureManager::jungle;
+		wall = TextureManager::water;
 		break;
 	case 11:
 	case 12:
 	case 13:
 	case 14:
 	case 15:
-		path = concrete01;
-		wall = water;
+		path = TextureManager::concrete01;
+		wall = TextureManager::water;
 		break;
 	case 16:
 	case 17:
 	case 18:
 	case 19:
 	case 20:
-		path = concrete02;
-		wall = lava;
+		path = TextureManager::concrete02;
+		wall = TextureManager::lava;
 		break;
 	default:
 		break;
@@ -180,11 +174,8 @@ void Map::DrawMap() {
 			case 0:
 				TextureManager::Draw(path, srcRect, destRectDraw);
 				break;
-			case 1:
-				TextureManager::Draw(wall, srcRect, destRectDraw);
-				break;
 			default:
-				TextureManager::Draw(err_, srcRect, destRectDraw);
+				TextureManager::Draw(TextureManager::err_, srcRect, destRectDraw);
 				break;
 			}
 

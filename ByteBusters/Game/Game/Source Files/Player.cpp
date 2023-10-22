@@ -3,10 +3,12 @@
 #include "Player.h"
 #include "TextureManager.h"
 #include "Map.h"
+#include "Game.h"
+#include <iostream>
 
-Player::Player(int startX, int startY, int targetResW, int targetResH) {
+Player::Player(int startX, int startY, int targetResW, int targetResH, SDL_Texture* t) {
 
-	objTexture = TextureManager::Deerly;
+	objTexture = t;
 
 	destRect = new SDL_Rect;
 
@@ -44,6 +46,11 @@ void Player::Update() {
 			break;
 		}
 	}
+}
+
+void Player::Render() {
+	//std::cout << "player render" << std::endl;
+	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
 }
 
 void Player::SetVelX(int vel) {

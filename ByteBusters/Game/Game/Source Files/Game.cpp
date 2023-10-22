@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include <thread>
 #include "Player.h"
+#include "Enemy.h"
 
 
 SDL_Renderer* Game::renderer;
@@ -28,6 +29,7 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 	height = h;
 	width = w;
 	tileRes = tR;
+	GameObjectManager::SetTileSize(tileRes);
 
 	int flags = 0;
 	if (fullscreen)
@@ -57,24 +59,39 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 		isRunning = false;
 	}
 
-	TextureManager::LoadAllTextures();
+	TextureManager::LoadAllTextures(); /*/////////////////////////////////*/
 	map = new Map(tileRes, 16);
-	player = new Player(tileRes, tileRes, tileRes, tileRes);
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes);
+	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
+	GameObjectManager::CreateGameObject(GameObjectManager::deer, tileRes * 10, tileRes * 10);
+	GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileRes * 10, tileRes * 10);
+	GameObjectManager::CreateGameObject(GameObjectManager::ape, tileRes * 10, tileRes * 10);
+	//for (size_t i = 0; i < 100; i++) // invasion of the yusri
+	//{
+	//	GameObjectManager::CreateGameObject(GameObjectManager::yusri, tileRes * 10, tileRes * 10);
+	//}
 	
+	
+
+
 }
 
 void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	map->DrawMap();
-	player->Render(),
+	map->DrawMap(); /////////////////////////////////////////////////
+	//player->Render();
+	//enemy->Render();
+
+	GameObjectManager::RenderAllGameObjects();
 
 	SDL_RenderPresent(renderer);
 }
 
 void Game::Clean()
 {
+	//GameObjectManager::DestroyAllGameObjects(); causes critcical error !?
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
@@ -137,8 +154,9 @@ void Game::HandleEvents()
 
 void Game::UpdateThread() {
 	std::cout << "Thread Created" << std::endl;
+	std::cout << tileRes << std::endl;
 
-	const int UPS = 240;
+	const int UPS = tileRes * 3;
 	const int frameDelay = 1000 / UPS;
 
 	Uint32 frameStart;
@@ -148,7 +166,10 @@ void Game::UpdateThread() {
 	{
 		frameStart = SDL_GetTicks();
 
-		player->Update(); ////////////////////////////////////////
+		//player->Update(); ////////////////////////////////////////
+		//enemy->Update();
+
+		GameObjectManager::UpdateAllGameObjects();
 
 		frameTime = SDL_GetTicks() - frameStart;
 
@@ -161,13 +182,3 @@ void Game::UpdateThread() {
 	std::cout << "Thread Finished" << std::endl;
 
 }
-
-
-
-//read velocity everyy frame in a separete function
-//set velocity based on keyevents
-//handle collisions based in velocity->new position every frame
-//this way the inputs and the collision detection is separated
-//same will be true for enemies and other game object
-//only their velocity will be set and thir position updated every frame based on that
-// !!! framerate independent velocity ???

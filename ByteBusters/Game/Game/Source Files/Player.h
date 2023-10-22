@@ -3,10 +3,11 @@
 
 class Player : public GameObject {
 public:
-	Player(int startX, int startY, int targetResW, int targetResH);
+	Player(int startX, int startY, int targetResW, int targetResH, SDL_Texture* t);
 	~Player();
 
 	void Update();
+	void Render();
 
 	void SetVelX(int vel);
 	void SetVelY(int vel);

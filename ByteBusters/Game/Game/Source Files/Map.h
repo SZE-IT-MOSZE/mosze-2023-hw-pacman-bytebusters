@@ -25,19 +25,9 @@ private:
 	SDL_Rect* srcRect;
 	SDL_Rect* destRectDraw;
 	std::set<SDL_Rect*> mapPaths;
-	
 
 	SDL_Texture* path;
 	SDL_Texture* wall;
-
-	SDL_Texture* concrete01;
-	SDL_Texture* concrete02;
-	SDL_Texture* dirt;
-	SDL_Texture* jungle;
-	SDL_Texture* lava;
-	SDL_Texture* water;
-	SDL_Texture* err_;
-	
 
 	int tileSize;		// rectanqular !! target rersolution of one tile on the screen
 	int tileResolution;	// rectanqular !! texture size in pixels

@@ -19,19 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Source Files\Enemy.cpp" />
     <ClCompile Include="Game\Source Files\Game.cpp" />
     <ClCompile Include="Game\Source Files\GameObject.cpp" />
+    <ClCompile Include="Game\Source Files\GameObjectManager.cpp" />
     <ClCompile Include="Game\Source Files\main.cpp" />
     <ClCompile Include="Game\Source Files\Map.cpp" />
     <ClCompile Include="Game\Source Files\Player.cpp" />
     <ClCompile Include="Game\Source Files\TextureManager.cpp" />
+    <ClCompile Include="Game\Source Files\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Source Files\Enemy.h" />
     <ClInclude Include="Game\Source Files\Game.h" />
     <ClInclude Include="Game\Source Files\GameObject.h" />
+    <ClInclude Include="Game\Source Files\GameObjectManager.h" />
     <ClInclude Include="Game\Source Files\Map.h" />
     <ClInclude Include="Game\Source Files\Player.h" />
     <ClInclude Include="Game\Source Files\TextureManager.h" />
+    <ClInclude Include="Game\Source Files\Wall.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

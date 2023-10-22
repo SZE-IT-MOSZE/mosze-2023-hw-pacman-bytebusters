@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "Map.h"
 #include <set>
+#include "GameObjectManager.h"
 
 class Game {
 
@@ -12,7 +13,7 @@ public:
 	Game();
 	~Game();
 
-	void Init(const char* title, int xPos, int yPos, int width, int height, int tileRes, bool fullscreen);
+	void Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen);
 	void Update();
 	void Render();
 	void Clean();
@@ -32,6 +33,7 @@ private:
 	Map* map;
 
 	GameObject* player;
+	GameObject* enemy;
 
 	std::set<GameObject*> gameObjects;
 
