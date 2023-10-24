@@ -4,30 +4,42 @@
 #include "Game.h"
 #include <iostream>
 
+int GameObject::TileSize;
+
 GameObject::GameObject() {};
 
-GameObject::GameObject(int startX, int startY, int targetResW, int targetResH) {
+GameObject::GameObject(int x, int y) { //static tileSize that is set once using a setter, avoid taking that in into constructor
 	objTexture = TextureManager::err_;
 
 	destRect = new SDL_Rect;
 
-	destRect->x = startX;
-	destRect->y = startY;
-	destRect->w = targetResW;
-	destRect->h = targetResH;
+	destRect->x = x;
+	destRect->y = y;
+
+	destRect->w = destRect->h = TileSize;
+
+	//destRect->w = w;
+	//destRect->h = h;
 
 }
 
 GameObject::~GameObject() {
-	std::cout << "base class destructor" << std::endl;
+	std::cout << "base class destructor called" << std::endl;
 	delete destRect;
 }
 
-void GameObject::Update() {}
-void GameObject::SetVelX(int vel) {}
-void GameObject::SetVelY(int vel) {}
+void GameObject::Update() {
+	std::cout << "base class update called" << std::endl;
+}
+
+//void GameObject::SetVelX(int vel) {}
+//void GameObject::SetVelY(int vel) {}
 
 void GameObject::Render() {
 	//std::cout << "base class render" << std::endl;
 	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
+}
+
+void GameObject::setTileSize(int s) {
+	TileSize = s;
 }

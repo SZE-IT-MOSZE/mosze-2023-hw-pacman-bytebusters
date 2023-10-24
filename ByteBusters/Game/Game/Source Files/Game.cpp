@@ -29,7 +29,7 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 	height = h;
 	width = w;
 	tileRes = tR;
-	GameObjectManager::SetTileSize(tileRes);
+	
 
 	int flags = 0;
 	if (fullscreen)
@@ -60,7 +60,11 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 	}
 
 	TextureManager::LoadAllTextures(); /*/////////////////////////////////*/
+
+	GameObjectManager::SetTileSize(tileRes);
+
 	map = new Map(tileRes, 16);
+
 	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes);
 	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
 	GameObjectManager::CreateGameObject(GameObjectManager::deer, tileRes * 10, tileRes * 10);
@@ -70,8 +74,6 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 	//{
 	//	GameObjectManager::CreateGameObject(GameObjectManager::yusri, tileRes * 10, tileRes * 10);
 	//}
-	
-	
 
 
 }
@@ -80,9 +82,7 @@ void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	map->DrawMap(); /////////////////////////////////////////////////
-	//player->Render();
-	//enemy->Render();
+	map->DrawMap(); ///////////////////////////////////////////////// only for background now
 
 	GameObjectManager::RenderAllGameObjects();
 
@@ -91,7 +91,7 @@ void Game::Render()
 
 void Game::Clean()
 {
-	//GameObjectManager::DestroyAllGameObjects(); causes critcical error !?
+	GameObjectManager::DestroyAllGameObjects(); //causes critcical error !?
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();

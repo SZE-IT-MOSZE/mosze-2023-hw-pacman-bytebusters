@@ -5,19 +5,17 @@
 
 class Enemy : public GameObject {
 public:
-	Enemy(int startX, int startY, int targetResW, int targetResH, SDL_Texture* t, Player* p);
+	Enemy(int x, int y, SDL_Texture* t, Player* p);
 	~Enemy();
 
 	void Update();
 	void Render();
-	//void UpdatePlayerPosition();
+
+	static void setTileSize(int s);
 
 private:
-	GameObject* player;
+	Player* player;
 	SDL_Rect* playerRect;
-
-	void SetVelX(int vel);
-	void SetVelY(int vel);
 
 	bool CheckLineOfSight();
 	void Chase();

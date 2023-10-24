@@ -1,15 +1,12 @@
 #include "Wall.h"
+#include <iostream>
 
-Wall::Wall(int x, int y, int h, int w, SDL_Texture* t) {
+Wall::Wall(int x, int y, SDL_Texture* t) : GameObject::GameObject(x, y){
 	objTexture = t;
-	destRect = new SDL_Rect;
-
-	destRect->x = x;
-	destRect->y = y;
-	destRect->w = w;
-	destRect->h = h;
 }
 
 Wall::~Wall() {
+	std::cout << "wall destructor called" << std::endl;
+
 	delete destRect;
 }

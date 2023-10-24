@@ -6,22 +6,21 @@ class GameObject {
 public:
 
 	GameObject();
-	GameObject(int startX, int startY, int targetResW, int targetResH);
+	GameObject(int x, int y);
 	virtual  ~GameObject();
 
 	virtual void Update();
 	virtual void Render();
 
-	SDL_Rect* getDestRect() {
+	static void setTileSize(int s);
+
+	/*SDL_Rect* getDestRect() {
 		return destRect;
-	};
-
-	virtual void SetVelX(int vel);
-	virtual void SetVelY(int vel);
-
-	
+	};*/
 
 protected:
+	static int TileSize;
+
 	SDL_Rect* destRect;
 	SDL_Texture* objTexture;
 };

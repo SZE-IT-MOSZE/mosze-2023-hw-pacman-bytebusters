@@ -6,16 +6,10 @@
 #include "Game.h"
 #include <iostream>
 
-Player::Player(int startX, int startY, int targetResW, int targetResH, SDL_Texture* t) {
+Player::Player(int x, int y, SDL_Texture* t) : GameObject(x, y) {
+	std::cout << "player tilesize " << TileSize << std::endl;
 
 	objTexture = t;
-
-	destRect = new SDL_Rect;
-
-	destRect->x = startX;
-	destRect->y = startY;
-	destRect->w = targetResW;
-	destRect->h = targetResH;
 
 	xvel = 0;
 	yvel = 0;
@@ -23,13 +17,14 @@ Player::Player(int startX, int startY, int targetResW, int targetResH, SDL_Textu
 }
 
 Player::~Player() {
-	delete destRect;
+	std::cout << "player destructor called" << std::endl;
+	//delete destRect; // this causes some weird stuff to happen
 }
 
 void Player::Update() {
 	destRect->x += xvel;
 	
-	for (SDL_Rect* wall : Map::mapWalls)
+	for (SDL_Rect* wall : Map::mapWalls) // replace with better alternative
 	{
 		if (SDL_HasIntersection(destRect, wall)) {
 			destRect->x -= xvel;
@@ -39,7 +34,7 @@ void Player::Update() {
 	
 	destRect->y += yvel;
 	
-	for (SDL_Rect* wall : Map::mapWalls)
+	for (SDL_Rect* wall : Map::mapWalls) //replace with better alternative
 	{
 		if (SDL_HasIntersection(destRect, wall)) {
 			destRect->y -= yvel;
@@ -48,9 +43,10 @@ void Player::Update() {
 	}
 }
 
-void Player::Render() {
-	//std::cout << "player render" << std::endl;
+void Player::Render() { // necessary for animations???
+	std::cout << "player render, obj texture: " << objTexture << std::endl;
 	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
+	SDL_RenderDrawRect(Game::renderer, destRect);
 }
 
 void Player::SetVelX(int vel) {

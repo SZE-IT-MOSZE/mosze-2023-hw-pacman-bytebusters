@@ -3,7 +3,7 @@
 
 class Player : public GameObject {
 public:
-	Player(int startX, int startY, int targetResW, int targetResH, SDL_Texture* t);
+	Player(int x, int y, SDL_Texture* t);
 	~Player();
 
 	void Update();
@@ -11,6 +11,8 @@ public:
 
 	void SetVelX(int vel);
 	void SetVelY(int vel);
+
+	SDL_Rect* getDestRect() { return destRect; }
 
 private:
 

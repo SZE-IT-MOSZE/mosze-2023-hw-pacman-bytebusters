@@ -5,6 +5,7 @@
 #include "Wall.h"
 
 #include <set>
+#include <forward_list>
 
 class GameObjectManager {
 public:
@@ -58,8 +59,8 @@ private:
 	static int tileSize;
 
 	static Player* _player;
-	static std::set<Enemy*> enemies;
-	static std::set<Wall*> walls;
-	//static std::set<Item*> items;
+	static std::forward_list<Enemy*> enemies;
+	static std::forward_list<Wall*> walls;
+	//static std::forward_list<Item*> items;
 
 };

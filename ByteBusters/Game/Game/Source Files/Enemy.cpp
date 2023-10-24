@@ -3,19 +3,12 @@
 #include "Game.h"
 #include <iostream>
 
-Enemy::Enemy(int startX, int startY, int targetResW, int targetResH, SDL_Texture* t, Player* p) {
+Enemy::Enemy(int x, int y, SDL_Texture* t, Player* p) : GameObject::GameObject(x, y) {
 	objTexture = t;
 
 	player = p;
 
 	playerRect = player->getDestRect();
-
-	destRect = new SDL_Rect;
-
-	destRect->x = startX;
-	destRect->y = startY;
-	destRect->w = targetResW;
-	destRect->h = targetResH;
 
 	xvel = 0;
 	yvel = 0;
@@ -24,6 +17,8 @@ Enemy::Enemy(int startX, int startY, int targetResW, int targetResH, SDL_Texture
 }
 
 Enemy::~Enemy() {
+	std::cout << "enemy destructor called" << std::endl;
+
 	delete destRect;
 }
 
@@ -32,7 +27,7 @@ void Enemy::Update() {
 
 	for (SDL_Rect* wall : Map::mapWalls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) {
+		if (SDL_HasIntersection(destRect, wall)) { // again, walls
 			destRect->x -= xvel;
 			break;
 		}
@@ -42,7 +37,7 @@ void Enemy::Update() {
 
 	for (SDL_Rect* wall : Map::mapWalls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) {
+		if (SDL_HasIntersection(destRect, wall)) { // again, walls
 			destRect->y -= yvel;
 			break;
 		}
@@ -55,7 +50,7 @@ void Enemy::Update() {
 		Enemy::Wander();
 	}
 
-	
+
 }
 
 void Enemy::Render() {
@@ -113,35 +108,38 @@ void Enemy::Chase() {
 		yvel = 0;
 	}
 }
+int rnd = 0;
+void Enemy::Wander() { // make counter for how many fraes later it start to wander then substract counter 1 each frame
 
-void Enemy::Wander() {
-
-	int rnd = rand() % 2000;
-	if (rnd < 1)
+	if (rnd)
 	{
-		xvel = 1;
+		rnd--;
+		return;
 	}
-	else if (rnd < 2) {
+
+	rnd = rand() % 2000;
+	int rndForVel = rand() % 5;
+	switch (rndForVel)
+	{
+	case 0:
 		xvel = 0;
-	}
-	else if (rnd < 3) {
+		break;
+	case 1:
+		xvel = 1;
+		break;
+	case 2:
 		xvel = -1;
-	}
-	else if (rnd < 4) {
-		yvel = 1;
-	}
-	else if (rnd < 5) {
+		break;
+	case 3:
 		yvel = 0;
-	}
-	else if (rnd < 6) {
+		break;
+	case 4:
+		yvel = 1;
+		break;
+	case 5:
 		yvel = -1;
+		break;
+	default:
+		break;
 	}
-}
-
-
-void Enemy::SetVelX(int vel) {
-	xvel = vel;
-}
-void Enemy::SetVelY(int vel) {
-	yvel = vel;
 }

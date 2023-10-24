@@ -32,10 +32,8 @@ private:
 
 	Map* map;
 
-	GameObject* player;
-	GameObject* enemy;
+	Player* player;
 
-	std::set<GameObject*> gameObjects;
 
 	int height; // default is smallest res
 	int width;
