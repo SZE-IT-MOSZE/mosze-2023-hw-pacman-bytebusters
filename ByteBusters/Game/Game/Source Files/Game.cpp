@@ -63,9 +63,10 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 
 	GameObjectManager::SetTileSize(tileRes);
 
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); // Items in map need player ref, create player before map
+
 	map = new Map(tileRes, 16);
 
-	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes);
 	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
 	GameObjectManager::CreateGameObject(GameObjectManager::deer, tileRes * 10, tileRes * 10);
 	GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileRes * 10, tileRes * 10);

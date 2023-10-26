@@ -18,8 +18,6 @@ Enemy::Enemy(int x, int y, SDL_Texture* t, Player* p) : GameObject::GameObject(x
 
 Enemy::~Enemy() {
 	std::cout << "enemy destructor called" << std::endl;
-
-	delete destRect;
 }
 
 void Enemy::Update() {

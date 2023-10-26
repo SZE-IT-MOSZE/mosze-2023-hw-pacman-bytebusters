@@ -1,2 +1,4 @@
-﻿  GameObject.cpp
+﻿  Map.cpp
+C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Map.cpp(67,33): warning C4101: 'e': unreferenced local variable
+C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Map.cpp(72,29): warning C4101: 'e': unreferenced local variable
   Game.vcxproj -> C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\x64\Debug\Game.exe

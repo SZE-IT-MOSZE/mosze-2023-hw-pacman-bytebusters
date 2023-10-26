@@ -105,11 +105,16 @@ void Map::LoadMap(int lvl) {
 			switch (map[r][c])
 			{
 			case 0:
-				mapPaths.insert(destRect);
+				mapPaths.insert(destRect); // theese are bad. fix this pls. 
 				break;
 			case 1:
 				mapWalls.insert(destRect);
 				GameObjectManager::CreateGameObject(GameObjectManager::lava, c * tileSize, r * tileSize);
+				break;
+			case 2:
+				mapPaths.insert(destRect);
+				//GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
+
 				break;
 			default:
 				mapPaths.insert(destRect);

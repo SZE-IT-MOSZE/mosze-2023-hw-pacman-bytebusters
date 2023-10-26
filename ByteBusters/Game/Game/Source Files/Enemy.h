@@ -11,8 +11,6 @@ public:
 	void Update();
 	void Render();
 
-	static void setTileSize(int s);
-
 private:
 	Player* player;
 	SDL_Rect* playerRect;

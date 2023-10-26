@@ -8,7 +8,7 @@ int GameObject::TileSize;
 
 GameObject::GameObject() {};
 
-GameObject::GameObject(int x, int y) { //static tileSize that is set once using a setter, avoid taking that in into constructor
+GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
 
 	destRect = new SDL_Rect;

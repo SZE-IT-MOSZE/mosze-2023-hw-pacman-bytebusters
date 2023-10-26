@@ -9,7 +9,7 @@ int GameObjectManager::tileSize;
 Player* GameObjectManager::_player;
 std::forward_list<Enemy*> GameObjectManager::enemies;
 std::forward_list<Wall*> GameObjectManager::walls;
-//std::forward_list<Item*> GameObjectManager::items;
+std::forward_list<Item*> GameObjectManager::items;
 
 void GameObjectManager::SetTileSize(int s) {
 	GameObject::setTileSize(s);
@@ -68,17 +68,14 @@ void GameObjectManager::CreateGameObject(WallTypes t, int x, int y) {
 }
 
 void GameObjectManager::CreateGameObject(ItemTypes t, int x, int y) {
-	//items.insert(new); item class doesnt exist yet
+	items.push_front(new Item(x, y, TextureManager::paper, _player));
 }
 
 void GameObjectManager::DestroyAllGameObjects() { //forward list remove calls the destructor, clear should to the same
 	delete _player;
 	enemies.clear();
 	walls.clear();
-	/*for (Item* item : items)
-	{
-		delete item;
-	}*/
+	items.clear();
 }
 
 void GameObjectManager::RenderAllGameObjects() {
@@ -91,10 +88,10 @@ void GameObjectManager::RenderAllGameObjects() {
 	{
 		wall->Render();
 	}
-	/*for (Item* item : items)
+	for (Item* item : items)
 	{
-		item;
-	}*/
+		item->Render();
+	}
 	_player->Render();
 }
 
@@ -108,10 +105,10 @@ void GameObjectManager::UpdateAllGameObjects() {
 	{
 		wall->Update();
 	}*/
-	/*for (Item* item : items)
+	for (Item* item : items)
 	{
-		item;
-	}*/
+		item->Update();
+	}
 	_player->Update();
 }
 

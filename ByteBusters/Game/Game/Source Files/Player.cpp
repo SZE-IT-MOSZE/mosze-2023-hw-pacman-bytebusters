@@ -18,7 +18,6 @@ Player::Player(int x, int y, SDL_Texture* t) : GameObject(x, y) {
 
 Player::~Player() {
 	std::cout << "player destructor called" << std::endl;
-	//delete destRect; // this causes some weird stuff to happen
 }
 
 void Player::Update() {
@@ -44,7 +43,7 @@ void Player::Update() {
 }
 
 void Player::Render() { // necessary for animations???
-	std::cout << "player render, obj texture: " << objTexture << std::endl;
+	//std::cout << "player render, obj texture: " << objTexture << std::endl;
 	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
 	SDL_RenderDrawRect(Game::renderer, destRect);
 }

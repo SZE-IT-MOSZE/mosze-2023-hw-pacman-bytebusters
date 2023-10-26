@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Wall.h"
+#include "Item.h"
 
 #include <set>
 #include <forward_list>
@@ -61,6 +62,6 @@ private:
 	static Player* _player;
 	static std::forward_list<Enemy*> enemies;
 	static std::forward_list<Wall*> walls;
-	//static std::forward_list<Item*> items;
+	static std::forward_list<Item*> items;
 
 };

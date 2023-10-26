@@ -27,6 +27,9 @@ public:
 	//misc
 	static SDL_Texture* Joseph_White;
 	static SDL_Texture* Yusri;
+
+	static SDL_Texture* paper;
+
 	//err
 	static SDL_Texture* err_;
 };
