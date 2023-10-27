@@ -2,18 +2,21 @@
 #include "GameObject.h"
 #include <time.h>
 #include "Player.h"
+#include <forward_list>
+#include "Wall.h"
 
 class Enemy : public GameObject {
 public:
-	Enemy(int x, int y, SDL_Texture* t, Player* p);
+	Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* p);
 	~Enemy();
 
 	void Update();
 	void Render();
 
 private:
-	Player* player;
+	Player* player; //player is still a pointer. only lists are references
 	SDL_Rect* playerRect;
+	std::forward_list<Wall*>& walls;
 
 	bool CheckLineOfSight();
 	void Chase();

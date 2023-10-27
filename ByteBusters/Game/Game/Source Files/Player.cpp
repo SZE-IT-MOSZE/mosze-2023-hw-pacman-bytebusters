@@ -5,15 +5,15 @@
 #include "Map.h"
 #include "Game.h"
 #include <iostream>
+#include "GameObjectManager.h"
 
-Player::Player(int x, int y, SDL_Texture* t) : GameObject(x, y) {
+Player::Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i) : walls(w), items(i), GameObject(x, y) {
 	std::cout << "player tilesize " << TileSize << std::endl;
 
 	objTexture = t;
 
 	xvel = 0;
 	yvel = 0;
-
 }
 
 Player::~Player() {
@@ -21,37 +21,44 @@ Player::~Player() {
 }
 
 void Player::Update() {
+
 	destRect->x += xvel;
-	
-	for (SDL_Rect* wall : Map::mapWalls) // replace with better alternative
+	for (Wall* wall : walls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) {
+		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
 			destRect->x -= xvel;
 			break;
 		}
 	}
-	
+
 	destRect->y += yvel;
-	
-	for (SDL_Rect* wall : Map::mapWalls) //replace with better alternative
+	for (Wall* wall : walls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) {
+		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
 			destRect->y -= yvel;
+			break;
+		}
+	}
+
+	for (Item* item : items)
+	{
+		if (SDL_HasIntersection(destRect, item->GetDestRect())) {
+			std::cout << "Item Pickup" << std::endl;
+			items.remove(item);
+			delete item;
 			break;
 		}
 	}
 }
 
-void Player::Render() { // necessary for animations???
-	//std::cout << "player render, obj texture: " << objTexture << std::endl;
+void Player::Render() {
 	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
-	SDL_RenderDrawRect(Game::renderer, destRect);
 }
 
-void Player::SetVelX(int vel) {
-	xvel = vel;
+void Player::SetVelX(int v) {
+	xvel = v;
 }
 
-void Player::SetVelY(int vel) {
-	yvel = vel;
+void Player::SetVelY(int v) {
+	yvel = v;
 }

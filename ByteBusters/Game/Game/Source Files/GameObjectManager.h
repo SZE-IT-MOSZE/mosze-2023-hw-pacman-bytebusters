@@ -5,7 +5,6 @@
 #include "Wall.h"
 #include "Item.h"
 
-#include <set>
 #include <forward_list>
 
 class GameObjectManager {
@@ -45,19 +44,21 @@ public:
 	static void CreateGameObject(WallTypes t, int x, int y);
 	static void CreateGameObject(ItemTypes t, int x, int y);
 
-	static void DestroyAllGameObjects();
-
 	static void SetTileSize(int size);
 
 	static void RenderAllGameObjects();
 
 	static void UpdateAllGameObjects();
 
+	static void DestroyAllGameObjects();
 
-
+	static std::forward_list<Wall*>* GetWalls();	//passing the list by pointer
+	static std::forward_list<Enemy*>* GetEnemies();	//passing the list by pointer
+	static std::forward_list<Item*>* GetItems();	//passing the list by pointer
+	static Player* GetPlayer();
 
 private:
-	static int tileSize;
+	//static int tileSize; // we could save this, but why
 
 	static Player* _player;
 	static std::forward_list<Enemy*> enemies;

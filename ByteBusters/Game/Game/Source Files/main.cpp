@@ -2,11 +2,54 @@
 #include "Game.h"
 #include <iostream>
 #include <thread>
+#include <forward_list>
 
 Game* game = nullptr;
+//
+//void zaza(std::forward_list<int>& l) {
+//	std::forward_list<int>& funcList = l;
+//
+//	l.push_front(5);
+//	l.push_front(6);
+//	funcList.push_front(11);
+//	funcList.push_front(12);
+//
+//	for (int i : l) {
+//		std::cout << i << std::endl;
+//	}
+//	std::cout << "----------" << std::endl;
+//
+//	for (int i : funcList) {
+//		std::cout << i << std::endl;
+//	}
+//	std::cout << "----------" << std::endl;
+//
+//}
 
 int main(int argc, char* argv[]) {
+	/*
+	std::forward_list<int> intList;
+
+	intList.push_front(1);
+	intList.push_front(2);
+	intList.push_front(3);
+	for (int i : intList) {
+		std::cout << i << std::endl;
+	}
+	std::cout << "----------" << std::endl;
+
+	zaza(intList);
+
 	
+
+	for (int i : intList) {
+		std::cout << i << std::endl;
+	}
+	std::cout << "----------" << std::endl;
+
+	return 0;*/
+
+
 	if ((SDL_Init(SDL_INIT_VIDEO) == -1)) {
 		printf("Could not initialize SDL: %s.\n", SDL_GetError());
 		return -1;
@@ -59,9 +102,7 @@ int main(int argc, char* argv[]) {
 	//15*112 = 1680
 	//15*128 = 1920
 
-	//return 0;
-
-	const int FPS = 60;
+	const int FPS = 30;
 	const int frameDelay = 1000 / FPS;
 
 	Uint32 frameStart;
@@ -79,7 +120,6 @@ int main(int argc, char* argv[]) {
 		frameStart = SDL_GetTicks();
 
 		game->HandleEvents();
-		//game->Update(); //placed on other thread
 		game->Render();
 
 		frameTime = SDL_GetTicks() - frameStart;

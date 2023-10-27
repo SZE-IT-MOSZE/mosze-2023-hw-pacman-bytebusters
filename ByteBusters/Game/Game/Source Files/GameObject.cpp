@@ -6,8 +6,6 @@
 
 int GameObject::TileSize;
 
-GameObject::GameObject() {};
-
 GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
 
@@ -18,25 +16,16 @@ GameObject::GameObject(int x, int y) {
 
 	destRect->w = destRect->h = TileSize;
 
-	//destRect->w = w;
-	//destRect->h = h;
-
 }
 
 GameObject::~GameObject() {
-	std::cout << "base class destructor called" << std::endl;
 	delete destRect;
 }
 
 void GameObject::Update() {
-	std::cout << "base class update called" << std::endl;
 }
 
-//void GameObject::SetVelX(int vel) {}
-//void GameObject::SetVelY(int vel) {}
-
 void GameObject::Render() {
-	//std::cout << "base class render" << std::endl;
 	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
 }
 

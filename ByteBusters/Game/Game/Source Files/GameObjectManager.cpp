@@ -4,7 +4,7 @@
 #include "Wall.h"
 #include <iostream>
 
-int GameObjectManager::tileSize;
+//int GameObjectManager::tileSize;
 
 Player* GameObjectManager::_player;
 std::forward_list<Enemy*> GameObjectManager::enemies;
@@ -15,35 +15,52 @@ void GameObjectManager::SetTileSize(int s) {
 	GameObject::setTileSize(s);
 }
 
-Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
-	_player = new Player(x, y, TextureManager::Deerly);
+std::forward_list<Wall*>* GameObjectManager::GetWalls() {
+	return &walls;
+}	
+
+std::forward_list<Enemy*>* GameObjectManager::GetEnemies() {
+	return &enemies;
+}	
+
+std::forward_list<Item*>* GameObjectManager::GetItems() {
+	return &items;
+}	
+
+Player* GameObjectManager::GetPlayer() {
 	return _player;
 }
 
+
+
+Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
+	_player = new Player(x, y, TextureManager::Deerly, walls, items);
+	return _player;
+}
 
 void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 	switch (t)
 	{
 	case GameObjectManager::ape:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Ape, _player));
+		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Ape, walls, _player));
 		break;
 	case GameObjectManager::deer:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Deer, _player));
+		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Deer, walls, _player));
 		break;
 	case GameObjectManager::guard:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Guard, _player));
+		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Guard, walls, _player));
 		break;
 	case GameObjectManager::homeless:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Homeless, _player));
+		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Homeless, walls, _player));
 		break;
 	case GameObjectManager::soldier:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Soldier, _player));
+		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Soldier, walls, _player));
 		break;
 	case GameObjectManager::yusri:
-		enemies.push_front(new Enemy(x, y, TextureManager::Yusri, _player));
+		enemies.push_front(new Enemy(x, y, TextureManager::Yusri, walls, _player));
 		break;
 	case GameObjectManager::joseph:
-		enemies.push_front(new Enemy(x, y, TextureManager::Joseph_White, _player));
+		enemies.push_front(new Enemy(x, y, TextureManager::Joseph_White, walls, _player));
 		break;
 	default:
 		break;
@@ -68,18 +85,11 @@ void GameObjectManager::CreateGameObject(WallTypes t, int x, int y) {
 }
 
 void GameObjectManager::CreateGameObject(ItemTypes t, int x, int y) {
-	items.push_front(new Item(x, y, TextureManager::paper, _player));
+	items.push_front(new Item(x, y, TextureManager::paper));
 }
 
-void GameObjectManager::DestroyAllGameObjects() { //forward list remove calls the destructor, clear should to the same
-	delete _player;
-	enemies.clear();
-	walls.clear();
-	items.clear();
-}
 
 void GameObjectManager::RenderAllGameObjects() {
-	//std::cout << "GOM Render" << std::endl;
 	for (Enemy* enemy : enemies)
 	{
 		enemy->Render();
@@ -112,4 +122,19 @@ void GameObjectManager::UpdateAllGameObjects() {
 	_player->Update();
 }
 
+void GameObjectManager::DestroyAllGameObjects() { 
+	for (Enemy* enemy : enemies)
+	{
+		delete enemy;
+	}
+	for (Wall* wall : walls)
+	{
+		delete wall;
+	}
+	for (Item* item : items)
+	{
+		delete item;
+	}
+	delete _player;
+}
 

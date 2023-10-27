@@ -2,12 +2,12 @@
 #include "TextureManager.h"
 #include "Game.h"
 #include <iostream>
+#include "GameObjectManager.h"
 
-Enemy::Enemy(int x, int y, SDL_Texture* t, Player* p) : GameObject::GameObject(x, y) {
+Enemy::Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* p) : walls(w), GameObject(x, y) {
 	objTexture = t;
 
 	player = p;
-
 	playerRect = player->getDestRect();
 
 	xvel = 0;
@@ -23,9 +23,9 @@ Enemy::~Enemy() {
 void Enemy::Update() {
 	destRect->x += xvel;
 
-	for (SDL_Rect* wall : Map::mapWalls)
+	for (Wall* wall : walls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) { // again, walls
+		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
 			destRect->x -= xvel;
 			break;
 		}
@@ -33,19 +33,20 @@ void Enemy::Update() {
 
 	destRect->y += yvel;
 
-	for (SDL_Rect* wall : Map::mapWalls)
+	for (Wall* wall : walls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) { // again, walls
+		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
 			destRect->y -= yvel;
 			break;
 		}
 	}
+
 	if (CheckLineOfSight())
 	{
-		Enemy::Chase();
+		Chase();
 	}
 	else {
-		Enemy::Wander();
+		Wander();
 	}
 
 
@@ -59,10 +60,6 @@ void Enemy::Render() {
 }
 
 bool Enemy::CheckLineOfSight() {
-	if (!player)
-	{
-		return false;
-	}
 
 	playerPosX = playerRect->x + playerRect->w / 2;
 	playerPosY = playerRect->y + playerRect->h / 2;
@@ -70,11 +67,18 @@ bool Enemy::CheckLineOfSight() {
 	posX = destRect->x + destRect->w / 2;
 	posY = destRect->y + destRect->h / 2;
 
-	//
+	int distance = sqrt( pow( (playerPosX - posX), 2) + pow( (playerPosY - posY), 2) );
+	std::cout << playerPosX << "," << playerPosY << " | " << posX << "," << posY << " | " << "dist: " << distance << std::endl;
+	
 
-	for (SDL_Rect* wall : Map::mapWalls)
+	if (distance > 1000)
 	{
-		if (SDL_IntersectRectAndLine(wall, &playerPosX, &playerPosY, &posX, &posY)) {
+		return false;
+	}
+	
+	for (Wall* wall : walls)
+	{
+		if (SDL_IntersectRectAndLine(wall->GetDestRect(), &playerPosX, &playerPosY, &posX, &posY)) {
 			//std::cout << "False" << std::endl;
 			return false;
 		}
@@ -106,8 +110,9 @@ void Enemy::Chase() {
 		yvel = 0;
 	}
 }
+
 int rnd = 0;
-void Enemy::Wander() { // make counter for how many fraes later it start to wander then substract counter 1 each frame
+void Enemy::Wander() {
 
 	if (rnd)
 	{

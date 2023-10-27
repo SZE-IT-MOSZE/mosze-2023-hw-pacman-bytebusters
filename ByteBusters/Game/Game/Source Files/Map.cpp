@@ -5,19 +5,12 @@
 #include <string>
 #include "GameObjectManager.h"
 
-std::set<SDL_Rect*> Map::mapWalls;
-
 Map::Map(int size, int res) {
 
 	tileResolution = res;	//may not need to keep this in the future
 	tileSize = size;		//may not need to keep this in the future
 
 	pathToFields = "Fields/";
-
-	srcRect = new SDL_Rect;
-	
-	srcRect->w = srcRect->h = tileResolution;
-	srcRect->x = srcRect->y = 0;
 
 	destRectDraw = new SDL_Rect;
 	
@@ -28,11 +21,10 @@ Map::Map(int size, int res) {
 }
 
 Map::~Map() {
-	delete srcRect;
 	delete destRectDraw;
 }
 
-void Map::LoadMap(int lvl) {
+void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 
 	std::ifstream ReadLevel(pathToFields + std::to_string(lvl) + ".txt"); // open the level file
 
@@ -96,28 +88,15 @@ void Map::LoadMap(int lvl) {
 	{
 		for (int c = 0; c < mapCols; c++)
 		{
-			SDL_Rect* destRect = new SDL_Rect;
-			destRect->w = tileSize;
-			destRect->h = tileSize;
-			destRect->x = c * tileSize;
-			destRect->y = r * tileSize;
-
 			switch (map[r][c])
 			{
-			case 0:
-				mapPaths.insert(destRect); // theese are bad. fix this pls. 
-				break;
 			case 1:
-				mapWalls.insert(destRect);
 				GameObjectManager::CreateGameObject(GameObjectManager::lava, c * tileSize, r * tileSize);
 				break;
 			case 2:
-				mapPaths.insert(destRect);
-				//GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
-
+				GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
 				break;
 			default:
-				mapPaths.insert(destRect);
 				break;
 			}
 
@@ -171,16 +150,18 @@ void Map::DrawMap() {
 	{
 		for (int c = 0; c < mapCols; c++)
 		{
-			destRectDraw->x = c * tileSize;
-			destRectDraw->y = r * tileSize;
-
 			switch (map[r][c])
 			{
 			case 0:
-				TextureManager::Draw(path, srcRect, destRectDraw);
+			case 2:
+				destRectDraw->x = c * tileSize;
+				destRectDraw->y = r * tileSize;
+				TextureManager::Draw(path, NULL, destRectDraw);
 				break;
 			default:
-				TextureManager::Draw(TextureManager::err_, srcRect, destRectDraw);
+				destRectDraw->x = c * tileSize;
+				destRectDraw->y = r * tileSize;
+				TextureManager::Draw(TextureManager::err_, NULL, destRectDraw);
 				break;
 			}
 

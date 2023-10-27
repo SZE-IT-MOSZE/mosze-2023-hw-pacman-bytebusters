@@ -63,14 +63,15 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 
 	GameObjectManager::SetTileSize(tileRes);
 
-	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); // Items in map need player ref, create player before map
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); //only need pointer to call SetVelX/Y at this time
+	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
 
 	map = new Map(tileRes, 16);
 
 	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
-	GameObjectManager::CreateGameObject(GameObjectManager::deer, tileRes * 10, tileRes * 10);
-	GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileRes * 10, tileRes * 10);
-	GameObjectManager::CreateGameObject(GameObjectManager::ape, tileRes * 10, tileRes * 10);
+	//GameObjectManager::CreateGameObject(GameObjectManager::deer, tileRes * 10, tileRes * 10);
+	//GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileRes * 10, tileRes * 10);
+	//GameObjectManager::CreateGameObject(GameObjectManager::ape, tileRes * 10, tileRes * 10);
 	//for (size_t i = 0; i < 100; i++) // invasion of the yusri
 	//{
 	//	GameObjectManager::CreateGameObject(GameObjectManager::yusri, tileRes * 10, tileRes * 10);
@@ -86,6 +87,7 @@ void Game::Render()
 	map->DrawMap(); ///////////////////////////////////////////////// only for background now
 
 	GameObjectManager::RenderAllGameObjects();
+	//GameObjectManager::UpdateAllGameObjects();
 
 	SDL_RenderPresent(renderer);
 }
@@ -154,6 +156,7 @@ void Game::HandleEvents()
 }
 
 void Game::UpdateThread() {
+	
 	std::cout << "Thread Created" << std::endl;
 	std::cout << tileRes << std::endl;
 
@@ -167,9 +170,6 @@ void Game::UpdateThread() {
 	{
 		frameStart = SDL_GetTicks();
 
-		//player->Update(); ////////////////////////////////////////
-		//enemy->Update();
-
 		GameObjectManager::UpdateAllGameObjects();
 
 		frameTime = SDL_GetTicks() - frameStart;
@@ -179,7 +179,7 @@ void Game::UpdateThread() {
 			SDL_Delay(frameDelay - frameTime);
 		}
 	}
-
+	
 	std::cout << "Thread Finished" << std::endl;
-
+	
 }

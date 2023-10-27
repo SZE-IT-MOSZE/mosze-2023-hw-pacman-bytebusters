@@ -1,4 +1,4 @@
-﻿  Map.cpp
-C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Map.cpp(67,33): warning C4101: 'e': unreferenced local variable
-C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Map.cpp(72,29): warning C4101: 'e': unreferenced local variable
-  Game.vcxproj -> C:\Storage\SZE\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\x64\Debug\Game.exe
+﻿  Enemy.cpp
+F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Enemy.cpp(16,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Enemy.cpp(70,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Game.vcxproj -> F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\x64\Debug\Game.exe

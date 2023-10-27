@@ -5,7 +5,6 @@ class GameObject {
 
 public:
 
-	GameObject();
 	GameObject(int x, int y);
 	virtual  ~GameObject();
 
@@ -14,9 +13,7 @@ public:
 
 	static void setTileSize(int s);
 
-	/*SDL_Rect* getDestRect() {
-		return destRect;
-	};*/
+	SDL_Rect* GetDestRect() { return destRect; }
 
 protected:
 	static int TileSize;
