@@ -102,36 +102,40 @@ int main(int argc, char* argv[]) {
 	//15*112 = 1680
 	//15*128 = 1920
 
-	const int FPS = 30;
-	const int frameDelay = 1000 / FPS;
-
-	Uint32 frameStart;
-	int frameTime;
+	
 
 	
 	game = new Game();
 
 	game->Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false);
-	
-	std::thread gameUpdates(&Game::UpdateThread, game); ///////////////////////////////////////////
 
-	while (game->Running())
-	{
-		frameStart = SDL_GetTicks();
+	game->Start();
 
-		game->HandleEvents();
-		game->Render();
+	//const int FPS = 30;
+	//const int frameDelay = 1000 / FPS;
 
-		frameTime = SDL_GetTicks() - frameStart;
+	//Uint32 frameStart;
+	//int frameTime;
 
-		if (frameDelay > frameTime)
-		{
-			SDL_Delay(frameDelay - frameTime);
-		}
+	//std::thread gameUpdates(&Game::UpdateThread, game); ///////////////////////////////////////////
 
-	}
+	//while (game->Running())
+	//{
+	//	frameStart = SDL_GetTicks();
 
-	gameUpdates.join();
+	//	game->HandleEvents();
+	//	game->Render();
+
+	//	frameTime = SDL_GetTicks() - frameStart;
+
+	//	if (frameDelay > frameTime)
+	//	{
+	//		SDL_Delay(frameDelay - frameTime);
+	//	}
+
+	//}
+
+	//gameUpdates.join();
 
 	game->Clean();
 

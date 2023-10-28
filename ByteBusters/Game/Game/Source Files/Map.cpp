@@ -5,9 +5,8 @@
 #include <string>
 #include "GameObjectManager.h"
 
-Map::Map(int size, int res) {
+Map::Map(int size) {
 
-	tileResolution = res;	//may not need to keep this in the future
 	tileSize = size;		//may not need to keep this in the future
 
 	pathToFields = "Fields/";
@@ -17,7 +16,6 @@ Map::Map(int size, int res) {
 	destRectDraw->w = destRectDraw->h = tileSize;
 	destRectDraw->x = destRectDraw->y = 0;
 
-	LoadMap(17); // loadmap wont stay here i guess
 }
 
 Map::~Map() {
@@ -38,7 +36,7 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 	int rowCnt = 0;
 	int colCnt = 0;
 	int totalCnt = 0;
-	int totalTiles = mapRows * mapCols; // 300
+	int totalTiles = ROWS * COLS; // 300
 
 	while (std::getline(ReadLevel, cell, ' '))	//read the data into the map array, SHOULD BE FAILSAFE
 	{
@@ -47,7 +45,7 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 			std::cout << "WRONG FORMAT: " << std::to_string(lvl) + ".txt" << std::endl;
 			break; //loop quits if the file is too long
 		}
-		if (colCnt == mapCols)
+		if (colCnt == COLS)
 		{
 			colCnt = 0;
 			rowCnt++;
@@ -84,9 +82,9 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 
 	ReadLevel.close();
 
-	for (int r = 0; r < mapRows; r++)
+	for (int r = 0; r < ROWS; r++)
 	{
-		for (int c = 0; c < mapCols; c++)
+		for (int c = 0; c < COLS; c++)
 		{
 			switch (map[r][c])
 			{
@@ -140,15 +138,13 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 	default:
 		break;
 	}
-	//std::cout << mapCols << std::endl;
-	//std::cout << mapRows << std::endl;
 
 }
 
 void Map::DrawMap() {
-	for (int r = 0; r < mapRows; r++)
+	for (int r = 0; r < ROWS; r++)
 	{
-		for (int c = 0; c < mapCols; c++)
+		for (int c = 0; c < COLS; c++)
 		{
 			switch (map[r][c])
 			{

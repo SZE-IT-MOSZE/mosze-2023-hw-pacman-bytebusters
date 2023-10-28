@@ -27,4 +27,6 @@ private:
 	int playerPosX, playerPosY;
 	int posX, posY;
 
+	int visionDistance;
+
 };

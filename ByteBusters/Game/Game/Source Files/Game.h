@@ -16,6 +16,7 @@ public:
 	void Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen);
 	void Update();
 	void Render();
+	void Start();
 	void Clean();
 	void HandleEvents();
 	void UpdateThread();

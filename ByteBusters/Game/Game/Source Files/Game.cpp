@@ -63,22 +63,22 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 
 	GameObjectManager::SetTileSize(tileRes);
 
+
+
 	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); //only need pointer to call SetVelX/Y at this time
 	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
 
-	map = new Map(tileRes, 16);
+	map = new Map(tileRes);
+
+	map->LoadMap(1);
 
 	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
-	//GameObjectManager::CreateGameObject(GameObjectManager::deer, tileRes * 10, tileRes * 10);
-	//GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileRes * 10, tileRes * 10);
-	//GameObjectManager::CreateGameObject(GameObjectManager::ape, tileRes * 10, tileRes * 10);
-	//for (size_t i = 0; i < 100; i++) // invasion of the yusri
-	//{
-	//	GameObjectManager::CreateGameObject(GameObjectManager::yusri, tileRes * 10, tileRes * 10);
-	//}
-
+	
 
 }
+
+
+
 
 void Game::Render()
 {
@@ -87,14 +87,13 @@ void Game::Render()
 	map->DrawMap(); ///////////////////////////////////////////////// only for background now
 
 	GameObjectManager::RenderAllGameObjects();
-	//GameObjectManager::UpdateAllGameObjects();
 
 	SDL_RenderPresent(renderer);
 }
 
 void Game::Clean()
 {
-	GameObjectManager::DestroyAllGameObjects(); //causes critcical error !?
+	GameObjectManager::DestroyAllGameObjects();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
@@ -153,6 +152,35 @@ void Game::HandleEvents()
 	default:
 		break;
 	}
+}
+
+void Game::Start()
+{
+	std::thread gameUpdates(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
+
+	const int FPS = 30;
+	const int frameDelay = 1000 / FPS;
+
+	Uint32 frameStart;
+	int frameTime;
+
+	while (Running())
+	{
+		frameStart = SDL_GetTicks();
+
+		HandleEvents();
+		Render();
+
+		frameTime = SDL_GetTicks() - frameStart;
+
+		if (frameDelay > frameTime)
+		{
+			SDL_Delay(frameDelay - frameTime);
+		}
+
+	}
+
+	gameUpdates.join();
 }
 
 void Game::UpdateThread() {

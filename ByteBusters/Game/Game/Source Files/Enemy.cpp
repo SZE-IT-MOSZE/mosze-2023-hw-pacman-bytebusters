@@ -14,6 +14,8 @@ Enemy::Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* 
 	yvel = 0;
 
 	srand(time(NULL));
+
+	visionDistance = TileSize * 5;
 }
 
 Enemy::~Enemy() {
@@ -56,7 +58,7 @@ void Enemy::Render() {
 
 	//std::cout << "enemy render" << std::endl;
 	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
-	SDL_RenderDrawLine(Game::renderer, playerPosX, playerPosY, posX, posY);
+	
 }
 
 bool Enemy::CheckLineOfSight() {
@@ -68,21 +70,24 @@ bool Enemy::CheckLineOfSight() {
 	posY = destRect->y + destRect->h / 2;
 
 	int distance = sqrt( pow( (playerPosX - posX), 2) + pow( (playerPosY - posY), 2) );
-	std::cout << playerPosX << "," << playerPosY << " | " << posX << "," << posY << " | " << "dist: " << distance << std::endl;
+	//std::cout << playerPosX << "," << playerPosY << " | " << posX << "," << posY << " | " << "dist: " << distance << std::endl;
 	
 
-	if (distance > 1000)
+	if (distance > visionDistance)
 	{
+		//std::cout << "False" << std::endl;
 		return false;
 	}
 	
 	for (Wall* wall : walls)
 	{
 		if (SDL_IntersectRectAndLine(wall->GetDestRect(), &playerPosX, &playerPosY, &posX, &posY)) {
+			
 			//std::cout << "False" << std::endl;
 			return false;
 		}
 	}
+	
 	//std::cout << "True" << std::endl;
 	return true;
 }
@@ -121,25 +126,39 @@ void Enemy::Wander() {
 	}
 
 	rnd = rand() % 2000;
-	int rndForVel = rand() % 5;
+	int rndForVel = rand() % 8;
 	switch (rndForVel)
 	{
 	case 0:
 		xvel = 0;
+		yvel = -1;
 		break;
 	case 1:
 		xvel = 1;
+		yvel = -1;
 		break;
 	case 2:
-		xvel = -1;
-		break;
-	case 3:
+		xvel = 1;
 		yvel = 0;
 		break;
+	case 3:
+		xvel = 1;
+		yvel = 1;
+		break;
 	case 4:
+		xvel = 0;
 		yvel = 1;
 		break;
 	case 5:
+		xvel = -1;
+		yvel = 1;
+		break;
+	case 6:
+		xvel = -1;
+		yvel = 0;
+		break;
+	case 7:
+		xvel = -1;
 		yvel = -1;
 		break;
 	default:
