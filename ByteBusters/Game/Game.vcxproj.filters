@@ -47,31 +47,31 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game\Source Files\Game.h">
+    <ClInclude Include="Game\Header Files\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\TextureManager.h">
+    <ClInclude Include="Game\Header Files\TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\GameObject.h">
+    <ClInclude Include="Game\Header Files\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\Map.h">
+    <ClInclude Include="Game\Header Files\Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\Player.h">
+    <ClInclude Include="Game\Header Files\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\Enemy.h">
+    <ClInclude Include="Game\Header Files\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\GameObjectManager.h">
+    <ClInclude Include="Game\Header Files\GameObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\Wall.h">
+    <ClInclude Include="Game\Header Files\Wall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Source Files\Item.h">
+    <ClInclude Include="Game\Header Files\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

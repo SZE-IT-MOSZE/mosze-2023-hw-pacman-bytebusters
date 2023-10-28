@@ -1,2 +1,2 @@
 ﻿  Game.cpp
-F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Game.cpp(159,26): error C2276: '&': illegal operation on bound member function expression
+  Game.vcxproj -> F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\x64\Debug\Game.exe

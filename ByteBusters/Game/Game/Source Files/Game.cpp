@@ -70,7 +70,7 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 
 	map = new Map(tileRes);
 
-	map->LoadMap(1);
+	map->LoadMap(5);
 
 	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
 	
