@@ -1,7 +1,6 @@
 // placeTwos.cpp
-#include <cstdlib>
-#include <ctime>
-#include <vector>
+#pragma once
+#include "placeTwos.h"
 
 void placeTwos(std::vector<std::vector<int>>& grid) {
     // meret lekerese

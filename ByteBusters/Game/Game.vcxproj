@@ -29,6 +29,16 @@
     <ClCompile Include="Game\Source Files\Player.cpp" />
     <ClCompile Include="Game\Source Files\TextureManager.cpp" />
     <ClCompile Include="Game\Source Files\Wall.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\checkReachability.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\createGrid.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\generateMaze.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\modifyGridEdges.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\placeTetrisBlocks.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\placeTwos.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\printGrid.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\readGridFromFile.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\removeEdgeAdjacentBlocks.cpp" />
+    <ClCompile Include="MazeGenerator\Source Files\writeGridToFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Header Files\Enemy.h" />
@@ -40,6 +50,44 @@
     <ClInclude Include="Game\Header Files\Player.h" />
     <ClInclude Include="Game\Header Files\TextureManager.h" />
     <ClInclude Include="Game\Header Files\Wall.h" />
+    <ClInclude Include="MazeGenerator\Header Files\checkReachability.h" />
+    <ClInclude Include="MazeGenerator\Header Files\createGrid.h" />
+    <ClInclude Include="MazeGenerator\Header Files\generateMaze.h" />
+    <ClInclude Include="MazeGenerator\Header Files\modifyGridEdges.h" />
+    <ClInclude Include="MazeGenerator\Header Files\placeTetrisBlocks.h" />
+    <ClInclude Include="MazeGenerator\Header Files\placeTwos.h" />
+    <ClInclude Include="MazeGenerator\Header Files\printGrid.h" />
+    <ClInclude Include="MazeGenerator\Header Files\readGridFromFile.h" />
+    <ClInclude Include="MazeGenerator\Header Files\removeEdgeAdjacentBlocks.h" />
+    <ClInclude Include="MazeGenerator\Header Files\writeGridToFile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="SDL2.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="SDL2_image.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Burned_diary_page.png" />
+    <Image Include="Assets\concrete01.png" />
+    <Image Include="Assets\concrete02.png" />
+    <Image Include="Assets\Deerly.png" />
+    <Image Include="Assets\dirt.png" />
+    <Image Include="Assets\Enemy_Ape.png" />
+    <Image Include="Assets\Enemy_Deer.png" />
+    <Image Include="Assets\Enemy_Guard.png" />
+    <Image Include="Assets\Enemy_Homeless.png" />
+    <Image Include="Assets\enemy_rat.png" />
+    <Image Include="Assets\Enemy_Soldier.png" />
+    <Image Include="Assets\err_.png" />
+    <Image Include="Assets\Joseph_White.png" />
+    <Image Include="Assets\jungle.png" />
+    <Image Include="Assets\lava.png" />
+    <Image Include="Assets\MensTherapyHotline.jpg" />
+    <Image Include="Assets\water.png" />
+    <Image Include="Assets\Yusri.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -94,7 +142,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PublicIncludeDirectories>$(ProjectDir)\Game\Header Files;$(ProjectDir)\Game\Source Files;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <PublicIncludeDirectories>$(ProjectDir)\Game\Header Files;$(ProjectDir)\MazeGenerator\Header Files;$(ProjectDir)\Game\Source Files;$(ProjectDir)\MazeGenerator\Source Files;$(PublicIncludeDirectories)</PublicIncludeDirectories>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -130,7 +178,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Game\Header Files;$(ProjectDir)\Game\Source Files;$(ProjectDir)Dependencies\SDL2_image-2.6.3\include;$(ProjectDir)Dependencies\SDL2-2.28.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Game\Header Files;$(ProjectDir)\MazeGenerator\Header Files;$(ProjectDir)\Game\Source Files;$(ProjectDir)\MazeGenerator\Source Files;$(ProjectDir)Dependencies\SDL2_image-2.6.3\include;$(ProjectDir)Dependencies\SDL2-2.28.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,6 +187,12 @@
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL2_image-2.6.3\lib\x64;$(ProjectDir)Dependencies\SDL2-2.28.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>XCOPY "$(ProjectDir)Assets" "$(TargetDir)Assets\" /S /Y
+XCOPY "$(ProjectDir)Fields" "$(TargetDir)Fields\" /S /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

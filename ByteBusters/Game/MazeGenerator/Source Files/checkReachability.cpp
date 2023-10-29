@@ -41,7 +41,7 @@ bool checkReachability(const std::vector<std::vector<int>>& grid) {
         }
     }
 
-    // nezzuj meg minden 0 belekerult-e a visited tombbe
+    // nezzuk meg minden 0 belekerult-e a visited tombbe
     for (int row = 0; row < numRows; row++) {
         for (int col = 0; col < numCols; col++) {
             if (grid[row][col] == 0 && !visited[row][col]) {

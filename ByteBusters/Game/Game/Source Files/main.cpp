@@ -4,6 +4,8 @@
 #include <thread>
 #include <forward_list>
 
+#include "generateMaze.h"
+
 Game* game = nullptr;
 //
 //void zaza(std::forward_list<int>& l) {
@@ -49,6 +51,7 @@ int main(int argc, char* argv[]) {
 
 	return 0;*/
 
+	generateMaze();
 
 	if ((SDL_Init(SDL_INIT_VIDEO) == -1)) {
 		printf("Could not initialize SDL: %s.\n", SDL_GetError());

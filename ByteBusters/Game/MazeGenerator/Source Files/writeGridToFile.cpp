@@ -17,6 +17,7 @@ void writeGridToFile(const std::vector<std::vector<int>>& grid, const std::strin
             outputFile << value << ' ';
         }
         outputFile << '\n';
+
     }
     outputFile.close();
 }

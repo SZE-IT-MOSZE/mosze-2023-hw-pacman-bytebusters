@@ -9,7 +9,7 @@ Map::Map(int size) {
 
 	tileSize = size;		//may not need to keep this in the future
 
-	pathToFields = "Fields/";
+	pathToFields = "Fields\\";
 
 	destRectDraw = new SDL_Rect;
 	
