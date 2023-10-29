@@ -47,15 +47,16 @@ public:
 	static void SetTileSize(int size);
 
 	static void RenderAllGameObjects();
-
 	static void UpdateAllGameObjects();
-
 	static void DestroyAllGameObjects();
+	static void DestroyAllExceptPlayer();
+
+	static bool AreAllItemsPickedUp();
 
 	static std::forward_list<Wall*>* GetWalls();	//passing the list by pointer
 	static std::forward_list<Enemy*>* GetEnemies();	//passing the list by pointer
 	static std::forward_list<Item*>* GetItems();	//passing the list by pointer
-	static Player* GetPlayer();
+	//static Player* GetPlayer();
 
 private:
 	//static int tileSize; // we could save this, but why

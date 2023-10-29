@@ -1,9 +1,10 @@
 #pragma once
 #include "GameObject.h"
-#include <time.h>
 #include "Player.h"
-#include <forward_list>
 #include "Wall.h"
+#include <time.h>
+#include <forward_list>
+
 
 class Enemy : public GameObject {
 public:

@@ -16,6 +16,8 @@ public:
 	void SetVelX(int v);
 	void SetVelY(int v);
 
+	void Reset();
+
 	SDL_Rect* getDestRect() { return destRect; }
 
 private:

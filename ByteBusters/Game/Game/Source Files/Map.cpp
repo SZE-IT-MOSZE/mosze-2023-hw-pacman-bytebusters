@@ -89,7 +89,7 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 			switch (map[r][c])
 			{
 			case 1:
-				GameObjectManager::CreateGameObject(GameObjectManager::lava, c * tileSize, r * tileSize);
+				GameObjectManager::CreateGameObject(GameObjectManager::concrete02, c * tileSize, r * tileSize);
 				break;
 			case 2:
 				GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);

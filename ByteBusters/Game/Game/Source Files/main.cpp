@@ -110,35 +110,12 @@ int main(int argc, char* argv[]) {
 	
 	game = new Game();
 
-	game->Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false);
+	if (!game->Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false))
+	{
+		return 1;
+	}
 
 	game->Start();
-
-	//const int FPS = 30;
-	//const int frameDelay = 1000 / FPS;
-
-	//Uint32 frameStart;
-	//int frameTime;
-
-	//std::thread gameUpdates(&Game::UpdateThread, game); ///////////////////////////////////////////
-
-	//while (game->Running())
-	//{
-	//	frameStart = SDL_GetTicks();
-
-	//	game->HandleEvents();
-	//	game->Render();
-
-	//	frameTime = SDL_GetTicks() - frameStart;
-
-	//	if (frameDelay > frameTime)
-	//	{
-	//		SDL_Delay(frameDelay - frameTime);
-	//	}
-
-	//}
-
-	//gameUpdates.join();
 
 	game->Clean();
 

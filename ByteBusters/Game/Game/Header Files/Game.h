@@ -6,6 +6,12 @@
 #include "Map.h"
 #include <set>
 #include "GameObjectManager.h"
+#include <iostream>
+#include "TextureManager.h"
+#include "GameObject.h"
+#include <thread>
+#include "Player.h"
+#include "Enemy.h"
 
 class Game {
 
@@ -13,7 +19,7 @@ public:
 	Game();
 	~Game();
 
-	void Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen);
+	bool Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen);
 	void Update();
 	void Render();
 	void Start();
@@ -35,11 +41,14 @@ private:
 
 	Player* player;
 
+	std::thread* gameUpdates;
+
 
 	int height; // default is smallest res
 	int width;
 	int tileRes;
 	bool isRunning;
+	bool quitGame = false; //this is a stupid quick fix. i just dont want to get distracted right now. will do this properly later.
 	
 
 };

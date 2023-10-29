@@ -1,14 +1,6 @@
 #include "Game.h"
-#include <iostream>
-#include "TextureManager.h"
-#include "GameObject.h"
-#include <thread>
-#include "Player.h"
-#include "Enemy.h"
-
 
 SDL_Renderer* Game::renderer;
-
 
 Game::Game() {
 	height = 480; // default is smallest res
@@ -24,7 +16,7 @@ Game::~Game() {
 	delete map;
 }
 
-void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
+bool Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
 {	
 	height = h;
 	width = w;
@@ -52,33 +44,19 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 		{
 			std::cout << "Renderer created!" << std::endl;
 		}
-
-		isRunning = true;
 	}
 	else {
-		isRunning = false;
+		return false;
 	}
 
 	TextureManager::LoadAllTextures(); /*/////////////////////////////////*/
 
 	GameObjectManager::SetTileSize(tileRes);
 
-
-
-	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); //only need pointer to call SetVelX/Y at this time
-	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
-
 	map = new Map(tileRes);
 
-	map->LoadMap(5);
-
-	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
-	
-
+	return true;
 }
-
-
-
 
 void Game::Render()
 {
@@ -93,7 +71,7 @@ void Game::Render()
 
 void Game::Clean()
 {
-	GameObjectManager::DestroyAllGameObjects();
+	//GameObjectManager::DestroyAllGameObjects();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
@@ -148,6 +126,8 @@ void Game::HandleEvents()
 	case SDL_QUIT:
 		
 		isRunning = false;
+		gameUpdates->join(); // ?????????? this is a feature (X loaded the next map, did not quit the program...)
+		quitGame = true; //this is a "fix" for that...........
 		break;
 	default:
 		break;
@@ -156,7 +136,6 @@ void Game::HandleEvents()
 
 void Game::Start()
 {
-	std::thread gameUpdates(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 
 	const int FPS = 30;
 	const int frameDelay = 1000 / FPS;
@@ -164,23 +143,53 @@ void Game::Start()
 	Uint32 frameStart;
 	int frameTime;
 
-	while (Running())
+	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); //only need pointer to call SetVelX/Y at this time
+
+	for (size_t i = 1; i <= 20; i++) // map counter
 	{
-		frameStart = SDL_GetTicks();
+		
+		map->LoadMap(i);
+		GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes * 18, tileRes * 13);
+		GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes * 18, tileRes * 13);
 
-		HandleEvents();
-		Render();
+		isRunning = true;
 
-		frameTime = SDL_GetTicks() - frameStart;
+		gameUpdates = new std::thread(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 
-		if (frameDelay > frameTime)
+		while (isRunning)
 		{
-			SDL_Delay(frameDelay - frameTime);
+			frameStart = SDL_GetTicks();
+			
+			HandleEvents();
+			Render();
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (GameObjectManager::AreAllItemsPickedUp())
+			{
+				isRunning = false;
+				gameUpdates->join();
+
+				std::cout << "All Items Picked Up" << std::endl;
+			}
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			frameTime = SDL_GetTicks() - frameStart;
+
+			if (frameDelay > frameTime)
+			{
+				SDL_Delay(frameDelay - frameTime);
+			}
 		}
 
-	}
+		GameObjectManager::DestroyAllExceptPlayer();
+		player->Reset();
 
-	gameUpdates.join();
+		if (quitGame) // stupid quick fix
+		{
+			break;
+		}
+	}
 }
 
 void Game::UpdateThread() {
@@ -196,6 +205,7 @@ void Game::UpdateThread() {
 
 	while (isRunning)
 	{
+
 		frameStart = SDL_GetTicks();
 
 		GameObjectManager::UpdateAllGameObjects();
