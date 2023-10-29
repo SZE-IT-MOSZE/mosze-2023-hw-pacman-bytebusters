@@ -25,6 +25,16 @@
     <ClCompile Include="Game\Source Files\Map.cpp" />
     <ClCompile Include="Game\Source Files\Player.cpp" />
     <ClCompile Include="Game\Source Files\TextureManager.cpp" />
+    <ClCompile Include="MazeGenerator\checkReachability.cpp" />
+    <ClCompile Include="MazeGenerator\createGrid.cpp" />
+    <ClCompile Include="MazeGenerator\main.cpp" />
+    <ClCompile Include="MazeGenerator\modifyGridEdges.cpp" />
+    <ClCompile Include="MazeGenerator\placeTetrisBlocks.cpp" />
+    <ClCompile Include="MazeGenerator\placeTwos.cpp" />
+    <ClCompile Include="MazeGenerator\printGrid.cpp" />
+    <ClCompile Include="MazeGenerator\readGridFromFile.cpp" />
+    <ClCompile Include="MazeGenerator\removeEdgeAdjacentBlocks.cpp" />
+    <ClCompile Include="MazeGenerator\writeGridToFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Source Files\Game.h" />
@@ -32,6 +42,14 @@
     <ClInclude Include="Game\Source Files\Map.h" />
     <ClInclude Include="Game\Source Files\Player.h" />
     <ClInclude Include="Game\Source Files\TextureManager.h" />
+    <ClInclude Include="MazeGenerator\checkReachability.h" />
+    <ClInclude Include="MazeGenerator\createGrid.h" />
+    <ClInclude Include="MazeGenerator\modifyGridEdges.h" />
+    <ClInclude Include="MazeGenerator\placeTetrisBlocks.h" />
+    <ClInclude Include="MazeGenerator\printGrid.h" />
+    <ClInclude Include="MazeGenerator\readGridFromFile.h" />
+    <ClInclude Include="MazeGenerator\removeEdgeAdjacentBlocks.h" />
+    <ClInclude Include="MazeGenerator\writeGridToFile.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
