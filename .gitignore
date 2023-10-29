@@ -4,4 +4,5 @@ ByteBusters/Game/Game.vcxproj
 ByteBusters/Game/Game.vcxproj.filters
 ByteBusters/Game/Game.vcxproj.user
 ByteBusters/Game/x64/
-ByteBusters/x64/
+ByteBusters/x64/Debug/Game.exe
+ByteBusters/x64/Debug/Game.pdb
