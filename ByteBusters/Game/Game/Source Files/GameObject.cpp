@@ -2,18 +2,19 @@
 #include "TextureManager.h"
 #include "Map.h"
 #include "Game.h"
+#include <iostream>
 
-GameObject::GameObject() {};
+int GameObject::TileSize;
 
-GameObject::GameObject(int startX, int startY, int targetResW, int targetResH) {
+GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
 
 	destRect = new SDL_Rect;
 
-	destRect->x = startX;
-	destRect->y = startY;
-	destRect->w = targetResW;
-	destRect->h = targetResH;
+	destRect->x = x;
+	destRect->y = y;
+
+	destRect->w = destRect->h = TileSize;
 
 }
 
@@ -21,10 +22,13 @@ GameObject::~GameObject() {
 	delete destRect;
 }
 
-void GameObject::Update() {}
-void GameObject::SetVelX(int vel) {};
-void GameObject::SetVelY(int vel) {};
+void GameObject::Update() {
+}
 
 void GameObject::Render() {
 	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
+}
+
+void GameObject::setTileSize(int s) {
+	TileSize = s;
 }

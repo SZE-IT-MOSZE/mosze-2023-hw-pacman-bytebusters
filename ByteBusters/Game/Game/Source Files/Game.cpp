@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include <thread>
 #include "Player.h"
+#include "Enemy.h"
 
 
 SDL_Renderer* Game::renderer;
@@ -28,6 +29,7 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 	height = h;
 	width = w;
 	tileRes = tR;
+	
 
 	int flags = 0;
 	if (fullscreen)
@@ -57,24 +59,41 @@ void Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 		isRunning = false;
 	}
 
-	TextureManager::LoadAllTextures();
-	map = new Map(tileRes, 16);
-	player = new Player(tileRes, tileRes, tileRes, tileRes);
+	TextureManager::LoadAllTextures(); /*/////////////////////////////////*/
+
+	GameObjectManager::SetTileSize(tileRes);
+
+
+
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); //only need pointer to call SetVelX/Y at this time
+	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
+
+	map = new Map(tileRes);
+
+	map->LoadMap(5);
+
+	GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes*10, tileRes*10);
 	
+
 }
+
+
+
 
 void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	map->DrawMap();
-	player->Render(),
+	map->DrawMap(); ///////////////////////////////////////////////// only for background now
+
+	GameObjectManager::RenderAllGameObjects();
 
 	SDL_RenderPresent(renderer);
 }
 
 void Game::Clean()
 {
+	GameObjectManager::DestroyAllGameObjects();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
@@ -135,10 +154,41 @@ void Game::HandleEvents()
 	}
 }
 
-void Game::UpdateThread() {
-	std::cout << "Thread Created" << std::endl;
+void Game::Start()
+{
+	std::thread gameUpdates(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 
-	const int UPS = 240;
+	const int FPS = 30;
+	const int frameDelay = 1000 / FPS;
+
+	Uint32 frameStart;
+	int frameTime;
+
+	while (Running())
+	{
+		frameStart = SDL_GetTicks();
+
+		HandleEvents();
+		Render();
+
+		frameTime = SDL_GetTicks() - frameStart;
+
+		if (frameDelay > frameTime)
+		{
+			SDL_Delay(frameDelay - frameTime);
+		}
+
+	}
+
+	gameUpdates.join();
+}
+
+void Game::UpdateThread() {
+	
+	std::cout << "Thread Created" << std::endl;
+	std::cout << tileRes << std::endl;
+
+	const int UPS = tileRes * 3;
 	const int frameDelay = 1000 / UPS;
 
 	Uint32 frameStart;
@@ -148,7 +198,7 @@ void Game::UpdateThread() {
 	{
 		frameStart = SDL_GetTicks();
 
-		player->Update(); ////////////////////////////////////////
+		GameObjectManager::UpdateAllGameObjects();
 
 		frameTime = SDL_GetTicks() - frameStart;
 
@@ -157,17 +207,7 @@ void Game::UpdateThread() {
 			SDL_Delay(frameDelay - frameTime);
 		}
 	}
-
+	
 	std::cout << "Thread Finished" << std::endl;
-
+	
 }
-
-
-
-//read velocity everyy frame in a separete function
-//set velocity based on keyevents
-//handle collisions based in velocity->new position every frame
-//this way the inputs and the collision detection is separated
-//same will be true for enemies and other game object
-//only their velocity will be set and thir position updated every frame based on that
-// !!! framerate independent velocity ???

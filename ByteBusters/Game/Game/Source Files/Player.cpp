@@ -3,53 +3,62 @@
 #include "Player.h"
 #include "TextureManager.h"
 #include "Map.h"
+#include "Game.h"
+#include <iostream>
+#include "GameObjectManager.h"
 
-Player::Player(int startX, int startY, int targetResW, int targetResH) {
+Player::Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i) : walls(w), items(i), GameObject(x, y) {
+	std::cout << "player tilesize " << TileSize << std::endl;
 
-	objTexture = TextureManager::Deerly;
-
-	destRect = new SDL_Rect;
-
-	destRect->x = startX;
-	destRect->y = startY;
-	destRect->w = targetResW;
-	destRect->h = targetResH;
+	objTexture = t;
 
 	xvel = 0;
 	yvel = 0;
-
 }
 
 Player::~Player() {
-	delete destRect;
+	std::cout << "player destructor called" << std::endl;
 }
 
 void Player::Update() {
+
 	destRect->x += xvel;
-	
-	for (SDL_Rect* wall : Map::mapWalls)
+	for (Wall* wall : walls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) {
+		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
 			destRect->x -= xvel;
 			break;
 		}
 	}
-	
+
 	destRect->y += yvel;
-	
-	for (SDL_Rect* wall : Map::mapWalls)
+	for (Wall* wall : walls)
 	{
-		if (SDL_HasIntersection(destRect, wall)) {
+		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
 			destRect->y -= yvel;
+			break;
+		}
+	}
+
+	for (Item* item : items)
+	{
+		if (SDL_HasIntersection(destRect, item->GetDestRect())) {
+			std::cout << "Item Pickup" << std::endl;
+			items.remove(item);
+			delete item;
 			break;
 		}
 	}
 }
 
-void Player::SetVelX(int vel) {
-	xvel = vel;
+void Player::Render() {
+	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
 }
 
-void Player::SetVelY(int vel) {
-	yvel = vel;
+void Player::SetVelX(int v) {
+	xvel = v;
+}
+
+void Player::SetVelY(int v) {
+	yvel = v;
 }

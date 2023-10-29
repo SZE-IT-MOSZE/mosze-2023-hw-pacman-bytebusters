@@ -3,43 +3,26 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "GameObjectManager.h"
 
-std::set<SDL_Rect*> Map::mapWalls;
+Map::Map(int size) {
 
-Map::Map(int size, int res) {
-
-	tileResolution = res;	//may not need to keep this in the future
 	tileSize = size;		//may not need to keep this in the future
 
 	pathToFields = "Fields/";
-
-	concrete01	= TextureManager::LoadTexture("Assets/concrete01.png");
-	concrete02	= TextureManager::LoadTexture("Assets/concrete02.png");
-	dirt		= TextureManager::LoadTexture("Assets/dirt.png");
-	jungle		= TextureManager::LoadTexture("Assets/jungle.png");
-	lava		= TextureManager::LoadTexture("Assets/lava.png");
-	water		= TextureManager::LoadTexture("Assets/water.png");
-	err_		= TextureManager::LoadTexture("Assets/err_.png");
-
-	srcRect = new SDL_Rect;
-	
-	srcRect->w = srcRect->h = tileResolution;
-	srcRect->x = srcRect->y = 0;
 
 	destRectDraw = new SDL_Rect;
 	
 	destRectDraw->w = destRectDraw->h = tileSize;
 	destRectDraw->x = destRectDraw->y = 0;
 
-	LoadMap(17); // loadmap wont stay here i guess
 }
 
 Map::~Map() {
-	delete srcRect;
 	delete destRectDraw;
 }
 
-void Map::LoadMap(int lvl) {
+void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 
 	std::ifstream ReadLevel(pathToFields + std::to_string(lvl) + ".txt"); // open the level file
 
@@ -53,7 +36,7 @@ void Map::LoadMap(int lvl) {
 	int rowCnt = 0;
 	int colCnt = 0;
 	int totalCnt = 0;
-	int totalTiles = mapRows * mapCols; // 300
+	int totalTiles = ROWS * COLS; // 300
 
 	while (std::getline(ReadLevel, cell, ' '))	//read the data into the map array, SHOULD BE FAILSAFE
 	{
@@ -62,7 +45,7 @@ void Map::LoadMap(int lvl) {
 			std::cout << "WRONG FORMAT: " << std::to_string(lvl) + ".txt" << std::endl;
 			break; //loop quits if the file is too long
 		}
-		if (colCnt == mapCols)
+		if (colCnt == COLS)
 		{
 			colCnt = 0;
 			rowCnt++;
@@ -99,26 +82,19 @@ void Map::LoadMap(int lvl) {
 
 	ReadLevel.close();
 
-	for (int r = 0; r < mapRows; r++)
+	for (int r = 0; r < ROWS; r++)
 	{
-		for (int c = 0; c < mapCols; c++)
+		for (int c = 0; c < COLS; c++)
 		{
-			SDL_Rect* destRect = new SDL_Rect;
-			destRect->w = tileSize;
-			destRect->h = tileSize;
-			destRect->x = c * tileSize;
-			destRect->y = r * tileSize;
-
 			switch (map[r][c])
 			{
-			case 0:
-				mapPaths.insert(destRect);
-				break;
 			case 1:
-				mapWalls.insert(destRect);
+				GameObjectManager::CreateGameObject(GameObjectManager::lava, c * tileSize, r * tileSize);
+				break;
+			case 2:
+				GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
 				break;
 			default:
-				mapPaths.insert(destRect);
 				break;
 			}
 
@@ -132,59 +108,56 @@ void Map::LoadMap(int lvl) {
 	case 3:
 	case 4:
 	case 5:
-		path = dirt;
-		wall = concrete02;
+		path = TextureManager::dirt;
+		wall = TextureManager::concrete02;
 		break;
 	case 6:
 	case 7:
 	case 8:
 	case 9:
 	case 10:
-		path = jungle;
-		wall = water;
+		path = TextureManager::jungle;
+		wall = TextureManager::water;
 		break;
 	case 11:
 	case 12:
 	case 13:
 	case 14:
 	case 15:
-		path = concrete01;
-		wall = water;
+		path = TextureManager::concrete01;
+		wall = TextureManager::water;
 		break;
 	case 16:
 	case 17:
 	case 18:
 	case 19:
 	case 20:
-		path = concrete02;
-		wall = lava;
+		path = TextureManager::concrete02;
+		wall = TextureManager::lava;
 		break;
 	default:
 		break;
 	}
-	//std::cout << mapCols << std::endl;
-	//std::cout << mapRows << std::endl;
 
 }
 
 void Map::DrawMap() {
-	for (int r = 0; r < mapRows; r++)
+	for (int r = 0; r < ROWS; r++)
 	{
-		for (int c = 0; c < mapCols; c++)
+		for (int c = 0; c < COLS; c++)
 		{
-			destRectDraw->x = c * tileSize;
-			destRectDraw->y = r * tileSize;
-
 			switch (map[r][c])
 			{
 			case 0:
-				TextureManager::Draw(path, srcRect, destRectDraw);
-				break;
-			case 1:
-				TextureManager::Draw(wall, srcRect, destRectDraw);
+			case 2:
+				destRectDraw->x = c * tileSize;
+				destRectDraw->y = r * tileSize;
+				TextureManager::Draw(path, NULL, destRectDraw);
 				break;
 			default:
-				TextureManager::Draw(err_, srcRect, destRectDraw);
+				destRectDraw->x = c * tileSize;
+				destRectDraw->y = r * tileSize;
+				TextureManager::Draw(TextureManager::err_, NULL, destRectDraw);
 				break;
 			}
 

@@ -21,6 +21,8 @@ SDL_Texture* TextureManager::dirt;
 SDL_Texture* TextureManager::Joseph_White;
 SDL_Texture* TextureManager::Yusri;
 
+SDL_Texture* TextureManager::paper;
+
 SDL_Texture* TextureManager::err_;
 
 SDL_Texture* TextureManager::LoadTexture(const char* texture) {
@@ -56,5 +58,7 @@ void TextureManager::LoadAllTextures() {
 	TextureManager::Joseph_White	= LoadTexture("Assets/Joseph_White.png");
 	TextureManager::Yusri			= LoadTexture("Assets/Yusri.png");
 									
+	TextureManager::paper			= LoadTexture("Assets/Burned_diary_page.png");
+
 	TextureManager::err_			= LoadTexture("Assets/err_.png");
 }
