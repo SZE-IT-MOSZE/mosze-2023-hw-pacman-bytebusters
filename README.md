@@ -1,1 +1,9 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12025186&assignment_repo_type=AssignmentRepo)
+# mosze-2023-hw-pacman-bytebusters
+Ezt a feladatok a Széchenyi István Egyetem Modern szoftver fejlesztési eszközök GKNB_INTM006 tárgy keretében készítették az alábbi diákok:
+- Holczinger Richárd
+- Fejér Máté
+- Piltz Gergely
+- Takó István
+- Tárnok Ákos
+
+mosze-2023-hw-pacman-bytebusters created by GitHub Classroom
