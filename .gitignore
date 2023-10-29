@@ -1,6 +1,5 @@
 #ignore visual studio's folder
 ByteBusters/.vs/
-ByteBusters/Game/Game.vcxproj
 ByteBusters/Game/Game.vcxproj.filters
 ByteBusters/Game/Game.vcxproj.user
 ByteBusters/Game/x64/
