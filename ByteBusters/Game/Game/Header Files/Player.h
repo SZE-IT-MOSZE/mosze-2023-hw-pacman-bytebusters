@@ -5,26 +5,26 @@
 #include "Item.h"
 
 
-class Player : public GameObject {
+class Player : public GameObject { //!< A játékos karakter osztálya
 public:
-	Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i);
+	Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i); //!< Konstruktor ami azt mutatja, hogy a player tud a falakról és az itemekrõl
 	~Player();
 
-	void Update();
-	void Render();
+	void Update();//!< Minden framen hívjuk ez tartalmazza a ütközés érzékelést és a játékos pozíciójána frissítését
+	void Render();//!< Csak a játékos renderelése és megjelenítése
 
-	void SetVelX(int v);
-	void SetVelY(int v);
+	void SetVelX(int v); //!< A player sebessége az X tengelyen mozogva
+	void SetVelY(int v); //!< A player sebessége az Y tengelyen mozogva
 
-	void Reset();
+	void Reset(); //!< A player alap helyzetbe állítása egy új pálya betöltésekor
 
-	SDL_Rect* getDestRect() { return destRect; }
+	SDL_Rect* getDestRect() { return destRect; } //!< player hitboxának a gettere
 
 private:
-	std::forward_list<Wall*>& walls;
-	std::forward_list<Item*>& items;
+	std::forward_list<Wall*>& walls; //!< Pálya falak listája
+	std::forward_list<Item*>& items; //!< A gyújthetõ elemek listája
 
-	int xvel;
-	int yvel;
+	int xvel; //!< X sebesség
+	int yvel; //!< Y sebesség
 
 };
