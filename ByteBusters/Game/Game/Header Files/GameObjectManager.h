@@ -27,9 +27,12 @@ public:
 		//random option might be added later
 	};
 
-	enum WallTypes //!< A wall típusok amik a pályákon szerepelni fognak
+	enum TileTypes //!< A cella típusok amik a pályákon szerepelni fognak
 	{
+		concrete01,
 		concrete02,
+		dirt,
+		jungle,
 		water,
 		lava
 	};
@@ -41,7 +44,7 @@ public:
 
 	static Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pionter vissza adása
 	static void CreateGameObject(EnemyTypes t, int x, int y); //!< Ellenség léterhozása adott pozícióban
-	static void CreateGameObject(WallTypes t, int x, int y); //!< Fal létrehozása adott pozícióban
+	static void CreateGameObject(TileTypes t, int x, int y); //!< Fal létrehozása adott pozícióban
 	static void CreateGameObject(ItemTypes t, int x, int y); //!< Item létrehozása adott pozícióban
 
 	static void SetTileSize(int size); //!< Cella méter beállítása

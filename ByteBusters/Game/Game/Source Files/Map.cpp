@@ -82,6 +82,53 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 
 	ReadLevel.close();
 
+
+	GameObjectManager::TileTypes wallType;
+	switch (lvl)	// technically i didnt do anything wrong
+	{				// this is NOT a programming war crime
+	case 1: // deep jungle
+		path = TextureManager::jungle;
+		wallType = GameObjectManager::concrete02;
+		break;
+	case 2: // jungle riverside
+		path = TextureManager::jungle;
+		wallType = GameObjectManager::water;
+		break;
+	case 3: // lavafields
+		path = TextureManager::concrete01;
+		wallType = GameObjectManager::lava;
+		break;
+	case 4: // wild monke area hmmm
+		//majom lol
+	case 5: // rocky shores
+		path = TextureManager::concrete01;
+		wallType = GameObjectManager::water;
+		break;
+	case 6: // desert oasis
+		path = TextureManager::dirt; // we no have sand
+		wallType = GameObjectManager::water;
+		break;
+	case 7: // dusty desert
+		path = TextureManager::dirt; // we no have sand
+		wallType = GameObjectManager::concrete02;
+		break;
+	case 8: // rocky hillside
+		path = TextureManager::concrete01;
+		wallType = GameObjectManager::concrete02;
+		break;
+	case 9: // around the lab
+		path = TextureManager::jungle;
+		wallType = GameObjectManager::concrete02;
+		break;
+	case 10: // in the lab
+		path = TextureManager::concrete01;
+		wallType = GameObjectManager::concrete02;
+		break;
+	default:
+		break;
+	}
+
+
 	for (int r = 0; r < ROWS; r++)
 	{
 		for (int c = 0; c < COLS; c++)
@@ -89,7 +136,7 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 			switch (map[r][c])
 			{
 			case 1:
-				GameObjectManager::CreateGameObject(GameObjectManager::concrete02, c * tileSize, r * tileSize);
+				GameObjectManager::CreateGameObject(wallType, c * tileSize, r * tileSize);
 				break;
 			case 2:
 				GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
@@ -99,44 +146,6 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 			}
 
 		}
-	}
-
-	switch (lvl)	// technically i didnt do anything wrong
-	{				// this is NOT a programming war crime
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-		path = TextureManager::dirt;
-		wall = TextureManager::concrete02;
-		break;
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 10:
-		path = TextureManager::jungle;
-		wall = TextureManager::water;
-		break;
-	case 11:
-	case 12:
-	case 13:
-	case 14:
-	case 15:
-		path = TextureManager::concrete01;
-		wall = TextureManager::water;
-		break;
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-	case 20:
-		path = TextureManager::concrete02;
-		wall = TextureManager::lava;
-		break;
-	default:
-		break;
 	}
 
 }

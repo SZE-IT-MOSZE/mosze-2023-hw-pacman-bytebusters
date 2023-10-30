@@ -69,7 +69,7 @@ void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 	}
 }
 
-void GameObjectManager::CreateGameObject(WallTypes t, int x, int y) {
+void GameObjectManager::CreateGameObject(TileTypes t, int x, int y) {
 	switch (t)
 	{
 	case GameObjectManager::concrete02:

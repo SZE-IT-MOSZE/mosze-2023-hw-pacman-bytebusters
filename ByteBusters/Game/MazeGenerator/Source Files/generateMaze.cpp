@@ -1,5 +1,7 @@
 #include "generateMaze.h"
 
+#define MAPS 10
+
 //#define DEBUG
 
 bool generateMaze() {
@@ -9,7 +11,7 @@ bool generateMaze() {
     int height = 15;
     int width = 20;
     double targetDensity = 0.2;
-    while (files <= 20) {
+    while (files <= MAPS) {
         std::vector<std::vector<int>> grid = createGrid(height, width);
 
         placeTetrisBlocks(grid, targetDensity);
