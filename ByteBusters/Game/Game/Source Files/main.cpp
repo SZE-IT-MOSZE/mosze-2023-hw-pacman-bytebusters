@@ -51,8 +51,6 @@ int main(int argc, char* argv[]) {
 
 	return 0;*/
 
-	generateMaze();
-
 	if ((SDL_Init(SDL_INIT_VIDEO) == -1)) {
 		printf("Could not initialize SDL: %s.\n", SDL_GetError());
 		return -1;
@@ -106,7 +104,9 @@ int main(int argc, char* argv[]) {
 	//15*128 = 1920
 
 	
+	srand(time(NULL)); // only intitialize srand once
 
+	generateMaze(); // call before game->Init
 	
 	game = new Game();
 

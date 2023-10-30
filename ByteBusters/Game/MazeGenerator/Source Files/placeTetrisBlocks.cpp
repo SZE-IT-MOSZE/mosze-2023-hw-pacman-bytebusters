@@ -19,7 +19,7 @@ void placeTetrisBlocks(std::vector<std::vector<int>>& grid, float targetDensity)
     int numCols = grid[0].size();
 
     //seedeles a veletlenszeruseghez
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    //std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     //szamoljuk ki hany cellat kell feltolteni
     int maxCells = static_cast<int>(targetDensity * numRows * numCols);

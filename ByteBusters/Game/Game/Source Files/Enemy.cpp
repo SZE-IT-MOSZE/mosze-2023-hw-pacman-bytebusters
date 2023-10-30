@@ -14,7 +14,7 @@ Enemy::Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* 
 	yvel = 0;
 
 
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	/*std::cout << "-------------------------------" << std::endl;
 	for (size_t i = 0; i < 10; i++)
