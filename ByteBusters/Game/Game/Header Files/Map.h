@@ -2,6 +2,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include <string>
+#include "GameObjectManager.h"
+
 
 #define ROWS 15
 #define COLS 20

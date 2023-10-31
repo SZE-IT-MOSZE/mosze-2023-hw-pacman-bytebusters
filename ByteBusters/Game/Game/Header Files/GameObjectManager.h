@@ -21,10 +21,11 @@ public:
 		deer,
 		guard,
 		homeless,
+		joseph,
+		rat,
 		soldier,
 		yusri,
-		joseph
-		//random option might be added later
+		//randomMutant // IMPLEMENT RAT AND RANDOMMUTANT !!!!!!!!!!!!
 	};
 
 	enum TileTypes //!< A cella típusok amik a pályákon szerepelni fognak

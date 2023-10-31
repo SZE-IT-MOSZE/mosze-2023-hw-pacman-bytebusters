@@ -43,6 +43,9 @@ Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
 void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 	switch (t)
 	{
+	case GameObjectManager::rat:
+		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Rat, walls, _player));
+		break;
 	case GameObjectManager::ape:
 		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Ape, walls, _player));
 		break;
