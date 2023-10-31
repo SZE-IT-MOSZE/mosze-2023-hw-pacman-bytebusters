@@ -147,15 +147,13 @@ void Game::Start()
 	int frameTime;
 
 	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
-	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes, tileRes); //only need pointer to call SetVelX/Y at this time
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes*9, tileRes*13); //only need pointer to call SetVelX/Y at this time
 
 	int currentLvl = 1;
 
 	while(isRunning)
 	{
 		map->LoadMap(currentLvl);
-		GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes * 18, tileRes * 13);
-		GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileRes * 18, tileRes * 13);
 
 		isPlaying = true;
 

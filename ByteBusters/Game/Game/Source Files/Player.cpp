@@ -64,6 +64,6 @@ void Player::SetVelY(int v) {
 }
 
 void Player::Reset() {
-	destRect->x = TileSize;
-	destRect->y = TileSize;
+	destRect->x = TileSize*9;
+	destRect->y = TileSize*13;
 }
