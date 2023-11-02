@@ -3,7 +3,72 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "GameObjectManager.h"
+
+#define MAPS 10
+
+struct levelData {
+	GameObjectManager::TileTypes wallType = GameObjectManager::concrete02;
+	SDL_Texture* path = TextureManager::dirt;
+	int ape = 0;
+	int deer = 0;
+	int guard = 0;
+	int homeless = 0;
+	int joseph = 0;
+	int rat = 0;
+	int soldier = 0;
+	int yusri = 0;
+};
+
+levelData lvlData[MAPS]; //index level.txt from 1, index lvlData from 0. it's a bit weird i admit.
+
+void DefineLevelData() {
+	///////////// DEEP JUNGLE /////////////
+	lvlData[0].wallType = GameObjectManager::concrete02;
+	lvlData[0].path = TextureManager::jungle;
+	lvlData[0].rat = 10;
+	///////////// JUNGLE RIVERSIDE /////////////
+	lvlData[1].wallType = GameObjectManager::water;
+	lvlData[1].path = TextureManager::jungle;
+	lvlData[1].deer = 10;
+	///////////// LAVAFIELDS /////////////
+	lvlData[2].wallType = GameObjectManager::water;
+	lvlData[2].path = TextureManager::jungle;
+	lvlData[2].rat = 10;
+	///////////// WILD MONKEY AREA /////////////
+	lvlData[3].wallType = GameObjectManager::concrete02;
+	lvlData[3].path = TextureManager::dirt;
+	lvlData[3].ape = 10;
+	///////////// ROCKY SHORES /////////////
+	lvlData[4].wallType = GameObjectManager::water;
+	lvlData[4].path = TextureManager::concrete01;
+	lvlData[4].homeless = 10;
+	///////////// DESERT OASIS /////////////
+	lvlData[5].wallType = GameObjectManager::water;
+	lvlData[5].path = TextureManager::dirt;
+	lvlData[5].ape = 3;
+	lvlData[5].deer = 3;
+	lvlData[5].rat = 3;
+	///////////// DUSTY DESERT /////////////
+	lvlData[6].wallType = GameObjectManager::concrete02;
+	lvlData[6].path = TextureManager::dirt;
+	lvlData[6].ape = 5;
+	lvlData[6].deer = 5;
+	///////////// ROCKY HILLSIDE /////////////
+	lvlData[7].wallType = GameObjectManager::concrete02;
+	lvlData[7].path = TextureManager::concrete01;
+	lvlData[7].homeless = 10;
+	///////////// AROUND THE LAB /////////////
+	lvlData[8].wallType = GameObjectManager::concrete02;
+	lvlData[8].path = TextureManager::jungle;
+	lvlData[8].soldier = 10;
+	///////////// IN THE LAB /////////////
+	lvlData[9].wallType = GameObjectManager::concrete02;
+	lvlData[9].path = TextureManager::concrete01;
+	lvlData[9].guard = 10;
+	lvlData[9].yusri = 1;
+	lvlData[9].joseph = 1;
+	
+}
 
 Map::Map(int size) {
 
@@ -16,6 +81,8 @@ Map::Map(int size) {
 	destRectDraw->w = destRectDraw->h = tileSize;
 	destRectDraw->x = destRectDraw->y = 0;
 
+	DefineLevelData();
+
 }
 
 Map::~Map() {
@@ -23,6 +90,8 @@ Map::~Map() {
 }
 
 void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
+
+	path = lvlData[lvl-1].path;
 
 	std::ifstream ReadLevel(pathToFields + std::to_string(lvl) + ".txt"); // open the level file
 
@@ -82,6 +151,11 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 
 	ReadLevel.close();
 
+	SpawnGameObjects(lvl-1);
+}
+
+void Map::SpawnGameObjects(int lvl) {
+	//spawn the walls and items
 	for (int r = 0; r < ROWS; r++)
 	{
 		for (int c = 0; c < COLS; c++)
@@ -89,7 +163,7 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 			switch (map[r][c])
 			{
 			case 1:
-				GameObjectManager::CreateGameObject(GameObjectManager::lava, c * tileSize, r * tileSize);
+				GameObjectManager::CreateGameObject(lvlData[lvl].wallType, c * tileSize, r * tileSize);
 				break;
 			case 2:
 				GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
@@ -101,44 +175,39 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 		}
 	}
 
-	switch (lvl)	// technically i didnt do anything wrong
-	{				// this is NOT a programming war crime
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-		path = TextureManager::dirt;
-		wall = TextureManager::concrete02;
-		break;
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 10:
-		path = TextureManager::jungle;
-		wall = TextureManager::water;
-		break;
-	case 11:
-	case 12:
-	case 13:
-	case 14:
-	case 15:
-		path = TextureManager::concrete01;
-		wall = TextureManager::water;
-		break;
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-	case 20:
-		path = TextureManager::concrete02;
-		wall = TextureManager::lava;
-		break;
-	default:
-		break;
+	//spawn enemies
+	for (size_t i = 0; i < lvlData[lvl].ape; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::ape, tileSize, tileSize);
 	}
-
+	for (size_t i = 0; i < lvlData[lvl].deer; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::deer, tileSize, tileSize);
+	}
+	for (size_t i = 0; i < lvlData[lvl].guard; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::guard, tileSize, tileSize);
+	}
+	for (size_t i = 0; i < lvlData[lvl].homeless; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileSize, tileSize);
+	}
+	for (size_t i = 0; i < lvlData[lvl].joseph; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::joseph, tileSize, tileSize);
+	}
+	for (size_t i = 0; i < lvlData[lvl].rat; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::rat, tileSize, tileSize);
+	}
+	for (size_t i = 0; i < lvlData[lvl].soldier; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileSize, tileSize);
+	}
+	for (size_t i = 0; i < lvlData[lvl].yusri; i++)
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::yusri, tileSize, tileSize);
+	}
 }
 
 void Map::DrawMap() {
@@ -148,16 +217,13 @@ void Map::DrawMap() {
 		{
 			switch (map[r][c])
 			{
-			case 0:
-			case 2:
+			case 0: // path
+			case 2: // item
 				destRectDraw->x = c * tileSize;
 				destRectDraw->y = r * tileSize;
 				TextureManager::Draw(path, NULL, destRectDraw);
 				break;
 			default:
-				destRectDraw->x = c * tileSize;
-				destRectDraw->y = r * tileSize;
-				TextureManager::Draw(TextureManager::err_, NULL, destRectDraw);
 				break;
 			}
 

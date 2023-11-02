@@ -1,6 +1,8 @@
 #include "generateMaze.h"
 
+#define MAPS 10
 
+//#define DEBUG
 
 bool generateMaze() {
     
@@ -9,7 +11,7 @@ bool generateMaze() {
     int height = 15;
     int width = 20;
     double targetDensity = 0.2;
-    while (files <= 20) {
+    while (files <= MAPS) {
         std::vector<std::vector<int>> grid = createGrid(height, width);
 
         placeTetrisBlocks(grid, targetDensity);
@@ -19,16 +21,26 @@ bool generateMaze() {
         std::ostringstream filenameStream;
         filenameStream << folderPath << files << ".txt";
         std::string filename = filenameStream.str();
-        //std::cout << filename << std::endl;
+
+#ifdef DEBUG
+        std::cout << filename << std::endl;
+#endif // DEBUG
+
+
+        
 
         bool isReachable = checkReachability(grid);
         if (isReachable) {
             modifyGridEdges(grid);
             placeTwos(grid);
-            //std::cout << "Grid: " << files << std::endl;
-            //printGrid(grid);                                                  // <- print
+#ifdef DEBUG
+            std::cout << "Grid: " << files << std::endl;
+            printGrid(grid);     
+#endif // DEBUG
             writeGridToFile(grid, filename);
-            //std::cout << "Saved grid " << files << " to " << filename << std::endl;
+#ifdef DEBUG
+            std::cout << "Saved grid " << files << " to " << filename << std::endl;
+#endif // DEBUG
             files++;
         }
 

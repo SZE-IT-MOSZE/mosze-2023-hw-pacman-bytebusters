@@ -2,20 +2,22 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include <string>
+#include "GameObjectManager.h"
+
 
 #define ROWS 15
 #define COLS 20
 
-class Map {
+class Map { 
 
 public:
 
-	Map(int size);
+	Map(int size); //!<  Létrehoz egy példányt az osztályból, amely a megadott cella méretet fogja használni
 	~Map();
-
-	void LoadMap(int lvl);	//takes in the level number (what file to load)
-
-	void DrawMap();
+	//takes in the level number (what file to load)
+	void LoadMap(int lvl); //!< Betöltjük az adott pályát 	
+	void SpawnGameObjects(int lvl);
+	void DrawMap(); //!< Az adott pálya hátterének a kirajzolása
 
 private:
 
@@ -25,11 +27,9 @@ private:
 	SDL_Rect* destRectDraw;
 
 	SDL_Texture* path;
-	SDL_Texture* wall;
 
-	int tileSize;		// rectanqular !! target rersolution of one tile on the screen
-	//int mapRows = 15;		// map has this much tiles in a row
-	//int mapCols = 20;		// map has this much tiles in a column ATTENTION !!! Hardcoded  values ! 
-	int map[ROWS][COLS] = {};	//init all to 0 
+	int tileSize; //!< Cella mérete		
+	//init all to 0
+	int map[ROWS][COLS] = {}; //! < Itt tároljuk el az adott pályát	
 
 };

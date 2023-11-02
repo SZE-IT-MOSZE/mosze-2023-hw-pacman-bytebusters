@@ -27,11 +27,13 @@ std::forward_list<Item*>* GameObjectManager::GetItems() {
 	return &items;
 }	
 
-Player* GameObjectManager::GetPlayer() {
-	return _player;
+bool GameObjectManager::AreAllItemsPickedUp() {
+	return items.empty();
 }
 
-
+//Player* GameObjectManager::GetPlayer() {
+//	return _player;
+//}
 
 Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
 	_player = new Player(x, y, TextureManager::Deerly, walls, items);
@@ -41,6 +43,9 @@ Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
 void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 	switch (t)
 	{
+	case GameObjectManager::rat:
+		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Rat, walls, _player));
+		break;
 	case GameObjectManager::ape:
 		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Ape, walls, _player));
 		break;
@@ -67,7 +72,7 @@ void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 	}
 }
 
-void GameObjectManager::CreateGameObject(WallTypes t, int x, int y) {
+void GameObjectManager::CreateGameObject(TileTypes t, int x, int y) {
 	switch (t)
 	{
 	case GameObjectManager::concrete02:
@@ -122,19 +127,25 @@ void GameObjectManager::UpdateAllGameObjects() {
 	_player->Update();
 }
 
-void GameObjectManager::DestroyAllGameObjects() { 
+void GameObjectManager::DestroyAllExceptPlayer() {
 	for (Enemy* enemy : enemies)
 	{
 		delete enemy;
 	}
+	enemies.clear();
 	for (Wall* wall : walls)
 	{
 		delete wall;
 	}
+	walls.clear();
 	for (Item* item : items)
 	{
 		delete item;
 	}
-	delete _player;
+	items.clear(); // items should be empty at the end of a map
 }
 
+void GameObjectManager::DestroyAllGameObjects() { 
+	DestroyAllExceptPlayer();
+	delete _player;
+}

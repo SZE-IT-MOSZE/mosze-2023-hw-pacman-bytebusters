@@ -1,8 +1,8 @@
+#pragma once
 #include "Enemy.h"
-#include "TextureManager.h"
+#include "GameObjectManager.h"
 #include "Game.h"
 #include <iostream>
-#include "GameObjectManager.h"
 
 Enemy::Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* p) : walls(w), GameObject(x, y) {
 	objTexture = t;
@@ -13,7 +13,15 @@ Enemy::Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* 
 	xvel = 0;
 	yvel = 0;
 
-	srand(time(NULL));
+
+	//srand(time(NULL));
+
+	/*std::cout << "-------------------------------" << std::endl;
+	for (size_t i = 0; i < 10; i++)
+	{
+		std::cout << rand() << std::endl;
+	}
+	std::cout << "-------------------------------" << std::endl;*/
 
 	visionDistance = TileSize * 5;
 }
@@ -126,6 +134,7 @@ void Enemy::Wander() {
 	}
 
 	rnd = rand() % 2000;
+	//std::cout << rnd << std::endl;
 	int rndForVel = rand() % 8;
 	switch (rndForVel)
 	{
