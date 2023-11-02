@@ -169,6 +169,8 @@ void Game::Start()
 			if (GameObjectManager::AreAllItemsPickedUp())
 			{
 				isPlaying = false; // stop both update and render
+				SDL_Delay(2000); // some delay between two maps
+
 			}
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			frameTime = SDL_GetTicks() - frameStart;

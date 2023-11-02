@@ -16,7 +16,7 @@ public:
 	~Map();
 	//takes in the level number (what file to load)
 	void LoadMap(int lvl); //!< Betöltjük az adott pályát 	
-
+	void SpawnGameObjects(int lvl);
 	void DrawMap(); //!< Az adott pálya hátterének a kirajzolása
 
 private:
@@ -27,7 +27,6 @@ private:
 	SDL_Rect* destRectDraw;
 
 	SDL_Texture* path;
-	SDL_Texture* wall;
 
 	int tileSize; //!< Cella mérete		
 	//init all to 0
