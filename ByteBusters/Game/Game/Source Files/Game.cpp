@@ -90,16 +90,22 @@ void Game::HandleEvents()
 	case SDL_KEYDOWN:
 		switch (event.key.keysym.sym) {
 		case SDLK_LEFT:
-			player->SetVelX(-1);
+			isPressed.insert('a');
 			break;
 		case SDLK_RIGHT:
-			player->SetVelX(1);
+			isPressed.insert('d');
 			break;
 		case SDLK_UP:
-			player->SetVelY(-1);
+			isPressed.insert('w');
 			break;
 		case SDLK_DOWN:
-			player->SetVelY(1);
+			isPressed.insert('s');
+			break;
+		case SDLK_y:
+			isPressed.insert('y');
+			break;
+		case SDLK_x:
+			isPressed.insert('x');
 			break;
 		default:
 			break;
@@ -109,22 +115,27 @@ void Game::HandleEvents()
 	case SDL_KEYUP:
 		switch (event.key.keysym.sym) {
 		case SDLK_LEFT:
-			player->SetVelX(0);
+			isPressed.erase('a');
 			break;
 		case SDLK_RIGHT:
-			player->SetVelX(0);
+			isPressed.erase('d');
 			break;
 		case SDLK_UP:
-			player->SetVelY(0);
+			isPressed.erase('w');
 			break;
 		case SDLK_DOWN:
-			player->SetVelY(0);
+			isPressed.erase('s');
+			break;
+		case SDLK_y:
+			isPressed.erase('y');
+			break;
+		case SDLK_x:
+			isPressed.erase('x');
 			break;
 		default:
 			break;
 		}
 		break;
-
 
 	case SDL_QUIT:
 		
@@ -135,6 +146,43 @@ void Game::HandleEvents()
 	default:
 		break;
 	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('w')) {
+		std::cout << "w" << std::endl;
+		player->SetVelY(-1);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('a')) {
+		std::cout << "a" << std::endl;
+		player->SetVelX(-1);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('s')) {
+		std::cout << "s" << std::endl;
+		player->SetVelY(1);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('d')) {
+		std::cout << "d" << std::endl;
+		player->SetVelX(1);
+	}
+	//////////////////////////////////////////////////////////
+	if (!isPressed.contains('d') && !isPressed.contains('a')) { // stop if none
+		player->SetVelX(0);
+	}
+	//////////////////////////////////////////////////////////
+	if (!isPressed.contains('w') && !isPressed.contains('s')) { // stop if none
+		player->SetVelY(0);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('y')) {
+		player->Shoot();
+	}
+
+	if (isPressed.contains('x')) {
+		player->Hit();
+	}
+	//////////////////////////////////////////////////////////
 }
 
 void Game::Start()
@@ -156,7 +204,7 @@ void Game::Start()
 		map->LoadMap(currentLvl);
 
 		isPlaying = true;
-
+										
 		gameUpdates = new std::thread(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 
 		while (isPlaying)

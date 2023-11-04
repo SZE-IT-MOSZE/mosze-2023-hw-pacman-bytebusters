@@ -42,6 +42,7 @@ private:
 
 	std::thread* gameUpdates; //!<Mutató a játék frissítésre
 
+	std::set<char> isPressed;
 
 	int height; // default is smallest res
 	int width;

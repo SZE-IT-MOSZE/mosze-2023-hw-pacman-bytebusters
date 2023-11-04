@@ -6,7 +6,7 @@ class GameObject {
 public:
 
 	GameObject(int x, int y);
-	virtual  ~GameObject();
+	virtual ~GameObject();
 
 	virtual void Update();
 	virtual void Render();
@@ -19,5 +19,9 @@ protected:
 	static int TileSize;
 
 	SDL_Rect* destRect;
+	SDL_Rect* srcRect;
+	SDL_Rect* hitbox;
+
 	SDL_Texture* objTexture;
+
 };

@@ -25,7 +25,7 @@ void DefineLevelData() {
 	///////////// DEEP JUNGLE /////////////
 	lvlData[0].wallType = GameObjectManager::concrete02;
 	lvlData[0].path = TextureManager::jungle;
-	lvlData[0].rat = 10;
+	lvlData[0].rat = 0; //10;									<- DISABLED ENEMIES FOR TESTING PURPOSES
 	///////////// JUNGLE RIVERSIDE /////////////
 	lvlData[1].wallType = GameObjectManager::water;
 	lvlData[1].path = TextureManager::jungle;

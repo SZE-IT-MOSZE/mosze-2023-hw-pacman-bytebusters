@@ -1,6 +1,9 @@
+#pragma once
 #include "TextureManager.h"
 #include "Game.h"
 #include <iostream>
+#include <fstream>
+#include <string>
 
 SDL_Texture* TextureManager::Deerly;
 
@@ -25,6 +28,23 @@ SDL_Texture* TextureManager::paper;
 
 SDL_Texture* TextureManager::err_;
 
+SDL_Texture* TextureManager::anim;
+
+//void TextureManager::readSheetData() {
+//	std::ifstream ReadData("Assetst/SheetData.txt"); // open the data file
+//	std::string str;
+//
+//	while (std::getline(ReadData, str, ' '))
+//	{
+//		if (str == "Player")
+//		{
+//
+//		}
+//	}
+//
+//}
+
+
 SDL_Texture* TextureManager::LoadTexture(const char* texture) {
 	SDL_Surface* tempSurface = IMG_Load(texture);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, tempSurface);
@@ -38,6 +58,8 @@ void TextureManager::Draw(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* destRec
 }
 
 void TextureManager::LoadAllTextures() {
+
+	TextureManager::anim = LoadTexture("Assets/Deerly_ultimate_sprite_sheet.png");
 	
 	TextureManager::Deerly			= LoadTexture("Assets/Deerly.png");
 	

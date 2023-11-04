@@ -21,11 +21,11 @@ private:
 
 	bool CheckLineOfSight(); //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és, hogy látó távolságon bellül van-e
 	void Chase(); //!<A játékos üldözése az enemy részélõl
-	void Wander(); //!< Az enemy barangolása az adot pályán 
+	void Wander(); //!< Az enemy barangolása az adott pályán 
 
 	int xvel, yvel;
 
-	int playerPosX, playerPosY; //!< A játékosunk pozíciója a pályán bellül
+	int playerPosX, playerPosY; //!< A játékosunk pozíciója a pályán belül
 	int posX, posY;
 
 	int visionDistance; //!< Az enemy látó távolsága

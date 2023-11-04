@@ -15,7 +15,7 @@ public:
 		player //only one texture
 	};
 
-	enum EnemyTypes //!< a játékban szereplõ ellenséget típusai
+	enum EnemyTypes //!< a játékban szereplõ ellenségek típusai
 	{
 		ape,
 		deer,
@@ -25,7 +25,6 @@ public:
 		rat,
 		soldier,
 		yusri,
-		//randomMutant // IMPLEMENT RAT AND RANDOMMUTANT !!!!!!!!!!!!
 	};
 
 	enum TileTypes //!< A cella típusok amik a pályákon szerepelni fognak
@@ -43,12 +42,12 @@ public:
 		item
 	};
 
-	static Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pionter vissza adása
+	static Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pointer vissza adása
 	static void CreateGameObject(EnemyTypes t, int x, int y); //!< Ellenség léterhozása adott pozícióban
 	static void CreateGameObject(TileTypes t, int x, int y); //!< Fal létrehozása adott pozícióban
 	static void CreateGameObject(ItemTypes t, int x, int y); //!< Item létrehozása adott pozícióban
 
-	static void SetTileSize(int size); //!< Cella méter beállítása
+	static void SetTileSize(int size); //!< Cella méret beállítása
 
 	static void RenderAllGameObjects(); //!< Game objektumok renderelése
 	static void UpdateAllGameObjects(); //!< Az objektumok frissítése

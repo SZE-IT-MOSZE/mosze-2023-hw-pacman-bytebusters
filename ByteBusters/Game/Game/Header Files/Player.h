@@ -16,6 +16,13 @@ public:
 	void SetVelX(int v); //!< A player sebessége az X tengelyen mozogva
 	void SetVelY(int v); //!< A player sebessége az Y tengelyen mozogva
 
+	/*void MoveUp(int vel);
+	void MoveDown(int vel);
+	void MoveRight(int vel);
+	void MoveLeft(int vel);*/
+	void Shoot();
+	void Hit();
+
 	void Reset(); //!< A player alap helyzetbe állítása egy új pálya betöltésekor
 
 	SDL_Rect* getDestRect() { return destRect; } //!< player hitboxának a gettere
@@ -26,5 +33,8 @@ private:
 
 	int xvel; //!< X sebesség
 	int yvel; //!< Y sebesség
+
+	SDL_Rect* srcRect;
+	
 
 };
