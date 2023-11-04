@@ -1,7 +1,4 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1116,5): warning MSB8027: Two or more files with the name of main.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Game\Source Files\main.cpp, MazeGenerator\main.cpp.
-  readGridFromFile.cpp
-  writeGridToFile.cpp
-  Generating Code...
 x64\Debug\main.obj : warning LNK4042: object specified more than once; extras ignored
 placeTwos.obj : error LNK2005: "void __cdecl placeTwos(class std::vector<class std::vector<int,class std::allocator<int> >,class std::allocator<class std::vector<int,class std::allocator<int> > > > &)" (?placeTwos@@YAXAEAV?$vector@V?$vector@HV?$allocator@H@std@@@std@@V?$allocator@V?$vector@HV?$allocator@H@std@@@std@@@2@@std@@@Z) already defined in main.obj
 D:\Sulesz\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\x64\Debug\Game.exe : fatal error LNK1169: one or more multiply defined symbols found
