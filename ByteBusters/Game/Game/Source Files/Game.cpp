@@ -80,10 +80,29 @@ void Game::Clean()
 	SDL_Quit();
 	std::cout << "Game Cleaned" << std::endl;
 }
-
+SDL_Event event;
 void Game::HandleEvents()
 {
-	SDL_Event event;
+	/*
+	IMPORTANT !!!
+
+	According to SDL documentation the KEYDOWN and KEYUP events should 
+	only occure once when the key is pressed down or released, however, 
+	the event triggeres once when the key is pressed/released, then 
+	after a short delay (~0.5s) the event is constantly triggered for seemingly
+	no reason. This caused weird glitches, thus the following system had to be implemented:
+
+	-The KEYDOWN event inserts (and keeps trying to insert) a value into a <set> which can only contain that value once.
+	-If the set contains that value, a respective fuction is called. 
+	-The KEYUP event removes that value from the set.
+
+	// May expand later to only trigger once when the key is pressed or released, how it should actually work, but for now it functions fine.
+	
+	// Might be my fault that this happenes, but I dont know why.
+
+	*/
+
+	
 	SDL_PollEvent(&event);
 	switch (event.type)
 	{
@@ -148,22 +167,22 @@ void Game::HandleEvents()
 	}
 	//////////////////////////////////////////////////////////
 	if (isPressed.contains('w')) {
-		std::cout << "w" << std::endl;
+		//std::cout << "w" << std::endl;
 		player->SetVelY(-1);
 	}
 	//////////////////////////////////////////////////////////
 	if (isPressed.contains('a')) {
-		std::cout << "a" << std::endl;
+		//std::cout << "a" << std::endl;
 		player->SetVelX(-1);
 	}
 	//////////////////////////////////////////////////////////
 	if (isPressed.contains('s')) {
-		std::cout << "s" << std::endl;
+		//std::cout << "s" << std::endl;
 		player->SetVelY(1);
 	}
 	//////////////////////////////////////////////////////////
 	if (isPressed.contains('d')) {
-		std::cout << "d" << std::endl;
+		//std::cout << "d" << std::endl;
 		player->SetVelX(1);
 	}
 	//////////////////////////////////////////////////////////
@@ -178,7 +197,6 @@ void Game::HandleEvents()
 	if (isPressed.contains('y')) {
 		player->Shoot();
 	}
-
 	if (isPressed.contains('x')) {
 		player->Hit();
 	}

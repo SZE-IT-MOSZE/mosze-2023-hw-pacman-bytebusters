@@ -4,28 +4,32 @@
 #include "Wall.h"
 #include <iostream>
 
+
 //int GameObjectManager::tileSize;
 
 Player* GameObjectManager::_player;
 std::forward_list<Enemy*> GameObjectManager::enemies;
 std::forward_list<Wall*> GameObjectManager::walls;
 std::forward_list<Item*> GameObjectManager::items;
+std::forward_list<Projectile*> GameObjectManager::projectiles;
+
+std::forward_list<Projectile*> GameObjectManager::flaggedForDeleteProjectiles;
 
 void GameObjectManager::SetTileSize(int s) {
 	GameObject::setTileSize(s);
 }
 
-std::forward_list<Wall*>* GameObjectManager::GetWalls() {
-	return &walls;
-}	
-
-std::forward_list<Enemy*>* GameObjectManager::GetEnemies() {
-	return &enemies;
-}	
-
-std::forward_list<Item*>* GameObjectManager::GetItems() {
-	return &items;
-}	
+//std::forward_list<Wall*>* GameObjectManager::GetWalls() {
+//	return &walls;
+//}	
+//
+//std::forward_list<Enemy*>* GameObjectManager::GetEnemies() {
+//	return &enemies;
+//}	
+//
+//std::forward_list<Item*>* GameObjectManager::GetItems() {
+//	return &items;
+//}	
 
 bool GameObjectManager::AreAllItemsPickedUp() {
 	return items.empty();
@@ -93,6 +97,10 @@ void GameObjectManager::CreateGameObject(ItemTypes t, int x, int y) {
 	items.push_front(new Item(x, y, TextureManager::paper));
 }
 
+void GameObjectManager::CreateGameObject(ProjectileTypes t, int x, int y, int d) {
+	projectiles.push_front(new Projectile(x, y, d, TextureManager::err_, walls));
+}
+
 
 void GameObjectManager::RenderAllGameObjects() {
 	for (Enemy* enemy : enemies)
@@ -106,6 +114,10 @@ void GameObjectManager::RenderAllGameObjects() {
 	for (Item* item : items)
 	{
 		item->Render();
+	}
+	for (Projectile* projectile : projectiles)
+	{
+		projectile->Render();
 	}
 	_player->Render();
 }
@@ -124,7 +136,13 @@ void GameObjectManager::UpdateAllGameObjects() {
 	{
 		item->Update();
 	}
+	for (Projectile* projectile : projectiles)
+	{
+		projectile->Update();
+	}
 	_player->Update();
+
+	DeleteFlagged();
 }
 
 void GameObjectManager::DestroyAllExceptPlayer() {
@@ -143,9 +161,27 @@ void GameObjectManager::DestroyAllExceptPlayer() {
 		delete item;
 	}
 	items.clear(); // items should be empty at the end of a map
+	for (Projectile* projectile : projectiles)
+	{
+		delete projectile;
+	}
+	projectiles.clear();
 }
 
 void GameObjectManager::DestroyAllGameObjects() { 
 	DestroyAllExceptPlayer();
 	delete _player;
+}
+
+void GameObjectManager::FlagForDelete(Projectile* p) {
+	flaggedForDeleteProjectiles.push_front(p);
+}
+
+void GameObjectManager::DeleteFlagged() {
+	for (Projectile* flaggedProjectile : flaggedForDeleteProjectiles)
+	{
+		projectiles.remove(flaggedProjectile);
+		delete flaggedProjectile;
+	}
+	flaggedForDeleteProjectiles.clear();
 }

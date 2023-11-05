@@ -27,6 +27,7 @@
     <ClCompile Include="Game\Source Files\main.cpp" />
     <ClCompile Include="Game\Source Files\Map.cpp" />
     <ClCompile Include="Game\Source Files\Player.cpp" />
+    <ClCompile Include="Game\Source Files\Projectile.cpp" />
     <ClCompile Include="Game\Source Files\TextureManager.cpp" />
     <ClCompile Include="Game\Source Files\Wall.cpp" />
     <ClCompile Include="MazeGenerator\Source Files\checkReachability.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Game\Header Files\Item.h" />
     <ClInclude Include="Game\Header Files\Map.h" />
     <ClInclude Include="Game\Header Files\Player.h" />
+    <ClInclude Include="Game\Header Files\Projectile.h" />
     <ClInclude Include="Game\Header Files\TextureManager.h" />
     <ClInclude Include="Game\Header Files\Wall.h" />
     <ClInclude Include="MazeGenerator\Header Files\checkReachability.h" />

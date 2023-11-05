@@ -7,23 +7,7 @@
 #include <iostream>
 #include "GameObjectManager.h"
 
-struct rowData {
-	int row = 0;
-	int frameCount = 1;
-	int frameDelay = INT_MAX;
-};
-
-struct sheetData {
-	int spriteSize;
-	rowData idle_R;
-	rowData idle_L;
-	rowData move_R;
-	rowData move_L;
-	rowData hit_R;
-	rowData hit_L;
-	rowData shoot_R;
-	rowData shoot_L;
-};
+#define SPRITESIZE 64
 
 /*
 Idle_R 5 200
@@ -38,11 +22,7 @@ Shoot_L 5 100
 */
 
 Player::Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i) : walls(w), items(i), GameObject(x, y) {
-	std::cout << "player tilesize " << TileSize << std::endl;
-
 	objTexture = t;
-
-	objTexture = TextureManager::anim;
 
 	xvel = 0;
 	yvel = 0;
@@ -61,8 +41,14 @@ Player::~Player() {
 	std::cout << "player destructor called" << std::endl;
 }
 
+
+bool uninterruptibleAnimation = false; // uninterruptible animations set this for themselfves, Render() only unsets it
 void Player::Update() {
 
+	//place enemy collision/hit check above here
+
+	if (uninterruptibleAnimation) return; // if an uninterruptible animation is playing the character does not move
+		
 	destRect->x += xvel;
 	for (Wall* wall : walls)
 	{
@@ -87,7 +73,7 @@ void Player::Update() {
 			std::cout << "Item Pickup" << std::endl;
 			items.remove(item);
 			delete item;
-			break;
+			break; // ABSOLUTELY NECESSARY
 		}
 	}
 }
@@ -105,12 +91,8 @@ Shoot_R	6	5 		100
 Shoot_L	7	5 		100
 */
 
-int textureSize = 64; // rectangular sprite size in pixels
-int currentDefault = 0; // currently default idle animation
 bool facingRight = true;
-bool facingLeft = false;
-bool facingDown = false;
-bool facingUp = false;
+
 int sheetData[8][2] = {
 	{5, 200},
 	{5, 200},
@@ -122,108 +104,95 @@ int sheetData[8][2] = {
 	{5, 100},
 };
 
+enum anim {
+	Idle_R	= 0,
+	Idle_L	= 1,
+	Run_R	= 2,
+	Run_L	= 3,
+	Hit_R	= 4,
+	Hit_L	= 5,
+	Shoot_R = 6,
+	Shoot_L = 7
+};
+
 Uint32 frameStart = SDL_GetTicks();	// start of render
 int frameDelay = 0;					// length between two renders of this object in milliseconds
-int i = 0;
-int row = 0;
+int i = 0;							// frame counter
+int row = 0;						// animation to display
 
 void Player::Render() {
-	//std::cout << "Row: " << row << std::endl;
 	frameDelay = SDL_GetTicks() - frameStart;
 	if (frameDelay > sheetData[row][1]) // if time to display next frame
 	{
 		frameStart = SDL_GetTicks();
 
-		srcRect->y = row * textureSize;
-
-		i++; // increment frames
-		if (i >= sheetData[row][0]) // dont go past last frame 
+		if (!uninterruptibleAnimation) // if NOT playing Shoot or Hit
 		{
-			i = 0; // return to first frame
-			if (facingRight)
+			if (xvel == 1) // if going right
 			{
-				row = 0;
+				facingRight = true;
+				row = Run_R;
 			}
-			else
+			else if (xvel == -1) // if going left
 			{
-				row = 1;
+				facingRight = false;
+				row = Run_L;
+			} 
+			else if (yvel != 0) // if NOT going right/left BUT going up/down
+			{
+				if (facingRight) // last direction the character was facing
+				{
+					row = Run_R;
+				}
+				else 
+				{
+					row = Run_L;
+				}
+			}
+			else // if NOT moving at all
+			{
+				if (facingRight) // last direction the character was facing
+				{
+					row = Idle_R;
+				}
+				else 
+				{
+					row = Idle_L;
+				}
 			}
 		}
-		srcRect->x = i * textureSize;
+		
+		if (srcRect->y != row * SPRITESIZE) { // if animation change happened
+			i = 0;	// reset counter
+			srcRect->y = row * SPRITESIZE; // set new animation
+		}
+		else // if not
+		{ 
+			i++; // increment frames
+			if (i >= sheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
+			{
+				i = 0; // return to first frame
+				uninterruptibleAnimation = false; // the animation has finished
+			}
+
+		}
+		srcRect->x = i * SPRITESIZE; // finally, set the frame to display
 	}
 
 	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
-	
-	
 }
 
 void Player::SetVelX(int v) { 
-	
 	xvel = v;
-
-	switch (v)
-	{
-	case 1:
-		std::cout << "setvelx row 2" << std::endl;
-		row = 2;
-		facingRight = true;
-		break;
-	case 0:
-		if (facingRight) //default
-		{
-			row = 0;
-		} 
-		else
-		{
-			row = 1;
-		}
-		break;
-	case -1:
-		std::cout << "setvelx row 3" << std::endl;
-		row = 3;
-		facingRight = false;
-		break;
-	default:
-		break;
-	}
 }
 
 void Player::SetVelY(int v) {
 	yvel = v;
-
-	switch (v)
-	{
-	case 1:
-	case -1:
-		std::cout << "setvely" << std::endl;
-		if (facingRight)
-		{
-			row = 2;
-		}
-		else
-		{
-			row = 3;
-		}
-		break;
-	case 0:
-		if (facingRight) //default
-		{
-			row = 0;
-		}
-		else
-		{
-			row = 1;
-		}
-		break;
-	default:
-		break;
-	}
 }
 
 void Player::Shoot() { // no up or down shoot animation
-	xvel = 0;
-	yvel = 0;
-
+	if (uninterruptibleAnimation) return;
+	uninterruptibleAnimation = true;
 	if (facingRight)
 	{
 		row = 6;
@@ -232,12 +201,11 @@ void Player::Shoot() { // no up or down shoot animation
 	{
 		row = 7;
 	}
+	GameObjectManager::CreateGameObject(GameObjectManager::projectile, destRect->x, destRect->y, 1);
 }
 
 void Player::Hit() { // no up or down hit animation
-	xvel = 0;
-	yvel = 0;
-
+	uninterruptibleAnimation = true;
 	if (facingRight)
 	{
 		row = 4;

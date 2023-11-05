@@ -4,32 +4,12 @@
 #include <limits>
 
 
-//struct rowData {
-//	int row = 0;
-//	int frameCount = 1;
-//	int frameDelay = INT_MAX;
-//};
-//
-//struct sheetData {
-//	int spriteSize;
-//	rowData idle_R;
-//	rowData idle_L;
-//	rowData move_R;
-//	rowData move_L;
-//	rowData hit_R;
-//	rowData hit_L;
-//	rowData shoot_R;
-//	rowData shoot_L;
-//};
-
-
 class TextureManager {
 public:
 
 	static SDL_Texture* LoadTexture(const char* fileName);
 	static void LoadAllTextures();
 	static void Draw(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* destRect);
-	//static void readSheetData();
 
 	//player
 	static SDL_Texture* Deerly;
