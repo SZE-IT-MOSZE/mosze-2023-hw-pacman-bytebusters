@@ -33,6 +33,8 @@ public:
 
 	static SDL_Texture* paper;
 
+	static SDL_Texture* projectile;
+
 	//err
 	static SDL_Texture* err_;
 

@@ -7,6 +7,9 @@
 #include "Projectile.h"
 
 #include <forward_list>
+#include <set>
+
+
 
 
 class GameObjectManager {
@@ -64,10 +67,10 @@ public:
 
 
 	//static void FlagForDelete(Player* p); why did i write this here (i know i just dont want to admit)
-	static void FlagForDelete(Enemy* p);		//my head hurts
-	static void FlagForDelete(Wall* p);			//really. im in phisical pain (idk how you spell physichal)
-	static void FlagForDelete(Item* p);			//im off to play WOT
-	static void FlagForDelete(Projectile* p);	//will continue tomorrow
+	static void FlagForDelete(Enemy* f);		//my head hurts
+	static void FlagForDelete(Wall* f);			//really. im in phisical pain (idk how you spell physichal)
+	static void FlagForDelete(Item* f);			//im off to play WOT
+	static void FlagForDelete(Projectile* f);	//will continue tomorrow
 
 
 	static bool AreAllItemsPickedUp(); //!< Annak az ellenõrzése, hogy az össze itemet fel vette-e a játékosunk
@@ -87,7 +90,10 @@ private:
 	static std::forward_list<Item*> items; //!< Itemek listája
 	static std::forward_list<Projectile*> projectiles; // !!!!!!!!!!!! other functions with same name but different param
 
-	static std::forward_list<Projectile*> flaggedForDeleteProjectiles;
+	static std::set<Enemy*> flaggedForDeleteEnemies; // used <set> because if a collision happens with a wall and an enemy at the same time it would get inserted twice and that would result in the code trying to delete it twice. which is bad.
+	static std::set<Wall*> flaggedForDeleteWalls;
+	static std::set<Item*> flaggedForDeleteItems;
+	static std::set<Projectile*> flaggedForDeleteProjectiles;
 
 	static void DeleteFlagged();
 

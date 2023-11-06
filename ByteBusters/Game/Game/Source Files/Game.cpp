@@ -1,6 +1,8 @@
-#include "Game.h"
+#pragma once
 
-#define TOTALMAPS 10
+#include "Game.h"
+#include "Defines.h"
+
 
 SDL_Renderer* Game::renderer;
 
@@ -248,7 +250,7 @@ void Game::Start()
 		GameObjectManager::DestroyAllExceptPlayer();
 		player->Reset();
 		currentLvl++;
-		if (currentLvl > TOTALMAPS) isRunning = false;
+		if (currentLvl > MAPS) isRunning = false;
 	}
 }
 
@@ -256,7 +258,7 @@ void Game::UpdateThread() {
 
 	std::cout << "Thread Created" << std::endl;
 
-	const int UPS = tileRes * 3;
+	const int UPS = 30;
 	const int frameDelay = 1000 / UPS;
 
 	Uint32 frameStart;

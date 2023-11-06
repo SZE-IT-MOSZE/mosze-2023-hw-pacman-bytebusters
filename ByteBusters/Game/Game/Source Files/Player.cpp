@@ -6,8 +6,9 @@
 #include "Game.h"
 #include <iostream>
 #include "GameObjectManager.h"
+#include "Defines.h"
 
-#define SPRITESIZE 64
+
 
 /*
 Idle_R 5 200
@@ -21,7 +22,7 @@ Shoot_L 5 100
 
 */
 
-Player::Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i) : walls(w), items(i), GameObject(x, y) {
+Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i) : walls(w), items(i), GameObject(x, y) {
 	objTexture = t;
 
 	xvel = 0;
@@ -31,10 +32,14 @@ Player::Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::f
 	srcRect->x = 0;
 	srcRect->y = 0;
 
-	srcRect->w = srcRect->h = 64;
+	srcRect->w = srcRect->h = PLAYERSPRITESIZE;
 
+	frameStart = SDL_GetTicks();	// start of render
+	frameDelay = 0;					// length between two renders of this object in milliseconds
+	frameCounter = 0;				// frame counter
+	row = 0;						// animation to display
 
-
+	speed = s * TileSize/DIVIDEBYTHIS;
 }
 
 Player::~Player() {
@@ -49,20 +54,20 @@ void Player::Update() {
 
 	if (uninterruptibleAnimation) return; // if an uninterruptible animation is playing the character does not move
 		
-	destRect->x += xvel;
+	destRect->x += xvel * speed;
 	for (Wall* wall : walls)
 	{
 		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->x -= xvel;
+			destRect->x -= xvel * speed;
 			break;
 		}
 	}
 
-	destRect->y += yvel;
+	destRect->y += yvel * speed;
 	for (Wall* wall : walls)
 	{
 		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->y -= yvel;
+			destRect->y -= yvel * speed;
 			break;
 		}
 	}
@@ -115,11 +120,6 @@ enum anim {
 	Shoot_L = 7
 };
 
-Uint32 frameStart = SDL_GetTicks();	// start of render
-int frameDelay = 0;					// length between two renders of this object in milliseconds
-int i = 0;							// frame counter
-int row = 0;						// animation to display
-
 void Player::Render() {
 	frameDelay = SDL_GetTicks() - frameStart;
 	if (frameDelay > sheetData[row][1]) // if time to display next frame
@@ -162,31 +162,55 @@ void Player::Render() {
 			}
 		}
 		
-		if (srcRect->y != row * SPRITESIZE) { // if animation change happened
-			i = 0;	// reset counter
-			srcRect->y = row * SPRITESIZE; // set new animation
+		if (srcRect->y != row * PLAYERSPRITESIZE) { // if animation change happened
+			frameCounter = 0;	// reset counter
+			srcRect->y = row * PLAYERSPRITESIZE; // set new animation
 		}
 		else // if not
 		{ 
-			i++; // increment frames
-			if (i >= sheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
+			frameCounter++; // increment frames
+			if (frameCounter >= sheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
 			{
-				i = 0; // return to first frame
+				frameCounter = 0; // return to first frame
 				uninterruptibleAnimation = false; // the animation has finished
 			}
 
 		}
-		srcRect->x = i * SPRITESIZE; // finally, set the frame to display
+		srcRect->x = frameCounter * PLAYERSPRITESIZE; // finally, set the frame to display
 	}
 
 	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
 }
 
+enum direction {
+	up = 1,
+	down = 2,
+	right = 3,
+	left = 4
+};
+int lookDirection = right;
+
 void Player::SetVelX(int v) { 
+	if (v == 1)
+	{
+		lookDirection = right;
+	}
+	else if (v == -1)
+	{
+		lookDirection = left;
+	}
 	xvel = v;
 }
 
 void Player::SetVelY(int v) {
+	if (v == 1)
+	{
+		lookDirection = down;
+	}
+	else if (v == -1)
+	{
+		lookDirection = up;
+	}
 	yvel = v;
 }
 
@@ -201,10 +225,11 @@ void Player::Shoot() { // no up or down shoot animation
 	{
 		row = 7;
 	}
-	GameObjectManager::CreateGameObject(GameObjectManager::projectile, destRect->x, destRect->y, 1);
+	GameObjectManager::CreateGameObject(GameObjectManager::projectile, destRect->x, destRect->y, lookDirection);
 }
 
 void Player::Hit() { // no up or down hit animation
+	if (uninterruptibleAnimation) return;
 	uninterruptibleAnimation = true;
 	if (facingRight)
 	{
@@ -215,19 +240,6 @@ void Player::Hit() { // no up or down hit animation
 		row = 5;
 	}
 }
-
-/*
-row = offset by size
-name 	row	frames	delay
-Idle_R 	0	5 		200
-Idle_L 	1	5 		200
-Move_R 	2	3 		200
-Move_L 	3	3 		200
-Hit_R 	4	7 		100
-Hit_L 	5	7 		100
-Shoot_R	6	5 		100
-Shoot_L	7	5 		100
-*/
 
 
 void Player::Reset() {

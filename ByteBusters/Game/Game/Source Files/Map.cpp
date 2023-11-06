@@ -1,10 +1,11 @@
+#pragma once
 #include "Map.h"
 #include "TextureManager.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 
-#define MAPS 10
+
 
 struct levelData {
 	GameObjectManager::TileTypes wallType = GameObjectManager::concrete02;
@@ -25,7 +26,7 @@ void DefineLevelData() {
 	///////////// DEEP JUNGLE /////////////
 	lvlData[0].wallType = GameObjectManager::concrete02;
 	lvlData[0].path = TextureManager::jungle;
-	lvlData[0].rat = 0; //10;									<- DISABLED ENEMIES FOR TESTING PURPOSES
+	lvlData[0].rat = 10;
 	///////////// JUNGLE RIVERSIDE /////////////
 	lvlData[1].wallType = GameObjectManager::water;
 	lvlData[1].path = TextureManager::jungle;

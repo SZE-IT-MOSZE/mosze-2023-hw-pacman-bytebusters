@@ -1,3 +1,4 @@
+#pragma once
 #include "Wall.h"
 #include <iostream>
 

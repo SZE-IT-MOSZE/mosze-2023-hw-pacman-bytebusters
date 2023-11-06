@@ -7,7 +7,7 @@
 
 class Player : public GameObject { //!< A játékos karakter osztálya
 public:
-	Player(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i); //!< Konstruktor ami azt mutatja, hogy a player tud a falakról és az itemekrõl
+	Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i); //!< Konstruktor ami azt mutatja, hogy a player tud a falakról és az itemekrõl
 	~Player();
 
 	void Update();//!< Minden framen hívjuk ez tartalmazza a ütközés érzékelést és a játékos pozíciójána frissítését
@@ -33,8 +33,13 @@ private:
 
 	int xvel; //!< X sebesség
 	int yvel; //!< Y sebesség
+	int speed;
 
 	SDL_Rect* srcRect;
 	
+	Uint32 frameStart;	// start of render
+	int frameDelay;		// length between two renders of this object in milliseconds
+	int frameCounter;	// frame counter
+	int row;			// animation to display
 
 };

@@ -42,6 +42,7 @@
     <ClCompile Include="MazeGenerator\Source Files\writeGridToFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Header Files\Defines.h" />
     <ClInclude Include="Game\Header Files\Enemy.h" />
     <ClInclude Include="Game\Header Files\Game.h" />
     <ClInclude Include="Game\Header Files\GameObject.h" />

@@ -26,6 +26,8 @@ SDL_Texture* TextureManager::Yusri;
 
 SDL_Texture* TextureManager::paper;
 
+SDL_Texture* TextureManager::projectile;
+
 SDL_Texture* TextureManager::err_;
 
 SDL_Texture* TextureManager::anim;
@@ -64,6 +66,8 @@ void TextureManager::LoadAllTextures() {
 	TextureManager::Yusri			= LoadTexture("Assets/Yusri.png");
 									
 	TextureManager::paper			= LoadTexture("Assets/Burned_diary_page.png");
+
+	TextureManager::projectile		= LoadTexture("Assets/projectile.png");
 
 	TextureManager::err_			= LoadTexture("Assets/err_.png");
 }

@@ -3,8 +3,10 @@
 #include "GameObjectManager.h"
 #include "Game.h"
 #include <iostream>
+#include "Defines.h"
 
-Enemy::Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* p) : walls(w), GameObject(x, y) {
+
+Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p) : walls(w), projectiles(pr), GameObject(x, y) {
 	objTexture = t;
 
 	player = p;
@@ -13,15 +15,7 @@ Enemy::Enemy(int x, int y, SDL_Texture* t, std::forward_list<Wall*>& w, Player* 
 	xvel = 0;
 	yvel = 0;
 
-
-	//srand(time(NULL));
-
-	/*std::cout << "-------------------------------" << std::endl;
-	for (size_t i = 0; i < 10; i++)
-	{
-		std::cout << rand() << std::endl;
-	}
-	std::cout << "-------------------------------" << std::endl;*/
+	speed = s * TileSize / DIVIDEBYTHIS;
 
 	visionDistance = TileSize * 5;
 }
@@ -31,22 +25,31 @@ Enemy::~Enemy() {
 }
 
 void Enemy::Update() {
-	destRect->x += xvel;
+	destRect->x += xvel * speed;
 
 	for (Wall* wall : walls)
 	{
 		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->x -= xvel;
+			destRect->x -= xvel * speed;
 			break;
 		}
 	}
 
-	destRect->y += yvel;
+	destRect->y += yvel * speed;
 
 	for (Wall* wall : walls)
 	{
 		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->y -= yvel;
+			destRect->y -= yvel * speed;
+			break;
+		}
+	}
+
+	for (Projectile* projectile : projectiles)
+	{
+		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
+			GameObjectManager::FlagForDelete(this);
+			GameObjectManager::FlagForDelete(projectile);
 			break;
 		}
 	}

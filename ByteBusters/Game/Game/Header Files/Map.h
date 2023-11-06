@@ -3,10 +3,10 @@
 #include "SDL_image.h"
 #include <string>
 #include "GameObjectManager.h"
+#include "Defines.h"
 
 
-#define ROWS 15
-#define COLS 20
+
 
 class Map { 
 

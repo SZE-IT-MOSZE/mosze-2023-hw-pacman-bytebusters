@@ -1,3 +1,4 @@
+#pragma once
 #include "SDL.h"
 #include "Game.h"
 #include <iostream>
@@ -29,6 +30,7 @@ Game* game = nullptr;
 //}
 
 int main(int argc, char* argv[]) {
+
 	/*
 	std::forward_list<int> intList;
 

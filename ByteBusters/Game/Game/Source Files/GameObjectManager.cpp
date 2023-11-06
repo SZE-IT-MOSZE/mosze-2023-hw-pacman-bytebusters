@@ -3,6 +3,7 @@
 #include "TextureManager.h"
 #include "Wall.h"
 #include <iostream>
+#include "Defines.h"
 
 
 //int GameObjectManager::tileSize;
@@ -13,34 +14,21 @@ std::forward_list<Wall*> GameObjectManager::walls;
 std::forward_list<Item*> GameObjectManager::items;
 std::forward_list<Projectile*> GameObjectManager::projectiles;
 
-std::forward_list<Projectile*> GameObjectManager::flaggedForDeleteProjectiles;
+std::set<Enemy*> GameObjectManager::flaggedForDeleteEnemies;
+std::set<Wall*> GameObjectManager::flaggedForDeleteWalls;
+std::set<Item*> GameObjectManager::flaggedForDeleteItems;
+std::set<Projectile*> GameObjectManager::flaggedForDeleteProjectiles;
 
 void GameObjectManager::SetTileSize(int s) {
 	GameObject::setTileSize(s);
 }
 
-//std::forward_list<Wall*>* GameObjectManager::GetWalls() {
-//	return &walls;
-//}	
-//
-//std::forward_list<Enemy*>* GameObjectManager::GetEnemies() {
-//	return &enemies;
-//}	
-//
-//std::forward_list<Item*>* GameObjectManager::GetItems() {
-//	return &items;
-//}	
-
 bool GameObjectManager::AreAllItemsPickedUp() {
 	return items.empty();
 }
 
-//Player* GameObjectManager::GetPlayer() {
-//	return _player;
-//}
-
 Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
-	_player = new Player(x, y, TextureManager::Deerly, walls, items);
+	_player = new Player(x, y, PLAYERSPEED, TextureManager::Deerly, walls, items);
 	return _player;
 }
 
@@ -48,28 +36,28 @@ void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 	switch (t)
 	{
 	case GameObjectManager::rat:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Rat, walls, _player));
+		enemies.push_front(new Enemy(x, y, FASTENEMYSPEED, TextureManager::Enemy_Rat, walls, projectiles, _player));
 		break;
 	case GameObjectManager::ape:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Ape, walls, _player));
+		enemies.push_front(new Enemy(x, y, SLOWENEMYSPEED, TextureManager::Enemy_Ape, walls, projectiles, _player));
 		break;
 	case GameObjectManager::deer:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Deer, walls, _player));
+		enemies.push_front(new Enemy(x, y, FASTENEMYSPEED, TextureManager::Enemy_Deer, walls, projectiles, _player));
 		break;
 	case GameObjectManager::guard:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Guard, walls, _player));
+		enemies.push_front(new Enemy(x, y, SLOWENEMYSPEED, TextureManager::Enemy_Guard, walls, projectiles, _player));
 		break;
 	case GameObjectManager::homeless:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Homeless, walls, _player));
+		enemies.push_front(new Enemy(x, y, SLOWENEMYSPEED, TextureManager::Enemy_Homeless, walls, projectiles, _player));
 		break;
 	case GameObjectManager::soldier:
-		enemies.push_front(new Enemy(x, y, TextureManager::Enemy_Soldier, walls, _player));
+		enemies.push_front(new Enemy(x, y, SLOWENEMYSPEED, TextureManager::Enemy_Soldier, walls, projectiles, _player));
 		break;
 	case GameObjectManager::yusri:
-		enemies.push_front(new Enemy(x, y, TextureManager::Yusri, walls, _player));
+		enemies.push_front(new Enemy(x, y, FASTENEMYSPEED, TextureManager::Yusri, walls, projectiles, _player));
 		break;
 	case GameObjectManager::joseph:
-		enemies.push_front(new Enemy(x, y, TextureManager::Joseph_White, walls, _player));
+		enemies.push_front(new Enemy(x, y, FASTENEMYSPEED, TextureManager::Joseph_White, walls, projectiles, _player));
 		break;
 	default:
 		break;
@@ -98,7 +86,7 @@ void GameObjectManager::CreateGameObject(ItemTypes t, int x, int y) {
 }
 
 void GameObjectManager::CreateGameObject(ProjectileTypes t, int x, int y, int d) {
-	projectiles.push_front(new Projectile(x, y, d, TextureManager::err_, walls));
+	projectiles.push_front(new Projectile(x, y, PROJECTILESPEED, d, TextureManager::projectile, walls));
 }
 
 
@@ -172,16 +160,51 @@ void GameObjectManager::DestroyAllGameObjects() {
 	DestroyAllExceptPlayer();
 	delete _player;
 }
-
-void GameObjectManager::FlagForDelete(Projectile* p) {
-	flaggedForDeleteProjectiles.push_front(p);
+/////////////////////////////////////////////////////////////// FLAGGING AND DELETEION
+void GameObjectManager::FlagForDelete(Enemy* f) {
+	flaggedForDeleteEnemies.insert(f);
 }
 
-void GameObjectManager::DeleteFlagged() {
-	for (Projectile* flaggedProjectile : flaggedForDeleteProjectiles)
+void GameObjectManager::FlagForDelete(Wall* f) {
+	flaggedForDeleteWalls.insert(f);
+}
+
+void GameObjectManager::FlagForDelete(Item* f) {
+	flaggedForDeleteItems.insert(f);
+}
+
+void GameObjectManager::FlagForDelete(Projectile* f) {
+	flaggedForDeleteProjectiles.insert(f);
+}
+
+void GameObjectManager::DeleteFlagged() { // uncomment if implemented (for items a lighter built in version is working currently in Player.cpp)
+
+	for (Enemy* f : flaggedForDeleteEnemies)
 	{
-		projectiles.remove(flaggedProjectile);
-		delete flaggedProjectile;
+		enemies.remove(f);
+		delete f;
+	}
+	flaggedForDeleteEnemies.clear();
+
+	/*for (Wall* f : flaggedForDeleteWalls) // why would we do this? i know. but im not telling.
+	{
+		walls.remove(f);
+		delete f;
+	}
+	flaggedForDeleteWalls.clear();*/
+
+	/*for (Item* f : flaggedForDeleteItems)
+	{
+		items.remove(f);
+		delete f;
+	}
+	flaggedForDeleteItems.clear();*/
+
+	for (Projectile* f : flaggedForDeleteProjectiles)
+	{
+		projectiles.remove(f);
+		delete f;
 	}
 	flaggedForDeleteProjectiles.clear();
+
 }
