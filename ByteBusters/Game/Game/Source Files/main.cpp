@@ -5,9 +5,16 @@
 #include <thread>
 #include <forward_list>
 
+#include <vector>
+
+#include <chrono>
+
 #include "generateMaze.h"
 
 Game* game = nullptr;
+
+//THE SMALLER GARBAGE DUMP ABOVE THE GREAT GARBAGE DUMP
+
 //
 //void zaza(std::forward_list<int>& l) {
 //	std::forward_list<int>& funcList = l;
@@ -29,7 +36,65 @@ Game* game = nullptr;
 //
 //}
 
+
 int main(int argc, char* argv[]) {
+
+	//THE GREAT GARBAGE DUMP
+	{
+	
+
+
+	//std::cout << time(NULL) << std::endl;
+
+	//std::chrono::milliseconds ms = duration_cast<std::chrono::milliseconds>(
+	//	std::chrono::system_clock::now().time_since_epoch()
+	//);
+	//std::cout << ms << std::endl;
+
+	//uint64_t t = duration_cast<std::chrono::milliseconds>(
+	//	std::chrono::system_clock::now().time_since_epoch()
+	//).count();
+	//std::cout << "t: " << t << std::endl;
+
+	//SDL_Delay(1000);
+	//ms = duration_cast<std::chrono::milliseconds>(
+	//	std::chrono::system_clock::now().time_since_epoch()
+	//);
+	//std::cout << ms << std::endl;
+	//std::cout << time(NULL) << std::endl;
+
+
+	//return 123;
+
+	//std::forward_list<int> zaza;
+	//zaza.push_front(900);
+	//zaza.push_front(800);
+	//zaza.push_front(700);
+	//zaza.push_front(600);
+	//zaza.push_front(500);
+
+	//int size = distance(zaza.begin(), zaza.end());
+
+	//auto it = zaza.begin();
+
+	//for (int i =0; i < distance(zaza.begin(), zaza.end()); i++)
+	//{
+	//	if (*it == 700) {
+	//		//std::cout << "SIZE: " << zaza.size() << std::endl;
+	//		i--;
+	//		std::cout << "POP(cat)" << std::endl;
+
+	//		zaza.remove(i);
+
+	//		//std::cout << "SIZE: " << zaza.size() << std::endl;
+
+	//	}
+	//	std::advance(it, i);
+	//	std::cout << "asd " << *it << std::endl;
+
+	//}
+
+
 
 	/*
 	std::forward_list<int> intList;
@@ -44,7 +109,7 @@ int main(int argc, char* argv[]) {
 
 	zaza(intList);
 
-	
+
 
 	for (int i : intList) {
 		std::cout << i << std::endl;
@@ -52,6 +117,8 @@ int main(int argc, char* argv[]) {
 	std::cout << "----------" << std::endl;
 
 	return 0;*/
+
+	}
 
 	if ((SDL_Init(SDL_INIT_VIDEO) == -1)) {
 		printf("Could not initialize SDL: %s.\n", SDL_GetError());
@@ -69,7 +136,7 @@ int main(int argc, char* argv[]) {
 	int screenResWidth, screenResHeight; // these are scaled resolutions, not screen size in pixels
 	screenResWidth = dm.w;
 	screenResHeight = dm.h;
-	
+
 
 	int gameResWidth, gameResHeight, tileRes;
 	if (screenResHeight <= 480) {
@@ -105,11 +172,11 @@ int main(int argc, char* argv[]) {
 	//15*112 = 1680
 	//15*128 = 1920
 
-	
+
 	srand(time(NULL)); // only intitialize srand once
 
 	generateMaze(); // call before game->Init
-	
+
 	game = new Game();
 
 	if (!game->Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false))

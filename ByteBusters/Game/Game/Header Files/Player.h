@@ -37,6 +37,9 @@ private:
 
 	SDL_Rect* srcRect;
 	
+	bool uninterruptibleAnimation; // uninterruptible animations set this for themselves, Render() only unsets it
+
+
 	Uint32 frameStart;	// start of render
 	int frameDelay;		// length between two renders of this object in milliseconds
 	int frameCounter;	// frame counter

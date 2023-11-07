@@ -8,7 +8,8 @@ void placeTwos(std::vector<std::vector<int>>& grid) {
     int numCols = grid[0].size();
 
     // seedeles a veletlenszeruseghez
-    //std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    //std::
+    // (static_cast<unsigned int>(std::time(nullptr)));
 
     // szamoljuk ki hany cellat kell feltolteni
     int maxCells = 12; //!< megnézzünk, hogy hány cellát kell feltöltenünk 

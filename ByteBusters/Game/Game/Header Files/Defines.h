@@ -1,4 +1,11 @@
 #pragma once
+//DEBUG
+//#define DEBUGLEVEL
+
+//game
+#define _FPS 30
+#define _UPS 30
+
 //map
 #define ROWS 15
 #define COLS 20
@@ -13,8 +20,12 @@
 
 //player
 #define PLAYERSPRITESIZE 64
+#define PLAYERSPAWNX 18
+#define PLAYERSPAWNY 13
+
 
 //projectile
 #define PROJECTILESPRITESIZE 64
 
 //enemy
+#define ENEMYSPRITESIZE 64

@@ -18,13 +18,35 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	speed = s * TileSize / DIVIDEBYTHIS;
 
 	visionDistance = TileSize * 5;
+	attackDistance = TileSize * 1;
+
+	uninterruptibleAnimation = false;
+
+	frameStart = SDL_GetTicks();	// start of render
+	frameDelay = 0;					// length between two renders of this object in milliseconds
+	frameCounter = 0;				// frame counter
+	row = 0;						// animation to display
+
 }
 
 Enemy::~Enemy() {
 	std::cout << "enemy destructor called" << std::endl;
 }
 
+
 void Enemy::Update() {
+
+	for (Projectile* projectile : projectiles)
+	{
+		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
+			GameObjectManager::FlagForDelete(this);
+			GameObjectManager::FlagForDelete(projectile);
+			break;
+		}
+	}
+
+	if (uninterruptibleAnimation) return;
+
 	destRect->x += xvel * speed;
 
 	for (Wall* wall : walls)
@@ -45,60 +67,133 @@ void Enemy::Update() {
 		}
 	}
 
-	for (Projectile* projectile : projectiles)
+	CalculatePositions(); // CALL FIRST !!!!!!!!!
+	distance = CalculateDistance();
+
+	if (distance > visionDistance) // if too far
 	{
-		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
-			GameObjectManager::FlagForDelete(this);
-			GameObjectManager::FlagForDelete(projectile);
-			break;
-		}
+		Wander();
+		return;
 	}
 
-	if (CheckLineOfSight())
+	if (distance < attackDistance) // if close enough
+	{
+		Attack();
+		return;
+	}
+
+	if (CheckLineOfSight()) // only check line of sight if player is actually close enough to see and we didnt attack already
 	{
 		Chase();
 	}
-	else {
-		Wander();
-	}
-
 
 }
 
-void Enemy::Render() {
 
-	//std::cout << "enemy render" << std::endl;
-	SDL_RenderCopy(Game::renderer, objTexture, NULL, destRect);
+
+int enemySheetData[6][2]{
+	{3, 200},
+	{3, 200},
+	{5, 100},
+	{5, 100},
+	{3, 200},
+	{3, 200}
+};
+
+enum anim {
+	Idle_R = 0,
+	Idle_L = 1,
+	Run_R = 2,
+	Run_L = 3,
+	Attack_R = 4,
+	Attack_L = 5
+};
+
+void Enemy::Render() {
+	frameDelay = SDL_GetTicks() - frameStart;
+	if (frameDelay > enemySheetData[row][1]) // if time to display next frame
+	{
+		frameStart = SDL_GetTicks();
+
+		if (!uninterruptibleAnimation) // if NOT playing Shoot or Hit
+		{
+			if (xvel == 1) // if going right
+			{
+				facingRight = true;
+				row = Run_R;
+			}
+			else if (xvel == -1) // if going left
+			{
+				facingRight = false;
+				row = Run_L;
+			}
+			else if (yvel != 0) // if NOT going right/left BUT going up/down
+			{
+				if (facingRight) // last direction the character was facing
+				{
+					row = Run_R;
+				}
+				else
+				{
+					row = Run_L;
+				}
+			}
+			else // if NOT moving at all
+			{
+				if (facingRight) // last direction the enemy was facing
+				{
+					row = Idle_R;
+				}
+				else
+				{
+					row = Idle_L;
+				}
+			}
+		}
+
+		if (srcRect->y != row * ENEMYSPRITESIZE) { // if animation change happened
+			frameCounter = 0;	// reset counter
+			srcRect->y = row * ENEMYSPRITESIZE; // set new animation
+		}
+		else // if not
+		{
+			frameCounter++; // increment frames
+			if (frameCounter >= enemySheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
+			{
+				frameCounter = 0; // return to first frame
+				uninterruptibleAnimation = false; // the animation has finished
+			}
+
+		}
+		srcRect->x = frameCounter * ENEMYSPRITESIZE; // finally, set the frame to display
+	}
+
+	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
 	
 }
 
-bool Enemy::CheckLineOfSight() {
-
+void Enemy::CalculatePositions() {
 	playerPosX = playerRect->x + playerRect->w / 2;
 	playerPosY = playerRect->y + playerRect->h / 2;
 
 	posX = destRect->x + destRect->w / 2;
 	posY = destRect->y + destRect->h / 2;
+}
 
-	int distance = sqrt( pow( (playerPosX - posX), 2) + pow( (playerPosY - posY), 2) );
+int Enemy::CalculateDistance() {
 	//std::cout << playerPosX << "," << playerPosY << " | " << posX << "," << posY << " | " << "dist: " << distance << std::endl;
-	
+	return sqrt( pow( (playerPosX - posX), 2) + pow( (playerPosY - posY), 2) ); // math class was useful after all
+}
 
-	if (distance > visionDistance)
-	{
-		//std::cout << "False" << std::endl;
-		return false;
-	}
-	
+bool Enemy::CheckLineOfSight() {
+
 	for (Wall* wall : walls)
 	{
-		if (SDL_IntersectRectAndLine(wall->GetDestRect(), &playerPosX, &playerPosY, &posX, &posY)) {
-			
+		if (SDL_IntersectRectAndLine(wall->GetDestRect(), &playerPosX, &playerPosY, &posX, &posY)) {	
 			//std::cout << "False" << std::endl;
 			return false;
 		}
 	}
-	
 	//std::cout << "True" << std::endl;
 	return true;
 }
@@ -136,9 +231,9 @@ void Enemy::Wander() {
 		return;
 	}
 
-	rnd = rand() % 2000;
+	rnd = rand() % (2 * _UPS);
 	//std::cout << rnd << std::endl;
-	int rndForVel = rand() % 8;
+	int rndForVel = rand() % 9;
 	switch (rndForVel)
 	{
 	case 0:
@@ -173,7 +268,25 @@ void Enemy::Wander() {
 		xvel = -1;
 		yvel = -1;
 		break;
+	case 8:
+		xvel = 0;
+		yvel = 0;
+		break;
 	default:
 		break;
+	}
+}
+
+void Enemy::Attack() {
+	std::cout << "ATTACK" << std::endl;
+	if (uninterruptibleAnimation) return;
+	uninterruptibleAnimation = true;
+	if (facingRight)
+	{
+		row = 4;
+	}
+	else
+	{
+		row = 5;
 	}
 }

@@ -208,14 +208,14 @@ void Game::HandleEvents()
 void Game::Start()
 {
 
-	const int FPS = 30;
+	const int FPS = _FPS;
 	const int frameDelay = 1000 / FPS;
 
 	Uint32 frameStart;
 	int frameTime;
 
 	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
-	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes*9, tileRes*13); //only need pointer to call SetVelX/Y at this time
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes * PLAYERSPAWNX, tileRes * PLAYERSPAWNY); //only need pointer to call SetVelX/Y at this time
 
 	int currentLvl = 1;
 
@@ -258,7 +258,7 @@ void Game::UpdateThread() {
 
 	std::cout << "Thread Created" << std::endl;
 
-	const int UPS = 30;
+	const int UPS = _UPS;
 	const int frameDelay = 1000 / UPS;
 
 	Uint32 frameStart;

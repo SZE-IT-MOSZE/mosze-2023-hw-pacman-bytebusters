@@ -21,16 +21,30 @@ private:
 	std::forward_list<Wall*>& walls;
 	std::forward_list<Projectile*>& projectiles;
 
-	bool CheckLineOfSight(); //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és, hogy látó távolságon bellül van-e
+	void CalculatePositions(); // !!!!!!!!! CALL BEFORE CalculateDistance() AND CheckLineOfSight()
+	int CalculateDistance(); // easier calculation, check first instead of CheckLineOfSight()
+	bool CheckLineOfSight(); // overwrites positions calculated in  CalculatePositions(), CALL LAST!!! //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és, hogy látó távolságon bellül van-e
 	void Chase(); //!<A játékos üldözése az enemy részélõl
 	void Wander(); //!< Az enemy barangolása az adott pályán 
+	void Attack();
 
 	int xvel, yvel;
 	int speed;
 
-	int playerPosX, playerPosY; //!< A játékosunk pozíciója a pályán belül
+	int playerPosX, playerPosY; //!< A játékos pozíciója a pályán belül
 	int posX, posY;
 
-	int visionDistance; //!< Az enemy látó távolsága
+	int distance;
+	int visionDistance; //!< Az enemy látótávolsága
+	int attackDistance;
+
+
+	bool uninterruptibleAnimation = false; 
+
+	Uint32 frameStart = SDL_GetTicks();	// start of render
+	int frameDelay = 0;		// length between two renders of this object in milliseconds
+	int frameCounter = 0;	// frame counter
+	int row = 0;			// animation to display
+	bool facingRight = true;
 
 };

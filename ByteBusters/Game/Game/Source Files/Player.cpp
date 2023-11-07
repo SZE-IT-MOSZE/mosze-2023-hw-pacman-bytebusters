@@ -34,6 +34,8 @@ Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w,
 
 	srcRect->w = srcRect->h = PLAYERSPRITESIZE;
 
+	uninterruptibleAnimation = false;
+
 	frameStart = SDL_GetTicks();	// start of render
 	frameDelay = 0;					// length between two renders of this object in milliseconds
 	frameCounter = 0;				// frame counter
@@ -47,7 +49,6 @@ Player::~Player() {
 }
 
 
-bool uninterruptibleAnimation = false; // uninterruptible animations set this for themselfves, Render() only unsets it
 void Player::Update() {
 
 	//place enemy collision/hit check above here
@@ -243,8 +244,8 @@ void Player::Hit() { // no up or down hit animation
 
 
 void Player::Reset() {
-	destRect->x = TileSize*9;
-	destRect->y = TileSize*13;
+	destRect->x = TileSize * PLAYERSPAWNX;
+	destRect->y = TileSize * PLAYERSPAWNY;
 }
 
 

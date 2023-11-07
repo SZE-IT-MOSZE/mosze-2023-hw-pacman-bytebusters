@@ -48,11 +48,11 @@ void TextureManager::LoadAllTextures() {
 	
 	TextureManager::Deerly			= LoadTexture("Assets/Deerly_ultimate_sprite_sheet.png");
 	
-	TextureManager::Enemy_Ape		= LoadTexture("Assets/Enemy_Ape.png");
-	TextureManager::Enemy_Deer		= LoadTexture("Assets/Enemy_Deer.png");
+	TextureManager::Enemy_Ape		= LoadTexture("Assets/Enemy_Ape_Sprite_sheet.png");
+	TextureManager::Enemy_Deer		= LoadTexture("Assets/Enemy_Deer_Sprite_sheet.png");
 	TextureManager::Enemy_Guard		= LoadTexture("Assets/Enemy_Guard.png");
-	TextureManager::Enemy_Homeless	= LoadTexture("Assets/Enemy_Homeless.png");
-	TextureManager::Enemy_Rat		= LoadTexture("Assets/Enemy_Rat.png");
+	TextureManager::Enemy_Homeless	= LoadTexture("Assets/Enemy_Homeless_Sprite_sheet.png");
+	TextureManager::Enemy_Rat		= LoadTexture("Assets/Enemy_Rat_Sprite_sheet.png");
 	TextureManager::Enemy_Soldier	= LoadTexture("Assets/Enemy_Soldier.png");
 									
 	TextureManager::concrete01		= LoadTexture("Assets/concrete01.png");
@@ -62,8 +62,8 @@ void TextureManager::LoadAllTextures() {
 	TextureManager::water			= LoadTexture("Assets/water.png");
 	TextureManager::dirt			= LoadTexture("Assets/dirt.png");
 									
-	TextureManager::Joseph_White	= LoadTexture("Assets/Joseph_White.png");
-	TextureManager::Yusri			= LoadTexture("Assets/Yusri.png");
+	TextureManager::Joseph_White	= LoadTexture("Assets/Josepf_White_Sprite_sheet.png");
+	TextureManager::Yusri			= LoadTexture("Assets/Yusri_Sprite_sheet.png");
 									
 	TextureManager::paper			= LoadTexture("Assets/Burned_diary_page.png");
 

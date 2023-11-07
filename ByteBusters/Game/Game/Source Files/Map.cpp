@@ -68,6 +68,13 @@ void DefineLevelData() {
 	lvlData[9].guard = 10;
 	lvlData[9].yusri = 1;
 	lvlData[9].joseph = 1;
+
+#ifdef DEBUGLEVEL
+	lvlData[0].rat = 0;
+
+	lvlData[0].homeless = 1;
+#endif // DEBUGLEVEL
+
 	
 }
 
