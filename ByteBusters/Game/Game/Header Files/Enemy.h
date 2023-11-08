@@ -3,7 +3,6 @@
 #include "Player.h"
 #include "Wall.h"
 #include "Projectile.h"
-#include <time.h>
 #include <forward_list>
 
 
@@ -12,10 +11,10 @@ public:
 	Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p); //!< Enemy konstruktor az enemy létrehozására
 	~Enemy();
 
-	void Update(); //!< Enemy frissítése
+	virtual void Update(); //!< Enemy frissítése
 	void Render(); //!< Enemy renderelése
 
-private: 
+protected: 
 	Player* player; //player is still a pointer. only lists are references
 	SDL_Rect* playerRect;
 	std::forward_list<Wall*>& walls;
@@ -23,10 +22,8 @@ private:
 
 	void CalculatePositions(); // !!!!!!!!! CALL BEFORE CalculateDistance() AND CheckLineOfSight()
 	int CalculateDistance(); // easier calculation, check first instead of CheckLineOfSight()
-	bool CheckLineOfSight(); // overwrites positions calculated in  CalculatePositions(), CALL LAST!!! //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és, hogy látó távolságon bellül van-e
-	void Chase(); //!<A játékos üldözése az enemy részélõl
+	bool CheckLineOfSight(); // overwrites positions calculated in CalculatePositions(), CALL LAST!!! //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és, hogy látó távolságon bellül van-e
 	void Wander(); //!< Az enemy barangolása az adott pályán 
-	void Attack();
 
 	int xvel, yvel;
 	int speed;
@@ -38,7 +35,6 @@ private:
 	int visionDistance; //!< Az enemy látótávolsága
 	int attackDistance;
 
-
 	bool uninterruptibleAnimation = false; 
 
 	Uint32 frameStart = SDL_GetTicks();	// start of render
@@ -47,4 +43,36 @@ private:
 	int row = 0;			// animation to display
 	bool facingRight = true;
 
+private:
+
+	int sheetData[4][2]{
+		{3, 200},
+		{3, 200},
+		{5, 100},
+		{5, 100},
+	};
+	enum anim {
+		Idle_R = 0,
+		Idle_L = 1,
+		Run_R = 2,
+		Run_L = 3,
+	};
+
 };
+
+/*
+base enemy - should include wander
+	>Enemy_MeleeAttack
+		>wander
+		>chase
+		>attack
+	>Enemy_RangedAttack 
+		>wander
+		>shoot (attack but different)
+	>Enemy_NoAttack
+		>wander
+		>runaway
+
+
+*/
+//

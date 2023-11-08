@@ -6,12 +6,7 @@
 #include "Defines.h"
 
 
-enum direction {
-	up = 1,
-	down = 2,
-	right = 3,
-	left = 4
-};
+
 
 Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w) : walls(w), GameObject(x, y)
 {

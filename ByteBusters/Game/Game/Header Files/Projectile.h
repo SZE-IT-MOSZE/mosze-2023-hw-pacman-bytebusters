@@ -11,6 +11,13 @@ public:
 	void Update();
 	void Render();
 
+	enum ProjectileDirection {
+		up = 1,
+		down = 2,
+		right = 3,
+		left = 4
+	};
+
 private:
 	int xvel, yvel;
 	int speed;

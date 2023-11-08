@@ -1,6 +1,6 @@
 #pragma once
 #include "Enemy.h"
-#include "GameObjectManager.h"
+//#include "GameObjectManager.h"
 #include "Game.h"
 #include <iostream>
 #include "Defines.h"
@@ -33,85 +33,13 @@ Enemy::~Enemy() {
 	std::cout << "enemy destructor called" << std::endl;
 }
 
-
 void Enemy::Update() {
-
-	for (Projectile* projectile : projectiles)
-	{
-		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
-			GameObjectManager::FlagForDelete(this);
-			GameObjectManager::FlagForDelete(projectile);
-			break;
-		}
-	}
-
-	if (uninterruptibleAnimation) return;
-
-	destRect->x += xvel * speed;
-
-	for (Wall* wall : walls)
-	{
-		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->x -= xvel * speed;
-			break;
-		}
-	}
-
-	destRect->y += yvel * speed;
-
-	for (Wall* wall : walls)
-	{
-		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->y -= yvel * speed;
-			break;
-		}
-	}
-
-	CalculatePositions(); // CALL FIRST !!!!!!!!!
-	distance = CalculateDistance();
-
-	if (distance > visionDistance) // if too far
-	{
-		Wander();
-		return;
-	}
-
-	if (distance < attackDistance) // if close enough
-	{
-		Attack();
-		return;
-	}
-
-	if (CheckLineOfSight()) // only check line of sight if player is actually close enough to see and we didnt attack already
-	{
-		Chase();
-	}
 
 }
 
-
-
-int enemySheetData[6][2]{
-	{3, 200},
-	{3, 200},
-	{5, 100},
-	{5, 100},
-	{3, 200},
-	{3, 200}
-};
-
-enum anim {
-	Idle_R = 0,
-	Idle_L = 1,
-	Run_R = 2,
-	Run_L = 3,
-	Attack_R = 4,
-	Attack_L = 5
-};
-
 void Enemy::Render() {
 	frameDelay = SDL_GetTicks() - frameStart;
-	if (frameDelay > enemySheetData[row][1]) // if time to display next frame
+	if (frameDelay > sheetData[row][1]) // if time to display next frame
 	{
 		frameStart = SDL_GetTicks();
 
@@ -158,7 +86,7 @@ void Enemy::Render() {
 		else // if not
 		{
 			frameCounter++; // increment frames
-			if (frameCounter >= enemySheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
+			if (frameCounter >= sheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
 			{
 				frameCounter = 0; // return to first frame
 				uninterruptibleAnimation = false; // the animation has finished
@@ -169,7 +97,6 @@ void Enemy::Render() {
 	}
 
 	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
-	
 }
 
 void Enemy::CalculatePositions() {
@@ -196,30 +123,6 @@ bool Enemy::CheckLineOfSight() {
 	}
 	//std::cout << "True" << std::endl;
 	return true;
-}
-
-void Enemy::Chase() {
-	if (playerRect->x > destRect->x)
-	{
-		xvel = 1;
-	}
-	else if (playerRect->x < destRect->x) {
-		xvel = -1;
-	}
-	else {
-		xvel = 0;
-	}
-
-	if (playerRect->y > destRect->y)
-	{
-		yvel = 1;
-	}
-	else if (playerRect->y < destRect->y) {
-		yvel = -1;
-	}
-	else {
-		yvel = 0;
-	}
 }
 
 int rnd = 0;
@@ -274,19 +177,5 @@ void Enemy::Wander() {
 		break;
 	default:
 		break;
-	}
-}
-
-void Enemy::Attack() {
-	std::cout << "ATTACK" << std::endl;
-	if (uninterruptibleAnimation) return;
-	uninterruptibleAnimation = true;
-	if (facingRight)
-	{
-		row = 4;
-	}
-	else
-	{
-		row = 5;
 	}
 }

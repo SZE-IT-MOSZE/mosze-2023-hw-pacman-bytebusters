@@ -8,7 +8,7 @@
 
 
 struct levelData {
-	GameObjectManager::TileTypes wallType = GameObjectManager::concrete02;
+	GameObjectManager::WallTypes wallType = GameObjectManager::concrete02;
 	SDL_Texture* path = TextureManager::dirt;
 	int ape = 0;
 	int deer = 0;

@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Source Files\Enemy.cpp" />
+    <ClCompile Include="Game\Source Files\Enemy_Melee.cpp" />
+    <ClCompile Include="Game\Source Files\Enemy_NoAttack.cpp" />
+    <ClCompile Include="Game\Source Files\Enemy_Ranged.cpp" />
     <ClCompile Include="Game\Source Files\Game.cpp" />
     <ClCompile Include="Game\Source Files\GameObject.cpp" />
     <ClCompile Include="Game\Source Files\GameObjectManager.cpp" />
@@ -44,6 +47,9 @@
   <ItemGroup>
     <ClInclude Include="Game\Header Files\Defines.h" />
     <ClInclude Include="Game\Header Files\Enemy.h" />
+    <ClInclude Include="Game\Header Files\Enemy_Melee.h" />
+    <ClInclude Include="Game\Header Files\Enemy_NoAttack.h" />
+    <ClInclude Include="Game\Header Files\Enemy_Ranged.h" />
     <ClInclude Include="Game\Header Files\Game.h" />
     <ClInclude Include="Game\Header Files\GameObject.h" />
     <ClInclude Include="Game\Header Files\GameObjectManager.h" />

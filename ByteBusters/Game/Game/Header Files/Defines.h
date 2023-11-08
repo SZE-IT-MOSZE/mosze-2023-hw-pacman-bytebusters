@@ -10,6 +10,7 @@
 #define ROWS 15
 #define COLS 20
 #define MAPS 10
+
 //speed
 #define DIVIDEBYTHIS 32
 

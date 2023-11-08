@@ -183,7 +183,7 @@ void Player::Render() {
 	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
 }
 
-enum direction {
+enum ProjectileDirection {
 	up = 1,
 	down = 2,
 	right = 3,
