@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "Defines.h"
+
 
 SDL_Texture* TextureManager::Deerly;
 
@@ -30,13 +32,10 @@ SDL_Texture* TextureManager::projectile;
 
 SDL_Texture* TextureManager::err_;
 
-SDL_Texture* TextureManager::anim;
-
 SDL_Texture* TextureManager::LoadTexture(const char* texture) {
 	SDL_Surface* tempSurface = IMG_Load(texture);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, tempSurface);
 	SDL_FreeSurface(tempSurface);
-
 	return tex;
 }
 

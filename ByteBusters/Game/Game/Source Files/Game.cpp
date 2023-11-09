@@ -4,22 +4,24 @@
 #include "Defines.h"
 
 
-SDL_Renderer* Game::renderer;
+SDL_Renderer* Game::renderer = nullptr;
 
-Game::Game() {
-	height = 480; // default is smallest res
-	width = 640;
-	tileRes = 32;
-	isRunning = true;
-	isPlaying = false;
-	window = nullptr;
+SDL_Window* Game::window = nullptr; //!<Mutató az ablakra
 
-}
+Map* Game::map = nullptr; //!< Mutató a mapra
 
-Game::~Game() {
-	//looks too empty, youre forgetting things
-	delete map;
-}
+Player* Game::player = nullptr; //!< Mutató a playerre
+
+std::thread* Game::gameUpdates = nullptr; //!<Mutató a játék frissítésre
+
+std::set<char> Game::isPressed;
+
+int Game::height = 480;
+int Game::width = 640;
+int Game::tileRes = 32;
+
+bool Game::isRunning = true;
+bool Game::isPlaying = false;
 
 bool Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
 {	
@@ -58,7 +60,7 @@ bool Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 
 	GameObjectManager::SetTileSize(tileRes);
 
-	map = new Map(tileRes);
+	Map::Innit(tileRes);
 
 	return true;
 }
@@ -67,7 +69,7 @@ void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	map->DrawMap(); ///////////////////////////////////////////////// only for background now
+	Map::DrawMap(); ///////////////////////////////////////////////// only for background now
 
 	GameObjectManager::RenderAllGameObjects();
 
@@ -77,11 +79,13 @@ void Game::Render()
 void Game::Clean()
 {
 	GameObjectManager::DestroyAllGameObjects();
+	Map::Clean();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 	std::cout << "Game Cleaned" << std::endl;
 }
+
 SDL_Event event;
 void Game::HandleEvents()
 {
@@ -100,7 +104,7 @@ void Game::HandleEvents()
 
 	// May expand later to only trigger once when the key is pressed or released, how it should actually work, but for now it functions fine.
 	
-	// Might be my fault that this happenes, but I dont know why.
+	// Might be my fault that this happenes, but I dont know why. :/
 
 	*/
 
@@ -221,11 +225,11 @@ void Game::Start()
 
 	while(isRunning)
 	{
-		map->LoadMap(currentLvl);
+		Map::LoadMap(currentLvl);
 
 		isPlaying = true;
 										
-		gameUpdates = new std::thread(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
+		gameUpdates = new std::thread(&Game::UpdateThread); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 
 		while (isPlaying)
 		{
@@ -245,7 +249,9 @@ void Game::Start()
 			if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
 
 		}
+
 		gameUpdates->join(); // wait for update
+		delete gameUpdates;
 
 		GameObjectManager::DestroyAllExceptPlayer();
 		player->Reset();

@@ -20,7 +20,7 @@ protected:
 
 	SDL_Rect* destRect;
 	SDL_Rect* srcRect;
-	SDL_Rect* hitbox;
+	//SDL_Rect* hitbox;
 
 	SDL_Texture* objTexture;
 

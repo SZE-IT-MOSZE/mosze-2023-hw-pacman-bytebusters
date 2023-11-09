@@ -37,6 +37,4 @@ public:
 
 	//err
 	static SDL_Texture* err_;
-
-	static SDL_Texture* anim;
 };

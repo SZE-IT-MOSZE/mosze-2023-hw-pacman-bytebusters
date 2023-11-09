@@ -1,6 +1,6 @@
 #pragma once
 //DEBUG
-//#define DEBUGLEVEL
+#define DEBUGLEVEL
 
 //game
 #define _FPS 30

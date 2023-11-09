@@ -1,4 +1,6 @@
 #pragma once
+#include "Defines.h"
+
 #include "SDL.h"
 #include "Game.h"
 #include <iostream>
@@ -10,6 +12,8 @@
 #include <chrono>
 
 #include "generateMaze.h"
+
+#include "GameObjectManager.h"
 
 Game* game = nullptr;
 
@@ -177,18 +181,16 @@ int main(int argc, char* argv[]) {
 
 	generateMaze(); // call before game->Init
 
-	game = new Game();
-
-	if (!game->Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false))
+	if (!Game::Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false))
 	{
 		return 1;
 	}
 
-	game->Start();
+	Game::Start();
 
-	game->Clean();
+	Game::Clean();
 
-	delete game;
+	std::cout << _CrtDumpMemoryLeaks();
 
 	return 0;
 }

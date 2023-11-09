@@ -1,11 +1,21 @@
 #pragma once
+#include "Defines.h"
+
 #include "Map.h"
 #include "TextureManager.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 
+std::string Map::pathToFields;
+std::string Map::pathToTextures;
 
+SDL_Rect* Map::destRectDraw;
+
+SDL_Texture* Map::path;
+
+int Map::tileSize;
+int Map::map[ROWS][COLS] = {};
 
 struct levelData {
 	GameObjectManager::WallTypes wallType = GameObjectManager::concrete02;
@@ -21,6 +31,7 @@ struct levelData {
 };
 
 levelData lvlData[MAPS]; //index level.txt from 1, index lvlData from 0. it's a bit weird i admit.
+						//why is the struct and the variable declaration floating in the cpp file?
 
 void DefineLevelData() {
 	///////////// DEEP JUNGLE /////////////
@@ -72,13 +83,13 @@ void DefineLevelData() {
 #ifdef DEBUGLEVEL
 	lvlData[0].rat = 0;
 
-	lvlData[0].homeless = 1;
+	lvlData[0].soldier = 10;
 #endif // DEBUGLEVEL
 
 	
 }
 
-Map::Map(int size) {
+void Map::Innit(int size) {
 
 	tileSize = size;		//may not need to keep this in the future
 
@@ -93,7 +104,7 @@ Map::Map(int size) {
 
 }
 
-Map::~Map() {
+void Map::Clean() {
 	delete destRectDraw;
 }
 

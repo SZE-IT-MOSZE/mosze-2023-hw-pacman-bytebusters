@@ -1,4 +1,5 @@
 #pragma once
+#include "Defines.h"
 
 #include "GameObject.h"
 #include "TextureManager.h"
@@ -6,7 +7,7 @@
 #include "Game.h"
 #include <iostream>
 
-int GameObject::TileSize;
+int GameObject::TileSize = 0;
 
 GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
@@ -19,7 +20,7 @@ GameObject::GameObject(int x, int y) {
 	srcRect = new SDL_Rect;
 	srcRect->x = 0;
 	srcRect->y = 0;
-	srcRect->w = srcRect->h = 64; // omg why is this here it should be here
+	srcRect->w = srcRect->h = 64; // omg why is this here it shouldnt be here
 
 }
 

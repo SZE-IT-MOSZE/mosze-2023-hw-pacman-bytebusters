@@ -28,10 +28,6 @@ Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w,
 	xvel = 0;
 	yvel = 0;
 
-	srcRect = new SDL_Rect;
-	srcRect->x = 0;
-	srcRect->y = 0;
-
 	srcRect->w = srcRect->h = PLAYERSPRITESIZE;
 
 	uninterruptibleAnimation = false;

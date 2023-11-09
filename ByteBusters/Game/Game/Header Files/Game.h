@@ -13,45 +13,42 @@
 #include "Player.h"
 #include "Enemy.h"
 
-class Game {
+static class Game {
 
 public:
-	Game(); //!< Üres objektum létrehozása
-	~Game(); 
+	static bool Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
+	static void Render(); //!< A játék megjelenítése/ki renderelése
+	static void Start(); //!< A játék indítása
+	static void Clean(); //!< Az össze objektum törlése, sub system leállítása a játék bezárása elõtt
+	static void HandleEvents(); //!< Az események lekezelése
+	static void UpdateThread(); //!< Ezen a szállon fut a frissítés
 
-	bool Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
-	void Render(); //!< A játék megjelenítése/ki renderelése
-	void Start(); //!< A játék indítása
-	void Clean(); //!< Az össze objektum törlése, sub system leállítása a játék bezárása elõtt
-	void HandleEvents(); //!< Az események lekezelése
-	void UpdateThread(); //!< Ezen a szállon fut a frissítés
-
-	bool Running() { return isPlaying; }
-	int getHeight() { return height; }
-	int getWidth() { return width; }
+	static bool Running() { return isPlaying; }
+	static int getHeight() { return height; }
+	static int getWidth() { return width; }
 
 	static SDL_Renderer* renderer;
 
 private:
 
-	SDL_Window* window; //!<Mutató az ablakra
+	static SDL_Window* window; //!<Mutató az ablakra
 
-	Map* map; //!< Mutató a mapra
+	static Map* map; //!< Mutató a mapra
 
-	Player* player; //!< Mutató a playerre
+	static Player* player; //!< Mutató a playerre
 
-	std::thread* gameUpdates; //!<Mutató a játék frissítésre
+	static std::thread* gameUpdates; //!<Mutató a játék frissítésre
 
-	std::set<char> isPressed;
+	static std::set<char> isPressed;
 
-	int height; // default is smallest res
-	int width;
-	int tileRes;
+	static int height;
+	static int width;
+	static int tileRes;
 
-	bool isRunning;
-	bool isPlaying;
+	static bool isRunning;
+	static bool isPlaying;
 
-	bool quitGame = false; //this is a stupid quick fix. i just dont want to get distracted right now. will do this properly later.
+	//static bool quitGame = false; //this is a stupid quick fix. i just dont want to get distracted right now. will do this properly later.
 	
 
 };
