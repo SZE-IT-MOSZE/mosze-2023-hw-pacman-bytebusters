@@ -13,16 +13,20 @@
   * @brief Prints the content of a 2D grid to the standard output.
   *
   * Iterates over each row of the 2D vector, printing each value separated by a space.
-  * Each row is followed by a new line character, thus formatting the grid to resemble
+  * Each row is followed by a new line character except the last row, thus formatting the grid to resemble
   * its actual layout.
   *
   * @param grid A constant reference to a 2D vector of integers representing the grid to be printed.
   */
 void printGrid(const std::vector<std::vector<int>>& grid) {
-    for (const auto& row : grid) {
-        for (int value : row) {
+    for (size_t i = 0; i < grid.size(); ++i) {
+        for (int value : grid[i]) {
             std::cout << value << ' ';
         }
-        std::cout << '\n';
+        // Add a newline character except after the last row
+        if (i < grid.size() - 1) {
+            std::cout << '\n';
+        }
     }
 }
+
