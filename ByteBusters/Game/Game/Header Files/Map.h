@@ -18,6 +18,7 @@ public:
 	static void LoadMap(int lvl); //!< Betöltjük az adott pályát 	
 	static void SpawnGameObjects(int lvl);
 	static void DrawMap(); //!< Az adott pálya hátterének a kirajzolása
+	//static void ReloadMap();
 
 private:
 
@@ -31,5 +32,7 @@ private:
 	static int tileSize; //!< Cella mérete		
 	//init all to 0
 	static int map[ROWS][COLS]; //! < Itt tároljuk el az adott pályát	
+
+	static int lvl;
 
 };

@@ -7,7 +7,18 @@
 
 
 Enemy_NoAttack::Enemy_NoAttack(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p) : Enemy(x, y, s, t, w, pr, p) {
+	enemySheetData = new int[4][2]{
+		{3, 200},
+		{3, 200},
+		{5, 100},
+		{5, 100},
+	};
 
+	visionDistance = TileSize * 5;
+}
+
+Enemy_NoAttack::~Enemy_NoAttack() {
+	delete[] enemySheetData;
 }
 
 void Enemy_NoAttack::Update() {

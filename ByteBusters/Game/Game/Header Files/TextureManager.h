@@ -16,7 +16,6 @@ public:
 	//enemy
 	static SDL_Texture* Enemy_Ape;
 	static SDL_Texture* Enemy_Deer;
-	static SDL_Texture* Enemy_Guard;
 	static SDL_Texture* Enemy_Homeless;
 	static SDL_Texture* Enemy_Rat;
 	static SDL_Texture* Enemy_Soldier;

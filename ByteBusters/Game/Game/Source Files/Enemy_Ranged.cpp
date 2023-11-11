@@ -6,7 +6,22 @@
 #include <iostream>
 
 Enemy_Ranged::Enemy_Ranged(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p) : Enemy(x, y, s, t, w, pr, p) {
+	//delete[] enemySheetData; // memory previously allocated in parent constructor. delete first to avoid memory leak
+	//not any more. parents enemySheetData is nullptr
+	enemySheetData = new int[8][2]{
+		{3, 200},
+		{3, 200},
+		{5, 100},
+		{5, 100},
+		{3, 200},
+		{3, 200},
+		{3, 200},
+		{3, 200}
+	};
+}
 
+Enemy_Ranged::~Enemy_Ranged() {
+	delete[] enemySheetData;
 }
 
 void Enemy_Ranged::Update() {
@@ -47,6 +62,7 @@ void Enemy_Ranged::Update() {
 	{
 		if (CheckLineOfSight()) 
 		{
+			xvel = yvel = 0;
 			Attack();
 			return;
 		}
@@ -60,28 +76,28 @@ void Enemy_Ranged::Attack(){
 	uninterruptibleAnimation = true;
 
 	CalculatePositions();
-	if (playerPosX - posX <= TileSize)
+	if (abs(playerPosX - posX) <= TileSize/2)
 	{
-		if (posY > playerPosY) {
-			GameObjectManager::CreateGameObject(GameObjectManager::projectile, posX, posY, Projectile::up);
+		if (posY >= playerPosY) {
 			row = Attack_U;
+			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::up);
 		}
-		else
+		else if (posY < playerPosY)
 		{
-			GameObjectManager::CreateGameObject(GameObjectManager::projectile, posX, posY, Projectile::down);
 			row = Attack_D;
+			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::down);
 		}
 	}
-	else if (playerPosY - posY <= TileSize)
+	else if (abs(playerPosY - posY) <= TileSize)
 	{
-		if (posX > playerPosX) {
-			GameObjectManager::CreateGameObject(GameObjectManager::projectile, posX, posY, Projectile::right);
+		if (posX <= playerPosX) {
 			row = Attack_R;
+			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::right);
 		}
-		else
+		else if (posX > playerPosX)
 		{
-			GameObjectManager::CreateGameObject(GameObjectManager::projectile, posX, posY, Projectile::left);
 			row = Attack_L;
+			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::left);
 		}
 	} 
 	else

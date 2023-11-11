@@ -8,42 +8,55 @@
 
 
 
-Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w) : walls(w), GameObject(x, y)
+Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w) : walls(w), GameObject(x - (TileSize / PROJECTILE_SIZE_REDUCTION) / 2, y - (TileSize / PROJECTILE_SIZE_REDUCTION) / 2)
+//projectile spawns centered on given position
 {
+
+	//std::cout << "Projectile Created" << std::endl;
+
 	objTexture = t;
 
 	xvel = yvel = 0;
 	switch (d)
 	{
 	case up:
+		frame = up;
 		yvel = -1;
 		break;
 	case down:
+		frame = down;
 		yvel = 1;
 		break;
 	case left:
+		frame = left;
 		xvel = -1;
 		break;
 	case right:
+		frame = right;
 		xvel = 1;
 		break;
 	default:
+		frame = up;
 		break;
 	}
 
-	srcRect->w = srcRect->h = PROJECTILESPRITESIZE;
+	destRect->w = destRect->h = TileSize / PROJECTILE_SIZE_REDUCTION;
+	srcRect->w = srcRect->h = PROJECTILE_SPRITE_SIZE;
 
-	frameStart = SDL_GetTicks();	// start of render
-	frameDelay = 0;					// length between two renders of this object in milliseconds
-	i = 0;							// frame counter
+	//todo, destrect to actual position
 
-	speed = s * TileSize / DIVIDEBYTHIS;
+	speed = s * TileSize / DIVIDE_BY_THIS;
+	/*std::cout << "speed: " << speed << std::endl;
+	if (speed > PROJECTILESPRITESIZE)
+	{
+		std::cout << "TOO HIGH PROJECTILE SPEED!!!" << std::endl;
+	}*/
 
 }
 
 Projectile::~Projectile()
 {
-	std::cout << "Projectile destructor called" << std::endl;
+	//std::cout << "Projectile destructor called" << std::endl;
 }
 
 void Projectile::Update()
@@ -59,22 +72,7 @@ void Projectile::Update()
 	}
 }
 
-int sheetData[2] = { 2, 100 };
-
 void Projectile::Render() {
-	frameDelay = SDL_GetTicks() - frameStart;
-	if (frameDelay > sheetData[1]) // if time to display next frame
-	{
-		frameStart = SDL_GetTicks();
-		
-		i++; // increment frames
-		if (i >= sheetData[0]) // dont go past last frame
-		{
-			i = 0; // return to first frame
-		}
-
-		srcRect->x = i * PROJECTILESPRITESIZE; // finally, set the frame to display
-	}
-
+	srcRect->x = frame * PROJECTILE_SPRITE_SIZE; //set the frame to display
 	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
 }

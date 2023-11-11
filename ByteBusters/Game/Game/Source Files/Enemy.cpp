@@ -12,13 +12,17 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	player = p;
 	playerRect = player->getDestRect();
 
-	xvel = 0;
-	yvel = 0;
+	playerPosX = playerPosY = 0;
+	posX = posY = 0;
 
-	speed = s * TileSize / DIVIDEBYTHIS;
+	xvel = yvel = 0;
+	
 
-	visionDistance = TileSize * 5;
-	attackDistance = TileSize * 1;
+	speed = s * TileSize / DIVIDE_BY_THIS;
+
+	distance = 0;
+	visionDistance = 0;
+	attackDistance = 0;
 
 	uninterruptibleAnimation = false;
 
@@ -26,21 +30,54 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	frameDelay = 0;					// length between two renders of this object in milliseconds
 	frameCounter = 0;				// frame counter
 	row = 0;						// animation to display
+	facingRight = true;
+	
+	/*enemySheetData = new int[4][2]{
+		{3, 200},
+		{3, 200},
+		{5, 100},
+		{5, 100},
+	};*/
+
+	enemySheetData = nullptr;
 
 }
 
 Enemy::~Enemy() {
-	std::cout << "enemy destructor called" << std::endl;
+
+	//delete[] enemySheetData; initialized to nullptr instead of actual data. deleteion is in child classes that initialize it with data
+	//std::cout << "enemy destructor called" << std::endl;
 }
 
 void Enemy::Update() {
 
 }
 
+//bool printed = false;
 void Enemy::Render() {
 	frameDelay = SDL_GetTicks() - frameStart;
-	if (frameDelay > sheetData[row][1]) // if time to display next frame
+	if (frameDelay > enemySheetData[row][1]) // if time to display next frame
 	{
+
+		//if (true /*!printed*/)
+		//{
+		//	for (size_t i = 0; i < std::size(enemySheetData); i++)
+		//	{
+		//		for (size_t j = 0; j < std::size(enemySheetData[i]); j++)
+		//		{
+		//			std::cout << "[" << enemySheetData[i][j] << "]";
+		//		}
+		//		std::cout << std::endl;
+		//	}
+		//	std::cout << std::endl;
+		//	printed = true;
+		//}
+
+		/*std::cout << "ROW:    " << row << std::endl;
+		std::cout << "FRAMES: " << enemySheetData[row][0] << std::endl;
+		std::cout << "DELAY:  " << enemySheetData[row][1] << std::endl;*/
+
+
 		frameStart = SDL_GetTicks();
 
 		if (!uninterruptibleAnimation) // if NOT playing Shoot or Hit
@@ -79,21 +116,21 @@ void Enemy::Render() {
 			}
 		}
 
-		if (srcRect->y != row * ENEMYSPRITESIZE) { // if animation change happened
+		if (srcRect->y != row * ENEMY_SPRITE_SIZE) { // if animation change happened
 			frameCounter = 0;	// reset counter
-			srcRect->y = row * ENEMYSPRITESIZE; // set new animation
+			srcRect->y = row * ENEMY_SPRITE_SIZE; // set new animation
 		}
 		else // if not
 		{
 			frameCounter++; // increment frames
-			if (frameCounter >= sheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
+			if (frameCounter >= enemySheetData[row][0]) // dont go past last frame (only need to check if incremented frames. everything has a first [0] frame)
 			{
 				frameCounter = 0; // return to first frame
 				uninterruptibleAnimation = false; // the animation has finished
 			}
 
 		}
-		srcRect->x = frameCounter * ENEMYSPRITESIZE; // finally, set the frame to display
+		srcRect->x = frameCounter * ENEMY_SPRITE_SIZE; // finally, set the frame to display
 	}
 
 	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);

@@ -6,16 +6,16 @@
 class Projectile : public GameObject
 {
 public:
-	Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w);
+	Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w); //projectile spawns centered on given position
 	~Projectile();
 	void Update();
 	void Render();
 
 	enum ProjectileDirection {
-		up = 1,
-		down = 2,
-		right = 3,
-		left = 4
+		up = 3,
+		down = 1,
+		right = 0,
+		left = 2
 	};
 
 private:
@@ -23,7 +23,5 @@ private:
 	int speed;
 	std::forward_list<Wall*>& walls;
 
-	Uint32 frameStart;	// start of render
-	int frameDelay;					// length between two renders of this object in milliseconds
-	int i;							// frame counter
+	int frame;	// frame
 };

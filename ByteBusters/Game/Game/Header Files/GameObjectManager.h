@@ -24,7 +24,6 @@ public:
 	{
 		ape,
 		deer,
-		guard,
 		homeless,
 		joseph,
 		rat,
@@ -43,7 +42,8 @@ public:
 	};
 	enum ProjectileTypes // i will work on this mess later
 	{
-		projectile
+		playerProjectile,
+		enemyProjectile
 	};
 
 	static Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pointer vissza adása
@@ -59,7 +59,9 @@ public:
 	static void DestroyAllGameObjects(); //!< Az összes objektum törlése
 	static void DestroyAllExceptPlayer(); //!< Az össze objektum törlése kivétel a játékos
 
+	//static void ResetPlayer();
 
+	static void CheckEnemyHit(int x, int y, int range, bool r);
 
 	//static void FlagForDelete(Player* p); why did i write this here (i know i just dont want to admit)
 	//static void FlagForDelete(Enemy* f);		
@@ -78,6 +80,7 @@ private:
 	//static int tileSize; // we could save this, but why
 
 	static Player* _player; //!< a player objetum mutatója
+	static SDL_Rect* playerRect;
 
 	//static std::forward_list<Enemy*> enemies; //!< Enemy-k listája
 
@@ -87,7 +90,8 @@ private:
 
 	static std::forward_list<Wall*> walls; //!< Falak listája
 	static std::forward_list<Item*> items; //!< Itemek listája
-	static std::forward_list<Projectile*> projectiles;
+	static std::forward_list<Projectile*> playerProjectiles;
+	static std::forward_list<Projectile*> enemyProjectiles;
 
 	//static std::set<Enemy_Melee*> flaggedForDeleteEnemies;
 	static std::set<Enemy_Melee*> flaggedForDeleteMeleeEnemies;

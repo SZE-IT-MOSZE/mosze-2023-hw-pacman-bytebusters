@@ -23,6 +23,10 @@ int Game::tileRes = 32;
 bool Game::isRunning = true;
 bool Game::isPlaying = false;
 
+void Game::SetPlaying(bool p) {
+	isPlaying = false;
+}
+
 bool Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
 {	
 	height = h;
@@ -219,7 +223,7 @@ void Game::Start()
 	int frameTime;
 
 	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
-	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes * PLAYERSPAWNX, tileRes * PLAYERSPAWNY); //only need pointer to call SetVelX/Y at this time
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
 
 	int currentLvl = 1;
 
@@ -242,7 +246,7 @@ void Game::Start()
 			{
 				isPlaying = false; // stop both update and render
 				SDL_Delay(2000); // some delay between two maps
-
+				currentLvl++;
 			}
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			frameTime = SDL_GetTicks() - frameStart;
@@ -250,12 +254,11 @@ void Game::Start()
 
 		}
 
-		gameUpdates->join(); // wait for update
+		gameUpdates->join(); // wait for update if it didnt finish already
 		delete gameUpdates;
 
 		GameObjectManager::DestroyAllExceptPlayer();
 		player->Reset();
-		currentLvl++;
 		if (currentLvl > MAPS) isRunning = false;
 	}
 }

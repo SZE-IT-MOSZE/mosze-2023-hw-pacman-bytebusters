@@ -6,7 +6,23 @@
 #include <iostream>
 
 Enemy_Melee::Enemy_Melee(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p) : Enemy(x, y, s, t, w, pr, p) {
+	//delete[] enemySheetData; // memory previously allocated in parent constructor. delete first to avoid memory leak
+	//not any more. parents enemySheetData is nullptr
+	enemySheetData = new int[6][2]{
+		{3, 200},
+		{3, 200},
+		{5, 100},
+		{5, 100},
+		{3, 200},
+		{3, 200},
+	};
 
+	visionDistance = TileSize * 5;
+	attackDistance = TileSize;
+}
+
+Enemy_Melee::~Enemy_Melee() {
+	delete[] enemySheetData;
 }
 
 void Enemy_Melee::Update() {
@@ -44,6 +60,8 @@ void Enemy_Melee::Update() {
 	CalculatePositions(); // CALL FIRST !!!!!!!!!
 	distance = CalculateDistance();
 
+	
+
 	if (distance > visionDistance) // if too far
 	{
 		Wander();
@@ -63,7 +81,7 @@ void Enemy_Melee::Update() {
 }
 
 void Enemy_Melee::Attack() {
-	std::cout << "ATTACK" << std::endl;
+	//std::cout << "ATTACK" << std::endl;
 	if (uninterruptibleAnimation) return;
 	uninterruptibleAnimation = true;
 	if (facingRight)
@@ -74,6 +92,7 @@ void Enemy_Melee::Attack() {
 	{
 		row = Attack_L;
 	}
+	player->DamagePlayer();
 }
 
 void Enemy_Melee::Chase() {

@@ -11,7 +11,6 @@ SDL_Texture* TextureManager::Deerly;
 
 SDL_Texture* TextureManager::Enemy_Ape;
 SDL_Texture* TextureManager::Enemy_Deer;
-SDL_Texture* TextureManager::Enemy_Guard;
 SDL_Texture* TextureManager::Enemy_Homeless;
 SDL_Texture* TextureManager::Enemy_Rat;
 SDL_Texture* TextureManager::Enemy_Soldier;
@@ -45,14 +44,13 @@ void TextureManager::Draw(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* destRec
 
 void TextureManager::LoadAllTextures() {
 	
-	TextureManager::Deerly			= LoadTexture("Assets/Deerly_ultimate_sprite_sheet.png");
+	TextureManager::Deerly			= LoadTexture("Assets/Deerly_vegleges_sprite_sheet.png");
 	
 	TextureManager::Enemy_Ape		= LoadTexture("Assets/Enemy_Ape_Sprite_sheet.png");
 	TextureManager::Enemy_Deer		= LoadTexture("Assets/Enemy_Deer_Sprite_sheet.png");
-	TextureManager::Enemy_Guard		= LoadTexture("Assets/Enemy_Guard.png");
 	TextureManager::Enemy_Homeless	= LoadTexture("Assets/Enemy_Homeless_Sprite_sheet.png");
 	TextureManager::Enemy_Rat		= LoadTexture("Assets/Enemy_Rat_Sprite_sheet.png");
-	TextureManager::Enemy_Soldier	= LoadTexture("Assets/Enemy_Soldier.png");
+	TextureManager::Enemy_Soldier	= LoadTexture("Assets/Enemy_Mercenary_sprite_sheet.png");
 									
 	TextureManager::concrete01		= LoadTexture("Assets/concrete01.png");
 	TextureManager::concrete02		= LoadTexture("Assets/concrete02.png");
@@ -66,7 +64,7 @@ void TextureManager::LoadAllTextures() {
 									
 	TextureManager::paper			= LoadTexture("Assets/Burned_diary_page.png");
 
-	TextureManager::projectile		= LoadTexture("Assets/projectile.png");
+	TextureManager::projectile		= LoadTexture("Assets/Projectile_sprite_sheet.png");
 
 	TextureManager::err_			= LoadTexture("Assets/err_.png");
 }

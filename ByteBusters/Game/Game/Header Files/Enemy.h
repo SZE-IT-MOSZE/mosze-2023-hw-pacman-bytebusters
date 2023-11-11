@@ -37,20 +37,16 @@ protected:
 
 	bool uninterruptibleAnimation = false; 
 
-	Uint32 frameStart = SDL_GetTicks();	// start of render
-	int frameDelay = 0;		// length between two renders of this object in milliseconds
-	int frameCounter = 0;	// frame counter
-	int row = 0;			// animation to display
-	bool facingRight = true;
+	Uint32 frameStart;	// start of render
+	int frameDelay;		// length between two renders of this object in milliseconds
+	int frameCounter;	// frame counter
+	int row;			// animation to display
+	bool facingRight;
+
+	int(*enemySheetData)[2];
 
 private:
 
-	int sheetData[4][2]{
-		{3, 200},
-		{3, 200},
-		{5, 100},
-		{5, 100},
-	};
 	enum anim {
 		Idle_R = 0,
 		Idle_L = 1,

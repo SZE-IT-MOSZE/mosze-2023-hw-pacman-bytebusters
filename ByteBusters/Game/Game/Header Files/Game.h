@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
-static class Game {
+class Game {
 
 public:
 	static bool Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
@@ -26,6 +26,8 @@ public:
 	static bool Running() { return isPlaying; }
 	static int getHeight() { return height; }
 	static int getWidth() { return width; }
+
+	static void SetPlaying(bool p);
 
 	static SDL_Renderer* renderer;
 
