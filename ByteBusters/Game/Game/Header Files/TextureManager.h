@@ -1,9 +1,12 @@
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
+#include <limits>
+
 
 class TextureManager {
 public:
+
 	static SDL_Texture* LoadTexture(const char* fileName);
 	static void LoadAllTextures();
 	static void Draw(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* destRect);
@@ -13,7 +16,6 @@ public:
 	//enemy
 	static SDL_Texture* Enemy_Ape;
 	static SDL_Texture* Enemy_Deer;
-	static SDL_Texture* Enemy_Guard;
 	static SDL_Texture* Enemy_Homeless;
 	static SDL_Texture* Enemy_Rat;
 	static SDL_Texture* Enemy_Soldier;
@@ -29,6 +31,8 @@ public:
 	static SDL_Texture* Yusri;
 
 	static SDL_Texture* paper;
+
+	static SDL_Texture* projectile;
 
 	//err
 	static SDL_Texture* err_;

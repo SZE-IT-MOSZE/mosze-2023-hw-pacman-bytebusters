@@ -1,17 +1,29 @@
+#pragma once
+#include "Defines.h"
+
 #include "Map.h"
 #include "TextureManager.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 
-#define MAPS 10
+std::string Map::pathToFields;
+std::string Map::pathToTextures;
+
+SDL_Rect* Map::destRectDraw;
+
+SDL_Texture* Map::path;
+
+int Map::tileSize;
+int Map::map[ROWS][COLS] = {};
+
+int Map::lvl;
 
 struct levelData {
-	GameObjectManager::TileTypes wallType = GameObjectManager::concrete02;
+	GameObjectManager::WallTypes wallType = GameObjectManager::concrete02;
 	SDL_Texture* path = TextureManager::dirt;
 	int ape = 0;
 	int deer = 0;
-	int guard = 0;
 	int homeless = 0;
 	int joseph = 0;
 	int rat = 0;
@@ -20,6 +32,7 @@ struct levelData {
 };
 
 levelData lvlData[MAPS]; //index level.txt from 1, index lvlData from 0. it's a bit weird i admit.
+						//why is the struct and the variable declaration floating in the cpp file?
 
 void DefineLevelData() {
 	///////////// DEEP JUNGLE /////////////
@@ -64,13 +77,20 @@ void DefineLevelData() {
 	///////////// IN THE LAB /////////////
 	lvlData[9].wallType = GameObjectManager::concrete02;
 	lvlData[9].path = TextureManager::concrete01;
-	lvlData[9].guard = 10;
+	lvlData[9].soldier = 10;
 	lvlData[9].yusri = 1;
 	lvlData[9].joseph = 1;
+
+#ifdef DEBUGLEVEL
+	lvlData[0].rat = 1;
+
+	lvlData[0].soldier = 1;
+#endif // DEBUGLEVEL
+
 	
 }
 
-Map::Map(int size) {
+void Map::Innit(int size) {
 
 	tileSize = size;		//may not need to keep this in the future
 
@@ -85,11 +105,13 @@ Map::Map(int size) {
 
 }
 
-Map::~Map() {
+void Map::Clean() {
 	delete destRectDraw;
 }
 
-void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
+void Map::LoadMap(int l) { // could be separated into 2 individual functions
+
+	lvl = l;
 
 	path = lvlData[lvl-1].path;
 
@@ -123,12 +145,12 @@ void Map::LoadMap(int lvl) { // could be separated into 2 individual functions
 		try {
 			map[rowCnt][colCnt] = std::stoi(cell);
 		}
-		catch (std::invalid_argument& e) {
+		catch (std::invalid_argument& /*e*/) {
 			// if no conversion could be performed
 			std::cout << "invalid_argument in: Row: " << rowCnt << " Col: " << colCnt<< std::endl;
 			map[rowCnt][colCnt] = -1;
 		}
-		catch (std::out_of_range& e) {
+		catch (std::out_of_range& /*e*/) {
 			// if the converted value would fall out of the range
 			std::cout << "out_of_range in: Row: " << rowCnt << " Col: " << colCnt << std::endl;
 			map[rowCnt][colCnt] = -1;
@@ -184,10 +206,6 @@ void Map::SpawnGameObjects(int lvl) {
 	{
 		GameObjectManager::CreateGameObject(GameObjectManager::deer, tileSize, tileSize);
 	}
-	for (size_t i = 0; i < lvlData[lvl].guard; i++)
-	{
-		GameObjectManager::CreateGameObject(GameObjectManager::guard, tileSize, tileSize);
-	}
 	for (size_t i = 0; i < lvlData[lvl].homeless; i++)
 	{
 		GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileSize, tileSize);
@@ -230,3 +248,12 @@ void Map::DrawMap() {
 		}
 	}
 }
+
+//void Map::ReloadMap() {
+//	if (!(lvl >= 1 && lvl <= 10)) {
+//		lvl = 1;
+//	}
+//	GameObjectManager::DestroyAllExceptPlayer();
+//	GameObjectManager::ResetPlayer();
+//	Map::SpawnGameObjects(lvl - 1);
+//}
