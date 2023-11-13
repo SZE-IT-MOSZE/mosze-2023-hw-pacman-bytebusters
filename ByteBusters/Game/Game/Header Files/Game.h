@@ -48,9 +48,6 @@ private:
 	static int tileRes;
 
 	static bool isRunning;
-	static bool isPlaying;
-
-	//static bool quitGame = false; //this is a stupid quick fix. i just dont want to get distracted right now. will do this properly later.
-	
+	static bool isPlaying;	
 
 };

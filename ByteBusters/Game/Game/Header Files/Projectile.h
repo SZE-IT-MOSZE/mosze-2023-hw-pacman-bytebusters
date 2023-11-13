@@ -23,5 +23,5 @@ private:
 	int speed;
 	std::forward_list<Wall*>& walls;
 
-	int frame;	// frame
+	int frame;
 };

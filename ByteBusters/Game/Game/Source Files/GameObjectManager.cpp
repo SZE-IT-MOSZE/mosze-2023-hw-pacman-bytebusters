@@ -4,9 +4,6 @@
 #include <iostream>
 #include "Defines.h"
 
-
-//int GameObjectManager::tileSize;
-
 Player* GameObjectManager::_player;
 SDL_Rect* GameObjectManager::playerRect;
 
@@ -37,7 +34,7 @@ bool GameObjectManager::AreAllItemsPickedUp() {
 	return items.empty();
 }
 
-Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) { //enemyProjectiles
+Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
 	_player = new Player(x, y, PLAYER_SPEED, TextureManager::Deerly, walls, items, enemyProjectiles);
 	playerRect = _player->GetDestRect();
 	return _player;
@@ -120,7 +117,6 @@ void GameObjectManager::RenderAllGameObjects() {
 	//	framteStart = SDL_GetTicks();
 	//}
 	
-	
 	for (Enemy_Melee* enemy : meleeEnemies)
 	{
 		enemy->Render();
@@ -166,7 +162,7 @@ void GameObjectManager::UpdateAllGameObjects() {
 	{
 		enemy->Update();
 	}
-	/*for (Wall* wall : walls) //why would i do this?
+	/*for (Wall* wall : walls) //walls dont have to be updated on current version
 	{
 		wall->Update();
 	}*/
@@ -255,8 +251,11 @@ void GameObjectManager::FlagForDelete(Projectile* f) {
 	flaggedForDeleteProjectiles.insert(f);
 }
 
-void GameObjectManager::DeleteFlagged() { // uncomment if implemented (for items a lighter built in version is working currently in Player.cpp)
+void GameObjectManager::DeleteFlagged() { 
+	// for items a lighter built in version is working currently in Player.cpp
+	// for the rest we need this to avoid invalidating the iterator while looping above the list
 
+	
 	for (Enemy_Melee* f : flaggedForDeleteMeleeEnemies)
 	{
 		meleeEnemies.remove(f);
@@ -278,14 +277,14 @@ void GameObjectManager::DeleteFlagged() { // uncomment if implemented (for items
 	}
 	flaggedForDeleteNoAttackEnemies.clear();
 
-	/*for (Wall* f : flaggedForDeleteWalls) // why would we do this? i know. but im not telling.
+	/*for (Wall* f : flaggedForDeleteWalls)
 	{
 		walls.remove(f);
 		delete f;
 	}
 	flaggedForDeleteWalls.clear();*/
 
-	/*for (Item* f : flaggedForDeleteItems)
+	/*for (Item* f : flaggedForDeleteItems) 
 	{
 		items.remove(f);
 		delete f;
@@ -302,7 +301,8 @@ void GameObjectManager::DeleteFlagged() { // uncomment if implemented (for items
 
 }
 
-void GameObjectManager::CheckEnemyHit(int x, int y, int range, bool right) { // okay, this iiiiis a bit bad
+//implement hit=true if hitboxes overlap
+void GameObjectManager::CheckEnemyHit(int x, int y, int range, bool right) { // this had to be impemented here to avoid circular references in headers
 	SDL_Rect* enemyRect;
 	int distance;
 	for (Enemy_Melee* enemy : meleeEnemies)
@@ -354,7 +354,3 @@ void GameObjectManager::CheckEnemyHit(int x, int y, int range, bool right) { // 
 		}
 	}
 }
-
-//void GameObjectManager::ResetPlayer() {
-//	_player->Reset();
-//}

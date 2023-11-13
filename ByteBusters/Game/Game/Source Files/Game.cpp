@@ -60,8 +60,9 @@ bool Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, boo
 		return false;
 	}
 
-	TextureManager::LoadAllTextures(); /*/////////////////////////////////*/
+	TextureManager::LoadAllTextures();
 
+	//multiple variables store the tile resolution, check later
 	GameObjectManager::SetTileSize(tileRes);
 
 	Map::Innit(tileRes);
@@ -73,7 +74,7 @@ void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	Map::DrawMap(); ///////////////////////////////////////////////// only for background now
+	Map::DrawMap(); // only for background
 
 	GameObjectManager::RenderAllGameObjects();
 
@@ -112,7 +113,6 @@ void Game::HandleEvents()
 
 	*/
 
-	
 	SDL_PollEvent(&event);
 	switch (event.type)
 	{
@@ -222,8 +222,8 @@ void Game::Start()
 	Uint32 frameStart;
 	int frameTime;
 
-	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
-	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
+	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list and get filled in later
+	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y);
 
 	int currentLvl = 1;
 
@@ -233,7 +233,7 @@ void Game::Start()
 
 		isPlaying = true;
 										
-		gameUpdates = new std::thread(&Game::UpdateThread); // pointer to non-static member function (Game:: necessary), pointer to object (this)
+		gameUpdates = new std::thread(&Game::UpdateThread); // pointer to static member function (Game:: necessary)
 
 		while (isPlaying)
 		{

@@ -32,7 +32,6 @@ struct levelData {
 };
 
 levelData lvlData[MAPS]; //index level.txt from 1, index lvlData from 0. it's a bit weird i admit.
-						//why is the struct and the variable declaration floating in the cpp file?
 
 void DefineLevelData() {
 	///////////// DEEP JUNGLE /////////////
@@ -248,12 +247,3 @@ void Map::DrawMap() {
 		}
 	}
 }
-
-//void Map::ReloadMap() {
-//	if (!(lvl >= 1 && lvl <= 10)) {
-//		lvl = 1;
-//	}
-//	GameObjectManager::DestroyAllExceptPlayer();
-//	GameObjectManager::ResetPlayer();
-//	Map::SpawnGameObjects(lvl - 1);
-//}

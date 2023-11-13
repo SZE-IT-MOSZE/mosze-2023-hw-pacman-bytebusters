@@ -8,20 +8,6 @@
 #include "GameObjectManager.h"
 #include "Defines.h"
 
-
-
-/*
-Idle_R 5 200
-Idle_L 5 200
-Move_R 3 200
-Move_L 3 200
-Hit_R 7 100
-Hit_L 7 100
-Shoot_R 5 100
-Shoot_L 5 100
-
-*/
-
 Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i, std::forward_list<Projectile*>& p) : walls(w), items(i), projectiles(p), GameObject(x, y) {
 	objTexture = t;
 
@@ -50,8 +36,6 @@ Player::~Player() {
 
 
 void Player::Update() {
-
-	//place enemy collision/hit check above here
 
 	for (Projectile* projectile : projectiles)
 	{
@@ -293,6 +277,3 @@ void Player::Reset() {
 	destRect->y = TileSize * PLAYER_SPAWN_Y;
 	hp = 10;
 }
-
-
-

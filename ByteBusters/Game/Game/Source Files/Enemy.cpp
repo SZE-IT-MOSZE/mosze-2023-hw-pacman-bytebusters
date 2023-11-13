@@ -31,13 +31,6 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	frameCounter = 0;				// frame counter
 	row = 0;						// animation to display
 	facingRight = true;
-	
-	/*enemySheetData = new int[4][2]{
-		{3, 200},
-		{3, 200},
-		{5, 100},
-		{5, 100},
-	};*/
 
 	enemySheetData = nullptr;
 
@@ -59,6 +52,7 @@ void Enemy::Render() {
 	if (frameDelay > enemySheetData[row][1]) // if time to display next frame
 	{
 
+		// was checking if recieved the right sheet datas
 		//if (true /*!printed*/)
 		//{
 		//	for (size_t i = 0; i < std::size(enemySheetData); i++)
@@ -73,9 +67,9 @@ void Enemy::Render() {
 		//	printed = true;
 		//}
 
-		/*std::cout << "ROW:    " << row << std::endl;
-		std::cout << "FRAMES: " << enemySheetData[row][0] << std::endl;
-		std::cout << "DELAY:  " << enemySheetData[row][1] << std::endl;*/
+		//std::cout << "ROW:    " << row << std::endl;
+		//std::cout << "FRAMES: " << enemySheetData[row][0] << std::endl;
+		//std::cout << "DELAY:  " << enemySheetData[row][1] << std::endl;
 
 
 		frameStart = SDL_GetTicks();
@@ -172,7 +166,6 @@ void Enemy::Wander() {
 	}
 
 	rnd = rand() % (2 * _UPS);
-	//std::cout << rnd << std::endl;
 	int rndForVel = rand() % 9;
 	switch (rndForVel)
 	{

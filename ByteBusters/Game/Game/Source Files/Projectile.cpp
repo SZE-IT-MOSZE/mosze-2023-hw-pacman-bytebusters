@@ -12,8 +12,6 @@ Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_
 //projectile spawns centered on given position
 {
 
-	//std::cout << "Projectile Created" << std::endl;
-
 	objTexture = t;
 
 	xvel = yvel = 0;
@@ -43,9 +41,8 @@ Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_
 	destRect->w = destRect->h = TileSize / PROJECTILE_SIZE_REDUCTION;
 	srcRect->w = srcRect->h = PROJECTILE_SPRITE_SIZE;
 
-	//todo, destrect to actual position
-
 	speed = s * TileSize / DIVIDE_BY_THIS;
+
 	/*std::cout << "speed: " << speed << std::endl;
 	if (speed > PROJECTILESPRITESIZE)
 	{

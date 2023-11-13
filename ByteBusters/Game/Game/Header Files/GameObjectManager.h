@@ -40,7 +40,7 @@ public:
 	{
 		item
 	};
-	enum ProjectileTypes // i will work on this mess later
+	enum ProjectileTypes
 	{
 		playerProjectile,
 		enemyProjectile
@@ -63,40 +63,40 @@ public:
 
 	static void CheckEnemyHit(int x, int y, int range, bool r);
 
-	//static void FlagForDelete(Player* p); why did i write this here (i know i just dont want to admit)
+
+	//this FlagForDelete stuff is kinda bad, will experiment with other (safe!) solutions later
+	//static void FlagForDelete(Player* p);
 	//static void FlagForDelete(Enemy* f);		
 	static void FlagForDelete(Enemy_Melee* f);
 	static void FlagForDelete(Enemy_Ranged* f);
 	static void FlagForDelete(Enemy_NoAttack* f);
-												//my head hurts
-	static void FlagForDelete(Wall* f);			//really. im in phisical pain (idk how you spell physichal)
-	static void FlagForDelete(Item* f);			//im off to play WOT
-	static void FlagForDelete(Projectile* f);	//will continue tomorrow
+											
+	static void FlagForDelete(Wall* f);		
+	static void FlagForDelete(Item* f);		
+	static void FlagForDelete(Projectile* f);
 
 	static bool AreAllItemsPickedUp(); //!< Annak az ellenõrzése, hogy az össze itemet fel vette-e a játékosunk
 	
 private:
 
-	//static int tileSize; // we could save this, but why
-
 	static Player* _player; //!< a player objetum mutatója
 	static SDL_Rect* playerRect;
 
-	//static std::forward_list<Enemy*> enemies; //!< Enemy-k listája
+	//static std::forward_list<Enemy*> enemies; 
 
-	static std::forward_list<Enemy_Melee*> meleeEnemies;
-	static std::forward_list<Enemy_Ranged*> rangedEnemies; 
-	static std::forward_list<Enemy_NoAttack*> noAttackEnemies; 
+	static std::forward_list<Enemy_Melee*> meleeEnemies;		//!< Közelharcra képes Enemy-k listája
+	static std::forward_list<Enemy_Ranged*> rangedEnemies;		//!< L?vegyveres Enemy-k listája
+	static std::forward_list<Enemy_NoAttack*> noAttackEnemies;	//!< Olyan Enemy-k listája, akik nem támadnak (story szempontjából fontosak)
 
 	static std::forward_list<Wall*> walls; //!< Falak listája
 	static std::forward_list<Item*> items; //!< Itemek listája
-	static std::forward_list<Projectile*> playerProjectiles;
-	static std::forward_list<Projectile*> enemyProjectiles;
+	static std::forward_list<Projectile*> playerProjectiles;	//!< Játékos lövedékeinek listája
+	static std::forward_list<Projectile*> enemyProjectiles;		//!< Ellenségek lövedékeinek listája
 
 	//static std::set<Enemy_Melee*> flaggedForDeleteEnemies;
-	static std::set<Enemy_Melee*> flaggedForDeleteMeleeEnemies;
-	static std::set<Enemy_Ranged*> flaggedForDeleteRangedEnemies;
-	static std::set<Enemy_NoAttack*> flaggedForDeleteNoAttackEnemies;  // used <set> because if a collision happens with a wall and an enemy at the same time it would get inserted twice and that would result in the code trying to delete it twice. which is bad.
+	static std::set<Enemy_Melee*> flaggedForDeleteMeleeEnemies;			// used <set> because if for example a projectile collides with a wall
+	static std::set<Enemy_Ranged*> flaggedForDeleteRangedEnemies;		// and an enemy at the same time it would get inserted twice and that
+	static std::set<Enemy_NoAttack*> flaggedForDeleteNoAttackEnemies;	// would result in the code trying to delete it twice. which is bad.
 	
 	static std::set<Wall*> flaggedForDeleteWalls;
 	static std::set<Item*> flaggedForDeleteItems;

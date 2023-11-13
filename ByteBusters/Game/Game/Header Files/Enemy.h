@@ -67,7 +67,7 @@ base enemy - should include wander
 		>shoot (attack but different)
 	>Enemy_NoAttack
 		>wander
-		>runaway
+		>runaway (chase but different)
 
 
 */
