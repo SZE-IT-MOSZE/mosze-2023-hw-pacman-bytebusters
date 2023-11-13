@@ -11,8 +11,8 @@ public:
 	Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i, std::forward_list<Projectile*>& p); //!< Konstruktor ami azt mutatja, hogy a player tud a falakról és az itemekrõl
 	~Player();
 
-	void Update();//!< Minden framen hívjuk ez tartalmazza a ütközés érzékelést és a játékos pozíciójána frissítését
-	void Render();//!< Csak a játékos renderelése és megjelenítése
+	void Update() override;//!< Minden framen hívjuk ez tartalmazza a ütközés érzékelést és a játékos pozíciójána frissítését
+	void Render() override;//!< Csak a játékos renderelése és megjelenítése
 
 	void SetVelX(int v); //!< A player sebessége az X tengelyen mozogva
 	void SetVelY(int v); //!< A player sebessége az Y tengelyen mozogva
@@ -22,8 +22,6 @@ public:
 
 	void DamagePlayer();
 	void Reset(); //!< A player alap helyzetbe állítása egy új pálya betöltésekor
-
-	SDL_Rect* getDestRect() { return destRect; } //!< player hitboxának a gettere
 
 	// player could have getters for posX and posY since it has to calculate it anyways
 
@@ -45,7 +43,5 @@ private:
 	int frameDelay;		// length between two renders of this object in milliseconds
 	int frameCounter;	// frame counter
 	int row;			// animation to display
-
-
 
 };

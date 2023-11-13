@@ -7,7 +7,7 @@
 #include "Game.h"
 #include <iostream>
 
-int GameObject::TileSize = 0;
+int GameObject::TileSize = 0; // what is the default tilesize, hmm?
 
 GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
@@ -27,9 +27,6 @@ GameObject::GameObject(int x, int y) {
 GameObject::~GameObject() {
 	delete destRect;
 	delete srcRect;
-}
-
-void GameObject::Update() {
 }
 
 void GameObject::Render() {

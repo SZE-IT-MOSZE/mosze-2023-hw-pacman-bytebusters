@@ -113,7 +113,7 @@ void Game::HandleEvents()
 	*/
 
 	
-	SDL_PollEvent(&event);
+	SDL_PollEvent(&event); // <- put this in a while loops condition
 	switch (event.type)
 	{
 	case SDL_KEYDOWN:

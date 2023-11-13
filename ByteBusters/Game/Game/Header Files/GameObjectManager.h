@@ -59,17 +59,11 @@ public:
 	static void DestroyAllGameObjects(); //!< Az összes objektum törlése
 	static void DestroyAllExceptPlayer(); //!< Az össze objektum törlése kivétel a játékos
 
-	//static void ResetPlayer();
-
 	static void CheckEnemyHit(int x, int y, int range, bool r);
 
-	//static void FlagForDelete(Player* p); why did i write this here (i know i just dont want to admit)
-	//static void FlagForDelete(Enemy* f);		
-	static void FlagForDelete(Enemy_Melee* f);
-	static void FlagForDelete(Enemy_Ranged* f);
-	static void FlagForDelete(Enemy_NoAttack* f);
-												//my head hurts
-	static void FlagForDelete(Wall* f);			//really. im in phisical pain (idk how you spell physichal)
+	static void FlagForDelete(Enemy* f);		
+													
+	static void FlagForDelete(Wall* f);			////my head hurts. really. im in phisical pain (idk how you spell physichal)
 	static void FlagForDelete(Item* f);			//im off to play WOT
 	static void FlagForDelete(Projectile* f);	//will continue tomorrow
 
@@ -82,21 +76,14 @@ private:
 	static Player* _player; //!< a player objetum mutatója
 	static SDL_Rect* playerRect;
 
-	//static std::forward_list<Enemy*> enemies; //!< Enemy-k listája
-
-	static std::forward_list<Enemy_Melee*> meleeEnemies;
-	static std::forward_list<Enemy_Ranged*> rangedEnemies; 
-	static std::forward_list<Enemy_NoAttack*> noAttackEnemies; 
+	static std::forward_list<Enemy*> enemies; //!< Enemy-k listája
 
 	static std::forward_list<Wall*> walls; //!< Falak listája
 	static std::forward_list<Item*> items; //!< Itemek listája
 	static std::forward_list<Projectile*> playerProjectiles;
 	static std::forward_list<Projectile*> enemyProjectiles;
 
-	//static std::set<Enemy_Melee*> flaggedForDeleteEnemies;
-	static std::set<Enemy_Melee*> flaggedForDeleteMeleeEnemies;
-	static std::set<Enemy_Ranged*> flaggedForDeleteRangedEnemies;
-	static std::set<Enemy_NoAttack*> flaggedForDeleteNoAttackEnemies;  // used <set> because if a collision happens with a wall and an enemy at the same time it would get inserted twice and that would result in the code trying to delete it twice. which is bad.
+	static std::set<Enemy*> flaggedForDeleteEnemies;
 	
 	static std::set<Wall*> flaggedForDeleteWalls;
 	static std::set<Item*> flaggedForDeleteItems;

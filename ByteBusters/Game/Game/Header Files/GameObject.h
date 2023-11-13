@@ -8,7 +8,7 @@ public:
 	GameObject(int x, int y);
 	virtual ~GameObject();
 
-	virtual void Update();
+	virtual void Update() {};
 	virtual void Render();
 
 	static void setTileSize(int s);

@@ -219,6 +219,7 @@ int main(int argc, char* argv[]) {
 
 	if (!Game::Init("DEER-MURDER-HORROR-BLOOD-GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameResWidth, gameResHeight, tileRes, false))
 	{
+		//Game::Clean(); here maybe?
 		return 1;
 	}
 

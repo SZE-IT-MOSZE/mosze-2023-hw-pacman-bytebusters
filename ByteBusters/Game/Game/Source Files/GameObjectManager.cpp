@@ -4,26 +4,26 @@
 #include <iostream>
 #include "Defines.h"
 
-
-//int GameObjectManager::tileSize;
-
 Player* GameObjectManager::_player;
 SDL_Rect* GameObjectManager::playerRect;
+std::forward_list<Enemy*> GameObjectManager::enemies;
+//std::forward_list<Enemy*> GameObjectManager::meleeEnemies;
+//std::forward_list<Enemy*> GameObjectManager::rangedEnemies;
+//std::forward_list<Enemy*> GameObjectManager::noAttackEnemies;
 
-//std::forward_list<Enemy*> GameObjectManager::enemies;
-std::forward_list<Enemy_Melee*> GameObjectManager::meleeEnemies;
-std::forward_list<Enemy_Ranged*> GameObjectManager::rangedEnemies;
-std::forward_list<Enemy_NoAttack*> GameObjectManager::noAttackEnemies;
+//std::forward_list<Enemy_Melee*> GameObjectManager::meleeEnemies;
+//std::forward_list<Enemy_Ranged*> GameObjectManager::rangedEnemies;
+//std::forward_list<Enemy_NoAttack*> GameObjectManager::noAttackEnemies;
 
 std::forward_list<Wall*> GameObjectManager::walls;
 std::forward_list<Item*> GameObjectManager::items;
 std::forward_list<Projectile*> GameObjectManager::playerProjectiles;
 std::forward_list<Projectile*> GameObjectManager::enemyProjectiles;
 
-//std::set<Enemy*> GameObjectManager::flaggedForDeleteEnemies;
-std::set<Enemy_Melee*> GameObjectManager::flaggedForDeleteMeleeEnemies;
-std::set<Enemy_Ranged*> GameObjectManager::flaggedForDeleteRangedEnemies;
-std::set<Enemy_NoAttack*> GameObjectManager::flaggedForDeleteNoAttackEnemies;
+std::set<Enemy*> GameObjectManager::flaggedForDeleteEnemies;
+//std::set<Enemy_Melee*> GameObjectManager::flaggedForDeleteMeleeEnemies;
+//std::set<Enemy_Ranged*> GameObjectManager::flaggedForDeleteRangedEnemies;
+//std::set<Enemy_NoAttack*> GameObjectManager::flaggedForDeleteNoAttackEnemies;
 
 std::set<Wall*> GameObjectManager::flaggedForDeleteWalls;
 std::set<Item*> GameObjectManager::flaggedForDeleteItems;
@@ -37,7 +37,7 @@ bool GameObjectManager::AreAllItemsPickedUp() {
 	return items.empty();
 }
 
-Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) { //enemyProjectiles
+Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
 	_player = new Player(x, y, PLAYER_SPEED, TextureManager::Deerly, walls, items, enemyProjectiles);
 	playerRect = _player->GetDestRect();
 	return _player;
@@ -47,25 +47,25 @@ void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 	switch (t)
 	{
 	case GameObjectManager::rat:
-		meleeEnemies.push_front(new Enemy_Melee(x, y, FAST_ENEMY_SPEED, TextureManager::Enemy_Rat, walls, playerProjectiles, _player));
+		enemies.push_front(new Enemy_Melee(x, y, FAST_ENEMY_SPEED, TextureManager::Enemy_Rat, walls, playerProjectiles, _player));
 		break;
 	case GameObjectManager::ape:
-		meleeEnemies.push_front(new Enemy_Melee(x, y, SLOW_ENEMY_SPEED, TextureManager::Enemy_Ape, walls, playerProjectiles, _player));
+		enemies.push_front(new Enemy_Melee(x, y, SLOW_ENEMY_SPEED, TextureManager::Enemy_Ape, walls, playerProjectiles, _player));
 		break;
 	case GameObjectManager::deer:
-		meleeEnemies.push_front(new Enemy_Melee(x, y, FAST_ENEMY_SPEED, TextureManager::Enemy_Deer, walls, playerProjectiles, _player));
+		enemies.push_front(new Enemy_Melee(x, y, FAST_ENEMY_SPEED, TextureManager::Enemy_Deer, walls, playerProjectiles, _player));
 		break;
 	case GameObjectManager::homeless:
-		meleeEnemies.push_front(new Enemy_Melee(x, y, SLOW_ENEMY_SPEED, TextureManager::Enemy_Homeless, walls, playerProjectiles, _player));
+		enemies.push_front(new Enemy_Melee(x, y, SLOW_ENEMY_SPEED, TextureManager::Enemy_Homeless, walls, playerProjectiles, _player));
 		break;
 	case GameObjectManager::soldier:
-		rangedEnemies.push_front(new Enemy_Ranged(x, y, SLOW_ENEMY_SPEED, TextureManager::Enemy_Soldier, walls, playerProjectiles, _player));
+		enemies.push_front(new Enemy_Ranged(x, y, SLOW_ENEMY_SPEED, TextureManager::Enemy_Soldier, walls, playerProjectiles, _player));
 		break;
 	case GameObjectManager::yusri:
-		noAttackEnemies.push_front(new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Yusri, walls, playerProjectiles, _player));
+		enemies.push_front(new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Yusri, walls, playerProjectiles, _player));
 		break;
 	case GameObjectManager::joseph:
-		noAttackEnemies.push_front(new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Joseph_White, walls, playerProjectiles, _player));
+		enemies.push_front(new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Joseph_White, walls, playerProjectiles, _player));
 		break;
 	default:
 		break;
@@ -110,42 +110,25 @@ void GameObjectManager::CreateGameObject(ProjectileTypes t, int x, int y, int d)
 
 }
 
-int framteStart = SDL_GetTicks();
 void GameObjectManager::RenderAllGameObjects() {
 	
-	//if ( SDL_GetTicks() - framteStart > 500) // if time to display next frame
-	//{
-	//	std::cout << "P: " << distance(playerProjectiles.begin(), playerProjectiles.end()) << std::endl;
-	//	std::cout << "E: " << distance(enemyProjectiles.begin(), enemyProjectiles.end()) << std::endl;
-	//	framteStart = SDL_GetTicks();
-	//}
-	
-	
-	for (Enemy_Melee* enemy : meleeEnemies)
+	for (auto enemy : enemies)
 	{
 		enemy->Render();
 	}
-	for (Enemy_Ranged* enemy : rangedEnemies)
-	{
-		enemy->Render();
-	}
-	for (Enemy_NoAttack* enemy : noAttackEnemies)
-	{
-		enemy->Render();
-	}
-	for (Wall* wall : walls)
+	for (auto wall : walls)
 	{
 		wall->Render();
 	}
-	for (Item* item : items)
+	for (auto item : items)
 	{
 		item->Render();
 	}
-	for (Projectile* projectile : playerProjectiles)
+	for (auto projectile : playerProjectiles)
 	{
 		projectile->Render();
 	}
-	for (Projectile* projectile : enemyProjectiles)
+	for (auto projectile : enemyProjectiles)
 	{
 		projectile->Render();
 	}
@@ -154,15 +137,7 @@ void GameObjectManager::RenderAllGameObjects() {
 
 void GameObjectManager::UpdateAllGameObjects() {
 	
-	for (Enemy_Melee* enemy : meleeEnemies)
-	{
-		enemy->Update();
-	}
-	for (Enemy_Ranged* enemy : rangedEnemies)
-	{
-		enemy->Update();
-	}
-	for (Enemy_NoAttack* enemy : noAttackEnemies)
+	for (auto enemy : enemies)
 	{
 		enemy->Update();
 	}
@@ -170,15 +145,15 @@ void GameObjectManager::UpdateAllGameObjects() {
 	{
 		wall->Update();
 	}*/
-	for (Item* item : items)
+	for (auto item : items)
 	{
 		item->Update();
 	}
-	for (Projectile* projectile : playerProjectiles)
+	for (auto projectile : playerProjectiles)
 	{
 		projectile->Update();
 	}
-	for (Projectile* projectile : enemyProjectiles)
+	for (auto projectile : enemyProjectiles)
 	{
 		projectile->Update();
 	}
@@ -188,21 +163,11 @@ void GameObjectManager::UpdateAllGameObjects() {
 }
 
 void GameObjectManager::DestroyAllExceptPlayer() {
-	for (Enemy_Melee* enemy : meleeEnemies)
+	for (auto enemy : enemies)
 	{
 		delete enemy;
 	}
-	meleeEnemies.clear();
-	for (Enemy_Ranged* enemy : rangedEnemies)
-	{
-		delete enemy;
-	}
-	rangedEnemies.clear();
-	for (Enemy_NoAttack* enemy : noAttackEnemies)
-	{
-		delete enemy;
-	}
-	noAttackEnemies.clear();
+	enemies.clear();
 	for (Wall* wall : walls)
 	{
 		delete wall;
@@ -231,16 +196,8 @@ void GameObjectManager::DestroyAllGameObjects() {
 }
 
 /////////////////////////////////////////////////////////////// FLAGGING AND DELETEION
-void GameObjectManager::FlagForDelete(Enemy_Melee* f) {
-	flaggedForDeleteMeleeEnemies.insert(f);
-}
-
-void GameObjectManager::FlagForDelete(Enemy_Ranged* f) {
-	flaggedForDeleteRangedEnemies.insert(f);
-}
-
-void GameObjectManager::FlagForDelete(Enemy_NoAttack* f) {
-	flaggedForDeleteNoAttackEnemies.insert(f);
+void GameObjectManager::FlagForDelete(Enemy* f) {
+	flaggedForDeleteEnemies.insert(f);
 }
 
 void GameObjectManager::FlagForDelete(Wall* f) {
@@ -255,28 +212,14 @@ void GameObjectManager::FlagForDelete(Projectile* f) {
 	flaggedForDeleteProjectiles.insert(f);
 }
 
-void GameObjectManager::DeleteFlagged() { // uncomment if implemented (for items a lighter built in version is working currently in Player.cpp)
+void GameObjectManager::DeleteFlagged() { // (for items a lighter built in version is working currently in Player.cpp)
 
-	for (Enemy_Melee* f : flaggedForDeleteMeleeEnemies)
+	for (auto f : flaggedForDeleteEnemies)
 	{
-		meleeEnemies.remove(f);
+		enemies.remove(f);
 		delete f;
 	}
-	flaggedForDeleteMeleeEnemies.clear();
-
-	for (Enemy_Ranged* f : flaggedForDeleteRangedEnemies)
-	{
-		rangedEnemies.remove(f);
-		delete f;
-	}
-	flaggedForDeleteRangedEnemies.clear();
-
-	for (Enemy_NoAttack* f : flaggedForDeleteNoAttackEnemies)
-	{
-		noAttackEnemies.remove(f);
-		delete f;
-	}
-	flaggedForDeleteNoAttackEnemies.clear();
+	flaggedForDeleteEnemies.clear();
 
 	/*for (Wall* f : flaggedForDeleteWalls) // why would we do this? i know. but im not telling.
 	{
@@ -305,56 +248,20 @@ void GameObjectManager::DeleteFlagged() { // uncomment if implemented (for items
 void GameObjectManager::CheckEnemyHit(int x, int y, int range, bool right) { // okay, this iiiiis a bit bad
 	SDL_Rect* enemyRect;
 	int distance;
-	for (Enemy_Melee* enemy : meleeEnemies)
+	for (auto enemy : enemies)
 	{
 		enemyRect = enemy->GetDestRect();
-		distance = sqrt(pow((playerRect->x - enemyRect->x), 2) + pow((playerRect->y - enemyRect->y), 2)); // make position getters for players and enemyies (all gameobject at that point)
-		if (distance < range)
-		{
-			if (right && (playerRect->x < enemyRect->x))
-			{
-				FlagForDelete(enemy);
-			}
-			else if (playerRect->x > enemyRect->x)
-			{
-				FlagForDelete(enemy);
-			}
+		if (SDL_HasIntersection(playerRect, enemyRect)) {
+			FlagForDelete(enemy);
+			continue;
 		}
-	}
-	for (Enemy_Ranged* enemy : rangedEnemies)
-	{
-		enemyRect = enemy->GetDestRect();
 		distance = sqrt(pow((playerRect->x - enemyRect->x), 2) + pow((playerRect->y - enemyRect->y), 2)); // make position getters for players and enemyies (all gameobject at that point)
 		if (distance < range)
 		{
-			if (right && (playerRect->x < enemyRect->x))
-			{
-				FlagForDelete(enemy);
-			}
-			else if (playerRect->x > enemyRect->x)
-			{
-				FlagForDelete(enemy);
-			}
-		}
-	}
-	for (Enemy_NoAttack* enemy : noAttackEnemies)
-	{
-		enemyRect = enemy->GetDestRect();
-		distance = sqrt(pow((playerRect->x - enemyRect->x), 2) + pow((playerRect->y - enemyRect->y), 2)); // make position getters for players and enemyies (all gameobject at that point)
-		if (distance < range)
-		{
-			if (right && (playerRect->x < enemyRect->x))
-			{
-				FlagForDelete(enemy);
-			}
-			else if (playerRect->x > enemyRect->x)
+			if ( (right && (playerRect->x < enemyRect->x)) || (playerRect->x > enemyRect->x) )
 			{
 				FlagForDelete(enemy);
 			}
 		}
 	}
 }
-
-//void GameObjectManager::ResetPlayer() {
-//	_player->Reset();
-//}

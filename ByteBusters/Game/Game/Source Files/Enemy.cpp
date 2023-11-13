@@ -10,7 +10,7 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	objTexture = t;
 
 	player = p;
-	playerRect = player->getDestRect();
+	playerRect = player->GetDestRect();
 
 	playerPosX = playerPosY = 0;
 	posX = posY = 0;
@@ -44,12 +44,6 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 }
 
 Enemy::~Enemy() {
-
-	//delete[] enemySheetData; initialized to nullptr instead of actual data. deleteion is in child classes that initialize it with data
-	//std::cout << "enemy destructor called" << std::endl;
-}
-
-void Enemy::Update() {
 
 }
 

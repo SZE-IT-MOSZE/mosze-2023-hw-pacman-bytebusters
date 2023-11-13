@@ -9,10 +9,10 @@
 class Enemy : public GameObject {
 public:
 	Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p); //!< Enemy konstruktor az enemy létrehozására
-	~Enemy();
+	virtual ~Enemy();
 
-	virtual void Update(); //!< Enemy frissítése
-	void Render(); //!< Enemy renderelése
+	virtual void Update() override = 0; //!< Enemy frissítése
+	void Render() override; //!< Enemy renderelése
 
 protected: 
 	Player* player; //player is still a pointer. only lists are references
