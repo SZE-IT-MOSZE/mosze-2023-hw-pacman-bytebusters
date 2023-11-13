@@ -1,26 +1,42 @@
-// placeTwos.cpp
-#pragma once
-#include "placeTwos.h"
+﻿#include "placeTwos.h"
+#include <cstdlib>
+#include <ctime>
 
+/**
+ * @file placeTwos.cpp
+ * @brief A placeTwos függvény implementációja.
+ *
+ * Ez a fájl tartalmazza a placeTwos függvény implementációját, amely
+ * "2"-ket helyez el véletlenszerűen egy rácsban.
+ */
+
+ /**
+  * @brief "2" helyez el a rácsban.
+  *
+  * Ez a függvény véletlenszerűen választ cellákat a rácsban, és elhelyezi
+  * bennük a "2" értéket, amíg el nem éri a meghatározott számú cellát.
+  * A függvény célja, hogy szórásszerűen elhelyezzen értékeket a rácsban.
+  *
+  * @param grid Egy referencia egy 2D egész számokból álló vektorra, amely a rácsot képviseli.
+  */
 void placeTwos(std::vector<std::vector<int>>& grid) {
-    // meret lekerese
     int numRows = grid.size();
     int numCols = grid[0].size();
 
-    // seedeles a veletlenszeruseghez
-    //std::
-    // (static_cast<unsigned int>(std::time(nullptr)));
+    // Random inicializálása
+    //std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    // szamoljuk ki hany cellat kell feltolteni
-    int maxCells = 12; //!< megn�zz�nk, hogy h�ny cell�t kell felt�lten�nk 
+    // Megnézzük, hogy hány cellát kell feltöltenünk
+    int maxCells = 12; // A feltöltendő cellák maximális száma
 
-    int filledCells = 0; //!< kezdetben a felt�lt�tt cell�k sz�ma 0-a
+    int filledCells = 0; // Kezdetben a feltöltött cellák száma nulla
 
     while (filledCells < maxCells) {
-        // veletlenszeruen valaszt helyet
-        int row = std::rand() % numRows; //!< V�ltlen elhelyez�s soronk�nt 
-        int col = std::rand() % numCols; //!< V�letlen szer� elhelyez�s oszloponk�nt 
+        // Véletlenszerűen választ helyet
+        int row = std::rand() % numRows; // Véletlenszerűen választ soronként
+        int col = std::rand() % numCols; // Véletlenszerűen választ oszloponként
 
+        // Ha a cella üres, akkor elhelyezzük benne hogy "2"
         if (grid[row][col] == 0) {
             grid[row][col] = 2;
             filledCells++;
