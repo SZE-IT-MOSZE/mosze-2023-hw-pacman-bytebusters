@@ -1,79 +1,67 @@
 #pragma once
 
 #include "Game.h"
-#include "Defines.h"
 
+#include "Defines.h"
 
 SDL_Renderer* Game::renderer = nullptr;
 
-SDL_Window* Game::window = nullptr; //!<Mutató az ablakra
-
-Map* Game::map = nullptr; //!< Mutató a mapra
-
-Player* Game::player = nullptr; //!< Mutató a playerre
-
-std::thread* Game::gameUpdates = nullptr; //!<Mutató a játék frissítésre
-
-std::set<char> Game::isPressed;
-
-int Game::height = 480;
-int Game::width = 640;
-int Game::tileRes = 32;
-
-bool Game::isRunning = true;
-bool Game::isPlaying = false;
-
-void Game::SetPlaying(bool p) {
+Game::Game() 
+{
+	window = nullptr;
+	map = nullptr;
+	player = nullptr;
+	gameUpdates = nullptr;
+	tileRes = 32;
+	isRunning = true;
 	isPlaying = false;
 }
 
-bool Game::Init(const char* title, int xPos, int yPos, int w, int h, int tR, bool fullscreen)
+Game::~Game() 
+{
+	delete map;
+}
+
+void Game::SetPlaying(bool p) 
+{
+	isPlaying = false;
+}
+
+int Game::Init(SDL_Window* window,const int tileRes)
 {	
-	height = h;
-	width = w;
-	tileRes = tR;
+	this->window = window;
+
 	
 
-	int flags = 0;
-	if (fullscreen)
+	this->tileRes = tileRes;
+
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	if (renderer)
 	{
-		flags = SDL_WINDOW_FULLSCREEN;
+		std::cout << "Renderer created!" << std::endl;
 	}
-
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	else 
 	{
-		std::cout << "Subsystem:" << std::endl;
-
-		window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
-		if (window)
-		{
-			std::cout << "Window created!" << std::endl;
-		}
-
-		renderer = SDL_CreateRenderer(window, -1, 0);
-		if (renderer)
-		{
-			std::cout << "Renderer created!" << std::endl;
-		}
-	}
-	else {
-		return false;
+		std::cout << "Renderer creation failed!" << std::endl;
+		return -1;
 	}
 
 	TextureManager::LoadAllTextures(); /*/////////////////////////////////*/
 
 	GameObjectManager::SetTileSize(tileRes);
 
-	Map::Innit(tileRes);
+	map = new Map(tileRes);
 
-	return true;
+	map->Innit();
+
+	return 0;
 }
 
 void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	Map::DrawMap(); ///////////////////////////////////////////////// only for background now
+	map->DrawMap(); ///////////////////////////////////////////////// only for background now
 
 	GameObjectManager::RenderAllGameObjects();
 
@@ -83,12 +71,13 @@ void Game::Render()
 void Game::Clean()
 {
 	GameObjectManager::DestroyAllGameObjects();
-	Map::Clean();
-	SDL_DestroyWindow(window);
+	map->Clean();
+
 	SDL_DestroyRenderer(renderer);
-	SDL_Quit();
 	std::cout << "Game Cleaned" << std::endl;
 }
+
+
 
 SDL_Event event;
 void Game::HandleEvents()
@@ -112,141 +101,155 @@ void Game::HandleEvents()
 
 	*/
 
-	
-	SDL_PollEvent(&event); // <- put this in a while loops condition
-	switch (event.type)
-	{
-	case SDL_KEYDOWN:
-		switch (event.key.keysym.sym) {
-		case SDLK_LEFT:
-			isPressed.insert('a');
+	while (SDL_PollEvent(&event)) {
+		switch (event.type)
+		{
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym) {
+			case SDLK_LEFT:
+				//std::cout << "LEFT \n";
+				pressedKeys.insert('a');
+				break;
+			case SDLK_RIGHT:
+				//std::cout << "RIGHT \n";
+				pressedKeys.insert('d');
+				break;
+			case SDLK_UP:
+				//std::cout << "UP \n";
+				pressedKeys.insert('w');
+				break;
+			case SDLK_DOWN:
+				//std::cout << "DOWN \n";
+				pressedKeys.insert('s');
+				break;
+			case SDLK_y:
+				pressedKeys.insert('y');
+				break;
+			case SDLK_x:
+				pressedKeys.insert('x');
+				break;
+			default:
+				break;
+			}
 			break;
-		case SDLK_RIGHT:
-			isPressed.insert('d');
+
+		case SDL_KEYUP:
+			switch (event.key.keysym.sym) {
+			case SDLK_LEFT:
+				pressedKeys.erase('a');
+				break;
+			case SDLK_RIGHT:
+				pressedKeys.erase('d');
+				break;
+			case SDLK_UP:
+				pressedKeys.erase('w');
+				break;
+			case SDLK_DOWN:
+				pressedKeys.erase('s');
+				break;
+			case SDLK_y:
+				pressedKeys.erase('y');
+				break;
+			case SDLK_x:
+				pressedKeys.erase('x');
+				break;
+			default:
+				break;
+			}
 			break;
-		case SDLK_UP:
-			isPressed.insert('w');
-			break;
-		case SDLK_DOWN:
-			isPressed.insert('s');
-			break;
-		case SDLK_y:
-			isPressed.insert('y');
-			break;
-		case SDLK_x:
-			isPressed.insert('x');
+
+		case SDL_QUIT:
+
+			isPlaying = false;
+			isRunning = false;
+
 			break;
 		default:
 			break;
 		}
-		break;
-
-	case SDL_KEYUP:
-		switch (event.key.keysym.sym) {
-		case SDLK_LEFT:
-			isPressed.erase('a');
-			break;
-		case SDLK_RIGHT:
-			isPressed.erase('d');
-			break;
-		case SDLK_UP:
-			isPressed.erase('w');
-			break;
-		case SDLK_DOWN:
-			isPressed.erase('s');
-			break;
-		case SDLK_y:
-			isPressed.erase('y');
-			break;
-		case SDLK_x:
-			isPressed.erase('x');
-			break;
-		default:
-			break;
+		//////////////////////////////////////////////////////////
+		if (pressedKeys.contains('w')) {
+			//std::cout << "w" << std::endl;
+			player->SetVelY(-1);
 		}
-		break;
+		//////////////////////////////////////////////////////////
+		if (pressedKeys.contains('a')) {
+			//std::cout << "a" << std::endl;
+			player->SetVelX(-1);
+		}
+		//////////////////////////////////////////////////////////
+		if (pressedKeys.contains('s')) {
+			//std::cout << "s" << std::endl;
+			player->SetVelY(1);
+		}
+		//////////////////////////////////////////////////////////
+		if (pressedKeys.contains('d')) {
+			//std::cout << "d" << std::endl;
+			player->SetVelX(1);
+		}
+		//////////////////////////////////////////////////////////
+		if (!pressedKeys.contains('d') && !pressedKeys.contains('a')) { // stop if none
+			player->SetVelX(0);
+		}
+		//////////////////////////////////////////////////////////
+		if (!pressedKeys.contains('w') && !pressedKeys.contains('s')) { // stop if none
+			player->SetVelY(0);
+		}
+		//////////////////////////////////////////////////////////
+		if (pressedKeys.contains('y')) {
+			player->Shoot();
+		}
+		if (pressedKeys.contains('x')) {
+			player->Hit();
+		}
+		//////////////////////////////////////////////////////////
 
-	case SDL_QUIT:
-		
-		isPlaying = false;
-		isRunning = false;
-
-		break;
-	default:
-		break;
 	}
-	//////////////////////////////////////////////////////////
-	if (isPressed.contains('w')) {
-		//std::cout << "w" << std::endl;
-		player->SetVelY(-1);
-	}
-	//////////////////////////////////////////////////////////
-	if (isPressed.contains('a')) {
-		//std::cout << "a" << std::endl;
-		player->SetVelX(-1);
-	}
-	//////////////////////////////////////////////////////////
-	if (isPressed.contains('s')) {
-		//std::cout << "s" << std::endl;
-		player->SetVelY(1);
-	}
-	//////////////////////////////////////////////////////////
-	if (isPressed.contains('d')) {
-		//std::cout << "d" << std::endl;
-		player->SetVelX(1);
-	}
-	//////////////////////////////////////////////////////////
-	if (!isPressed.contains('d') && !isPressed.contains('a')) { // stop if none
-		player->SetVelX(0);
-	}
-	//////////////////////////////////////////////////////////
-	if (!isPressed.contains('w') && !isPressed.contains('s')) { // stop if none
-		player->SetVelY(0);
-	}
-	//////////////////////////////////////////////////////////
-	if (isPressed.contains('y')) {
-		player->Shoot();
-	}
-	if (isPressed.contains('x')) {
-		player->Hit();
-	}
-	//////////////////////////////////////////////////////////
 }
 
 void Game::Start()
 {
+	
 
-	const int FPS = _FPS;
-	const int frameDelay = 1000 / FPS;
+	constexpr int FPS = _FPS;
+	constexpr int frameDelay = 1000 / FPS;
 
 	Uint32 frameStart;
 	int frameTime;
 
 	// generally better to create player before everything, as player is pointer that can be null, while the rest are in lists that exist from the beggining as an empty list empty and get filled in later
 	player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
-
+	std::cout << "game tile size" << tileRes << "\n";
 	int currentLvl = 1;
 
 	while(isRunning)
 	{
-		Map::LoadMap(currentLvl);
+		map->LoadMap(currentLvl);
 
 		isPlaying = true;
 										
-		gameUpdates = new std::thread(&Game::UpdateThread); // pointer to non-static member function (Game:: necessary), pointer to object (this)
+		gameUpdates = new std::thread(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 
 		while (isPlaying)
 		{
 			frameStart = SDL_GetTicks();
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
 			HandleEvents();
+#ifdef DO_RENDER
 			Render();
+#endif // DO_RENDER
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (GameObjectManager::AreAllItemsPickedUp())
 			{
 				isPlaying = false; // stop both update and render
 				SDL_Delay(2000); // some delay between two maps
 				currentLvl++;
+			}
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (player->GetHP() <= 0)
+			{
+				isPlaying = false; // stop both update and render without going to next map
 			}
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			frameTime = SDL_GetTicks() - frameStart;
@@ -267,8 +270,8 @@ void Game::UpdateThread() {
 
 	std::cout << "Thread Created" << std::endl;
 
-	const int UPS = _UPS;
-	const int frameDelay = 1000 / UPS;
+	constexpr int UPS = _UPS;
+	constexpr int frameDelay = 1000 / UPS;
 
 	Uint32 frameStart;
 	int frameTime;
@@ -277,7 +280,11 @@ void Game::UpdateThread() {
 	{
 		frameStart = SDL_GetTicks();
 		////////////////////////////////////////////////////////////////////////////
+		
+#ifdef DO_UPDATE
 		GameObjectManager::UpdateAllGameObjects();
+#endif // DISABLE_UPDATE
+
 		////////////////////////////////////////////////////////////////////////////
 		frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);

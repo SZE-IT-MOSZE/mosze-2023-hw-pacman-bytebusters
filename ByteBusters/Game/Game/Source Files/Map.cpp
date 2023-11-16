@@ -7,17 +7,7 @@
 #include <fstream>
 #include <string>
 
-std::string Map::pathToFields;
-std::string Map::pathToTextures;
 
-SDL_Rect* Map::destRectDraw;
-
-SDL_Texture* Map::path;
-
-int Map::tileSize;
-int Map::map[ROWS][COLS] = {};
-
-int Map::lvl;
 
 struct levelData {
 	GameObjectManager::WallTypes wallType = GameObjectManager::concrete02;
@@ -30,6 +20,28 @@ struct levelData {
 	int soldier = 0;
 	int yusri = 0;
 };
+
+Map::Map(const int size)
+{
+	path = TextureManager::err_;
+
+	lvl = 0;
+
+	tileSize = size;
+
+	pathToFields = "Fields\\";
+
+	destRectDraw = new SDL_Rect;
+
+	destRectDraw->w = destRectDraw->h = tileSize;
+	destRectDraw->x = destRectDraw->y = 0;
+}
+
+Map::~Map() 
+{
+	delete destRectDraw;
+}
+
 
 levelData lvlData[MAPS]; //index level.txt from 1, index lvlData from 0. it's a bit weird i admit.
 						//why is the struct and the variable declaration floating in the cpp file?
@@ -90,26 +102,17 @@ void DefineLevelData() {
 	
 }
 
-void Map::Innit(int size) {
-
-	tileSize = size;		//may not need to keep this in the future
-
-	pathToFields = "Fields\\";
-
-	destRectDraw = new SDL_Rect;
-	
-	destRectDraw->w = destRectDraw->h = tileSize;
-	destRectDraw->x = destRectDraw->y = 0;
+void Map::Innit() {
 
 	DefineLevelData();
 
 }
 
 void Map::Clean() {
-	delete destRectDraw;
+	
 }
 
-void Map::LoadMap(int l) { // could be separated into 2 individual functions
+int Map::LoadMap(int l) { // could be separated into 2 individual functions
 
 	lvl = l;
 
@@ -120,7 +123,8 @@ void Map::LoadMap(int l) { // could be separated into 2 individual functions
 	if (!ReadLevel)
 	{
 		std::cout << "ERROR READING FILE: " << std::to_string(lvl) + ".txt" << std::endl; 
-		return;
+
+		return -1;
 	}
 
 	std::string cell = "";
@@ -174,6 +178,8 @@ void Map::LoadMap(int l) { // could be separated into 2 individual functions
 	ReadLevel.close();
 
 	SpawnGameObjects(lvl-1);
+
+	return 0;
 }
 
 void Map::SpawnGameObjects(int lvl) {

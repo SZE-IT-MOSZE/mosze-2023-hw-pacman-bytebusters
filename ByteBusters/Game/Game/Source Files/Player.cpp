@@ -25,6 +25,8 @@ Shoot_L 5 100
 Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i, std::forward_list<Projectile*>& p) : walls(w), items(i), projectiles(p), GameObject(x, y) {
 	objTexture = t;
 
+	std::cout << "player tile size: " << TileSize << "\n";
+
 	xvel = 0;
 	yvel = 0;
 
@@ -282,10 +284,6 @@ void Player::Hit() { // no up or down hit animation
 void Player::DamagePlayer() {
 	--hp;
 	std::cout << "Health Points: " << hp << std::endl;
- 	if (hp == 0)
-	{
-		Game::SetPlaying(false); // it restarts the gameloop without incrementing the level
-	}
 }
 
 void Player::Reset() {

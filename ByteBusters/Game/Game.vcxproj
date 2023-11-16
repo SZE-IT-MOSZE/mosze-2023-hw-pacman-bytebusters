@@ -33,6 +33,7 @@
     <ClCompile Include="Game\Source Files\Projectile.cpp" />
     <ClCompile Include="Game\Source Files\TextureManager.cpp" />
     <ClCompile Include="Game\Source Files\Wall.cpp" />
+    <ClCompile Include="Game\Source Files\Window.cpp" />
     <ClCompile Include="MazeGenerator\Source Files\checkReachability.cpp" />
     <ClCompile Include="MazeGenerator\Source Files\createGrid.cpp" />
     <ClCompile Include="MazeGenerator\Source Files\generateMaze.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="MazeGenerator\Source Files\writeGridToFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Header Files\Button.h" />
     <ClInclude Include="Game\Header Files\Defines.h" />
     <ClInclude Include="Game\Header Files\Enemy.h" />
     <ClInclude Include="Game\Header Files\Enemy_Melee.h" />
@@ -59,6 +61,7 @@
     <ClInclude Include="Game\Header Files\Projectile.h" />
     <ClInclude Include="Game\Header Files\TextureManager.h" />
     <ClInclude Include="Game\Header Files\Wall.h" />
+    <ClInclude Include="Game\Header Files\Window.h" />
     <ClInclude Include="MazeGenerator\Header Files\checkReachability.h" />
     <ClInclude Include="MazeGenerator\Header Files\createGrid.h" />
     <ClInclude Include="MazeGenerator\Header Files\generateMaze.h" />

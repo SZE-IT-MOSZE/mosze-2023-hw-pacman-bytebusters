@@ -20,6 +20,7 @@ public:
 	void Shoot();
 	void Hit();
 
+	int GetHP() const { return hp; }
 	void DamagePlayer();
 	void Reset(); //!< A player alap helyzetbe állítása egy új pálya betöltésekor
 

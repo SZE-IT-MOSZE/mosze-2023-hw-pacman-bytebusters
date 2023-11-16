@@ -1,6 +1,8 @@
 #pragma once
 //DEBUG
 #define DEBUGLEVEL
+#define DO_RENDER
+#define DO_UPDATE
 
 //game
 #define _FPS 30
@@ -23,7 +25,6 @@
 #define PLAYER_SPRITE_SIZE 64
 #define PLAYER_SPAWN_X 18
 #define PLAYER_SPAWN_Y 13
-
 
 //projectile
 #define PROJECTILE_SPRITE_SIZE 16
