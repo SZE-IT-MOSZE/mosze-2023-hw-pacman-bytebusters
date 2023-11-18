@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Source Files\Button.cpp" />
     <ClCompile Include="Game\Source Files\Enemy.cpp" />
     <ClCompile Include="Game\Source Files\Enemy_Melee.cpp" />
     <ClCompile Include="Game\Source Files\Enemy_NoAttack.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Game\Source Files\Player.cpp" />
     <ClCompile Include="Game\Source Files\Projectile.cpp" />
     <ClCompile Include="Game\Source Files\TextureManager.cpp" />
+    <ClCompile Include="Game\Source Files\UI.cpp" />
     <ClCompile Include="Game\Source Files\Wall.cpp" />
     <ClCompile Include="Game\Source Files\Window.cpp" />
     <ClCompile Include="MazeGenerator\Source Files\checkReachability.cpp" />
@@ -60,6 +62,7 @@
     <ClInclude Include="Game\Header Files\Player.h" />
     <ClInclude Include="Game\Header Files\Projectile.h" />
     <ClInclude Include="Game\Header Files\TextureManager.h" />
+    <ClInclude Include="Game\Header Files\UI.h" />
     <ClInclude Include="Game\Header Files\Wall.h" />
     <ClInclude Include="Game\Header Files\Window.h" />
     <ClInclude Include="MazeGenerator\Header Files\checkReachability.h" />

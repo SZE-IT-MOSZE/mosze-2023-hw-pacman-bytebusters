@@ -190,6 +190,10 @@ void GameObjectManager::DestroyAllExceptPlayer() {
 	enemyProjectiles.clear();
 }
 
+void GameObjectManager::ResetPlayer() {
+	_player->Reset();
+}
+
 void GameObjectManager::DestroyAllGameObjects() { 
 	DestroyAllExceptPlayer();
 	delete _player;
@@ -255,7 +259,7 @@ void GameObjectManager::CheckEnemyHit(int x, int y, int range, bool right) { // 
 			FlagForDelete(enemy);
 			continue;
 		}
-		distance = sqrt(pow((playerRect->x - enemyRect->x), 2) + pow((playerRect->y - enemyRect->y), 2)); // make position getters for players and enemyies (all gameobject at that point)
+		distance = (int)sqrt(pow((playerRect->x - enemyRect->x), 2) + pow((playerRect->y - enemyRect->y), 2)); // make position getters for players and enemyies (all gameobject at that point)
 		if (distance < range)
 		{
 			if ( (right && (playerRect->x < enemyRect->x)) || (playerRect->x > enemyRect->x) )

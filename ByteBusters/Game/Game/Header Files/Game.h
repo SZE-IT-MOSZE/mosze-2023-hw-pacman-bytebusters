@@ -13,6 +13,10 @@
 #include "Player.h"
 #include "Enemy.h"
 
+#include "Button.h"
+
+#include "UI.h"
+
 class Game {
 
 public:
@@ -24,27 +28,35 @@ public:
 	void Render(); //!< A játék megjelenítése/ki renderelése
 	void Start(); //!< A játék indítása
 	void Clean(); //!< Az össze objektum törlése, sub system leállítása a játék bezárása elõtt
-	void HandleEvents(); //!< Az események lekezelése
+	void HandleEvents(SDL_Event* event); //!< Az események lekezelése
 	void UpdateThread(); //!< Ezen a szállon fut a frissítés
 
-	bool Running() const { return isPlaying; }
+	void StopUpdate();
+	void StartUpdate(); // not the best name, it just sets the variable that lets it run when update is created
+	void PauseUpdate();
+	void ResumeUpdate();
 
-	void SetPlaying(bool p);
+
+	bool isPlayerDead();
+
+
 
 	static SDL_Renderer* renderer;
 
 private:
 
+	//UI* ui;
+
 	SDL_Window* window; //!<Mutató az ablakra
-	Map* map; //!< Mutató a mapra
+	//Map* map; //!< Mutató a mapra
 	Player* player; //!< Mutató a playerre
-	std::thread* gameUpdates; //!<Mutató a játék frissítésre
+	//std::thread* gameUpdates; //!<Mutató a játék frissítésre
 
 	std::set<char> pressedKeys;
 
 	int tileRes;
 
-	bool isRunning;
-	bool isPlaying;	
+	bool update;
+	bool paused;
 
 };

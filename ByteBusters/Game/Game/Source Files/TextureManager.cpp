@@ -31,6 +31,13 @@ SDL_Texture* TextureManager::projectile;
 
 SDL_Texture* TextureManager::err_;
 
+SDL_Texture* TextureManager::title;
+SDL_Texture* TextureManager::start;
+SDL_Texture* TextureManager::load;
+SDL_Texture* TextureManager::quit;
+SDL_Texture* TextureManager::save;
+SDL_Texture* TextureManager::menu;
+
 SDL_Texture* TextureManager::LoadTexture(const char* texture) {
 	SDL_Surface* tempSurface = IMG_Load(texture);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, tempSurface);
@@ -67,4 +74,11 @@ void TextureManager::LoadAllTextures() {
 	TextureManager::projectile		= LoadTexture("Assets/Projectile_sprite_sheet.png");
 
 	TextureManager::err_			= LoadTexture("Assets/err_.png");
+
+	TextureManager::title			= LoadTexture("Assets/title.png");
+	TextureManager::start			= LoadTexture("Assets/start.png");
+	TextureManager::load			= LoadTexture("Assets/load.png");
+	TextureManager::quit			= LoadTexture("Assets/quit.png");
+	TextureManager::save			= LoadTexture("Assets/save.png");
+	TextureManager::menu			= LoadTexture("Assets/menu.png");
 }

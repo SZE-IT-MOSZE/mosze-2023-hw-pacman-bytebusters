@@ -55,7 +55,7 @@ int Window::Init(const char* title, const int xPos, const int yPos, const bool f
 		tileRes = 128;
 	}
 	windowHeight = tileRes * ROWS; //map size again
-	windowWidth = tileRes * COLS;  //map size again
+	windowWidth = tileRes * (COLS+2);  //map size again
 
 	//15*32 = 480
 	//15*48 = 720

@@ -5,65 +5,32 @@
 
 class Button {
 public:
-    Button(Window* window)
-    { 
-        SDLWindowSurface = SDL_GetWindowSurface(window->GetWindow());
-        Update();
-        std::cout << "button created" << "\n";
-    }
-    Button(SDL_Window* window)
-    {
-        SDLWindowSurface = SDL_GetWindowSurface(window);
-        Update();
-        std::cout << "button created" << "\n";
-    }
+    Button(Window* window, void (*func)(Uint32), Uint32 UIEvent, int tR, int pos[4], SDL_Texture* t);
+    Button(Window* window, void (*func)(), int tR, int pos[4], SDL_Texture* t);
 
-    bool HandleEvent(const SDL_Event* Event) {
-        if (Event->type == SDL_MOUSEBUTTONDOWN && Event->button.button == SDL_BUTTON_LEFT && isHovered) 
-        {
-            std::cout << "button pressed" << "\n";
-        }
-        else if (Event->type == SDL_MOUSEMOTION) [[likely]]
-        {
-            if (isHovered != IsWithinBounds(Event->motion.x, Event->motion.y)) {
-                isHovered = !isHovered;
-                Update();std::cout << "hover" << "\n";
-            }
-                
-            return isHovered;
-        }
-        return false;
-    }
+    //Button(SDL_Window* window, void (*func)(), int tR, int pos[4]);
 
+    bool HandleEvent(const SDL_Event* Event);
+
+    void Render();
 
 private:
-    bool IsWithinBounds(int x, int y) {
-        // Too far left
-        if (x < Rect.x) return false;
 
-        // Too far right
-        if (x > Rect.x + Rect.w) return false;
 
-        // Too high
-        if (y < Rect.y) return false;
+    bool IsWithinBounds(int x, int y);
 
-        // Too low
-        if (y > Rect.y + Rect.h) return false;
+    void Update();
 
-        // Inside rectangle
-        return true;
-    }
+    SDL_Texture* objTexture;
 
-    void Update() {
-        auto [r, g, b, a] { isHovered ? HoverColor : BGColor };
-        SDL_FillRect(SDLWindowSurface, &Rect, SDL_MapRGB(SDLWindowSurface->format, r, g, b));
-    }
-
-    bool isHovered{ false };
-    SDL_Color BGColor{ 255, 50, 50, 255 };
-    SDL_Color HoverColor{ 50, 50, 255, 255 };
-    SDL_Rect Rect{ 50, 50, 50, 50 };
+    bool isHovered;
+    SDL_Rect Rect;
 
     SDL_Surface* SDLWindowSurface{ nullptr };
+
+    void (*funcP)(Uint32);
+    void (*func)();
+
+    Uint32 UIEvent;
 
 };

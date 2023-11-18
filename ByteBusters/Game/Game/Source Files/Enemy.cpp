@@ -140,7 +140,7 @@ void Enemy::CalculatePositions() {
 
 int Enemy::CalculateDistance() {
 	//std::cout << playerPosX << "," << playerPosY << " | " << posX << "," << posY << " | " << "dist: " << distance << std::endl;
-	return sqrt( pow( (playerPosX - posX), 2) + pow( (playerPosY - posY), 2) ); // math class was useful after all
+	return (int)sqrt( pow( (playerPosX - posX), 2) + pow( (playerPosY - posY), 2) ); // math class was useful after all
 }
 
 bool Enemy::CheckLineOfSight() {

@@ -1,8 +1,6 @@
 #pragma once
 //DEBUG
 #define DEBUGLEVEL
-#define DO_RENDER
-#define DO_UPDATE
 
 //game
 #define _FPS 30
@@ -30,6 +28,11 @@
 #define PROJECTILE_SPRITE_SIZE 16
 #define PROJECTILE_SIZE_REDUCTION 2
 
-
 //enemy
 #define ENEMY_SPRITE_SIZE 64
+
+//events
+#define EVENT_START 1 
+#define EVENT_LOAD 2 
+#define EVENT_SAVE 3 
+#define EVENT_MENU 4

@@ -59,6 +59,8 @@ public:
 	static void DestroyAllGameObjects(); //!< Az összes objektum törlése
 	static void DestroyAllExceptPlayer(); //!< Az össze objektum törlése kivétel a játékos
 
+	static void ResetPlayer();
+
 	static void CheckEnemyHit(int x, int y, int range, bool r);
 
 	static void FlagForDelete(Enemy* f);		

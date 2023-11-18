@@ -36,4 +36,12 @@ public:
 
 	//err
 	static SDL_Texture* err_;
+
+	//menu
+	static SDL_Texture* title;
+	static SDL_Texture* start;
+	static SDL_Texture* load;
+	static SDL_Texture* quit;
+	static SDL_Texture* save;
+	static SDL_Texture* menu;
 };
