@@ -241,7 +241,13 @@ int main(int argc, char* argv[]) {
 						generateMaze(); // keep fields folder intact in case of save load
 						break;
 					case EVENT_LOAD:
-						std::cout << "LOAD GAME\n";
+						currentLvl = map->LoadMapNumber();
+						if (currentLvl < 0 && currentLvl > 9)
+						{
+							std::cout << "error loading map \n";
+							currentLvl = 0;
+						}
+						std::cout << "LOAD GAME: " << std::to_string(currentLvl) << "\n";
 						break;
 					default:
 						break;
@@ -285,6 +291,8 @@ int main(int argc, char* argv[]) {
 							std::cout << "SAVE GAME\n";
 							isPlaying = false;
 							inMenu = true;
+							map->SaveMapNumber(currentLvl);
+							std::cout << "saved map: " << std::to_string(currentLvl) << "\n";
 							game->StopUpdate();
 							gameUpdates->join();
 							break;

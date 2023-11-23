@@ -115,6 +115,61 @@ void Map::Clean() {
 	// ok
 }
 
+int Map::LoadMapNumber() {
+	//error is < 0;
+	std::ifstream ReadSave(pathToFields + "\\" + "save.txt"); // open the level file
+	
+	if (!ReadSave)
+	{
+		std::cout << "ERROR READING FILE: save.txt" << std::endl;
+		ReadSave.close();
+		return -1;
+	}
+	std::string mapNumStr = "";
+	if (std::getline(ReadSave, mapNumStr))
+	{
+		int mapNum;
+		try {
+			mapNum = std::stoi(mapNumStr);
+		}
+		catch (std::invalid_argument& /*e*/) {
+			// if no conversion could be performed
+			std::cout << "invalid_argument in save.txt" << std::endl;
+			mapNum = -1;
+		}
+		catch (std::out_of_range& /*e*/) {
+			// if the converted value would fall out of the range
+			std::cout << "out_of_range in save.txt" << std::endl;
+			mapNum = -1;
+		}
+		catch (...) {
+			// everything else
+			std::cout << "UNEXPECTED_ERROR in save.txt" << std::endl;
+			mapNum = -1;
+		}
+		ReadSave.close();
+		return mapNum;
+	}
+	ReadSave.close();
+	return -1;
+
+}
+
+void Map::SaveMapNumber(int mapNum) {
+
+	// not creating save.txt
+
+	std::ofstream WriteFile(pathToFields + "\\" + "save.txt");
+
+	if (!WriteFile) {
+		std::cout << "ERROR WRITING TO FILE save.txt \n";
+		WriteFile.close();
+		return;
+	}
+	WriteFile << std::to_string(mapNum);
+	WriteFile.close();
+}
+
 int Map::LoadMap(int l) { // could be separated into 2 individual functions
 
 	lvl = l;
@@ -127,6 +182,7 @@ int Map::LoadMap(int l) { // could be separated into 2 individual functions
 	{
 		std::cout << "ERROR READING FILE: " << std::to_string(lvl) + ".txt" << std::endl; 
 
+		ReadLevel.close();
 		return -1;
 	}
 

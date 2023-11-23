@@ -18,6 +18,8 @@ public:
 	void Innit(); 
 	void Clean();
 	//takes in the level number (what file to load)
+	void SaveMapNumber(int mapNum);
+	int LoadMapNumber();
 	int LoadMap(int lvl); //!< Betöltjük az adott pályát 	
 	void SpawnGameObjects(int lvl);
 	void DrawMap(); //!< Az adott pálya hátterének a kirajzolása

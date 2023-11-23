@@ -34,7 +34,7 @@ void GameObjectManager::SetTileSize(int s) {
 }
 
 bool GameObjectManager::AreAllItemsPickedUp() {
-	std::cout << "Items left: " << std::distance(items.begin(), items.end()) << "\n";
+	//std::cout << "Items left: " << std::distance(items.begin(), items.end()) << "\n";
 	return items.empty();
 }
 
