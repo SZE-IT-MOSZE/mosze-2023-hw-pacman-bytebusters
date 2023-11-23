@@ -122,8 +122,6 @@ void Game::HandleEvents(SDL_Event* event)
 
 	*/
 
-	std::cout << "event handling in game\n";
-
 	switch (event->type)
 	{
 	case SDL_KEYDOWN:

@@ -89,20 +89,37 @@
     <Image Include="Assets\concrete01.png" />
     <Image Include="Assets\concrete02.png" />
     <Image Include="Assets\Deerly.png" />
+    <Image Include="Assets\Deerly_ultimate_sprite_sheet.png" />
+    <Image Include="Assets\Deerly_vegleges_sprite_sheet.png" />
     <Image Include="Assets\dirt.png" />
     <Image Include="Assets\Enemy_Ape.png" />
+    <Image Include="Assets\Enemy_Ape_Sprite_sheet.png" />
     <Image Include="Assets\Enemy_Deer.png" />
+    <Image Include="Assets\Enemy_Deer_Sprite_sheet.png" />
     <Image Include="Assets\Enemy_Guard.png" />
     <Image Include="Assets\Enemy_Homeless.png" />
+    <Image Include="Assets\Enemy_Homeless_Sprite_sheet.png" />
+    <Image Include="Assets\Enemy_Mercenary_sprite_sheet.png" />
     <Image Include="Assets\enemy_rat.png" />
+    <Image Include="Assets\Enemy_Rat_Sprite_sheet.png" />
     <Image Include="Assets\Enemy_Soldier.png" />
     <Image Include="Assets\err_.png" />
+    <Image Include="Assets\icon.png" />
+    <Image Include="Assets\Josepf_White_Sprite_sheet.png" />
     <Image Include="Assets\Joseph_White.png" />
     <Image Include="Assets\jungle.png" />
     <Image Include="Assets\lava.png" />
+    <Image Include="Assets\load.png" />
     <Image Include="Assets\MensTherapyHotline.jpg" />
+    <Image Include="Assets\menu.png" />
+    <Image Include="Assets\Projectile_sprite_sheet.png" />
+    <Image Include="Assets\quit.png" />
+    <Image Include="Assets\save.png" />
+    <Image Include="Assets\start.png" />
+    <Image Include="Assets\title.png" />
     <Image Include="Assets\water.png" />
     <Image Include="Assets\Yusri.png" />
+    <Image Include="Assets\Yusri_Sprite_sheet.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -206,7 +223,7 @@
       <Message>
       </Message>
       <Command>XCOPY "$(ProjectDir)Assets" "$(TargetDir)Assets\" /S /Y
-XCOPY "$(ProjectDir)Fields" "$(TargetDir)Fields\" /S /Y</Command>
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

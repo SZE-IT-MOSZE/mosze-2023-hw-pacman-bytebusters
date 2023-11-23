@@ -6,8 +6,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <filesystem>
 
-
+//post-build events -> XCOPY "$(ProjectDir)Fields" "$(TargetDir)Fields\" /S /Y after all, it wasnt needed
 
 struct levelData {
 	GameObjectManager::WallTypes wallType = GameObjectManager::concrete02;
@@ -29,7 +30,9 @@ Map::Map(const int size)
 
 	tileSize = size;
 
-	pathToFields = "Fields\\";
+	pathToFields = "Fields";
+
+	std::filesystem::create_directory(pathToFields); // if Fields does not exist create it. No need to check if it exists, nothing will happen then
 
 	destRectDraw = new SDL_Rect;
 
@@ -103,13 +106,13 @@ void DefineLevelData() {
 }
 
 void Map::Innit() {
-
+	// very big and important Innit
 	DefineLevelData();
 
 }
 
 void Map::Clean() {
-	
+	// ok
 }
 
 int Map::LoadMap(int l) { // could be separated into 2 individual functions
@@ -118,7 +121,7 @@ int Map::LoadMap(int l) { // could be separated into 2 individual functions
 
 	path = lvlData[lvl-1].path;
 
-	std::ifstream ReadLevel(pathToFields + std::to_string(lvl) + ".txt"); // open the level file
+	std::ifstream ReadLevel(pathToFields + "\\" + std::to_string(lvl) + ".txt"); // open the level file
 
 	if (!ReadLevel)
 	{
