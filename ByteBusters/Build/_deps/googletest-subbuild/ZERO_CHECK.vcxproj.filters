@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Build\_deps\googletest-subbuild\CMakeFiles\d6704698f6aa3ad02931f32d1ff925dc\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{0DD36B13-326F-3D76-B96E-0D34AABABB2C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

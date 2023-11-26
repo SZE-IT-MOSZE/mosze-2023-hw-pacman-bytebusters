@@ -1,0 +1,5 @@
+if(EXISTS "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/tests[1]_tests.cmake")
+  include("F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/tests[1]_tests.cmake")
+else()
+  add_test(tests_NOT_BUILT tests_NOT_BUILT)
+endif()

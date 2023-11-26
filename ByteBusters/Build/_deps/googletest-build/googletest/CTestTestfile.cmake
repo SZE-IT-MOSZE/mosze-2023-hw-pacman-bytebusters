@@ -1,0 +1,6 @@
+# CMake generated Testfile for 
+# Source directory: F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-src/googletest
+# Build directory: F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-build/googletest
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.

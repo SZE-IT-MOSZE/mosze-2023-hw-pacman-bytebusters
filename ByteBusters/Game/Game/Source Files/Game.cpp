@@ -4,6 +4,21 @@
 #include "Defines.h"
 
 
+///////////////////////////////////////////////
+
+/*
+Google Test is incompatible with C++20, it only compiles on C++14. (for some reason)
+My code is "incompatible" with C++14, the contains() function only exists in C++20.
+I hate this.
+*/
+
+template<typename T, typename Container>
+bool contains(const Container& cont, const T& value) {
+	return cont.find(value) != cont.end();
+}
+///////////////////////////////////////////////
+
+
 SDL_Renderer* Game::renderer = nullptr;
 
 SDL_Window* Game::window = nullptr; //!<Mutató az ablakra
@@ -176,38 +191,46 @@ void Game::HandleEvents()
 		break;
 	}
 	//////////////////////////////////////////////////////////
-	if (isPressed.contains('w')) {
+	//if (isPressed.contains('w')) {
+	if (contains(isPressed, 'w')) {
 		//std::cout << "w" << std::endl;
 		player->SetVelY(-1);
 	}
 	//////////////////////////////////////////////////////////
-	if (isPressed.contains('a')) {
+	//if (isPressed.contains('a')) {
+	if (contains(isPressed, 'a')) {
 		//std::cout << "a" << std::endl;
 		player->SetVelX(-1);
 	}
 	//////////////////////////////////////////////////////////
-	if (isPressed.contains('s')) {
+	//if (isPressed.contains('s')) {
+	if (contains(isPressed, 's')) {
 		//std::cout << "s" << std::endl;
 		player->SetVelY(1);
 	}
 	//////////////////////////////////////////////////////////
-	if (isPressed.contains('d')) {
+	//if (isPressed.contains('d')) {
+	if (contains(isPressed, 'd')) {
 		//std::cout << "d" << std::endl;
 		player->SetVelX(1);
 	}
 	//////////////////////////////////////////////////////////
-	if (!isPressed.contains('d') && !isPressed.contains('a')) { // stop if none
+	//if (!isPressed.contains('d') && !isPressed.contains('a')) { // stop if none
+	if (!contains(isPressed, 'd') && !contains(isPressed, 'a')) { // stop if none
 		player->SetVelX(0);
 	}
 	//////////////////////////////////////////////////////////
-	if (!isPressed.contains('w') && !isPressed.contains('s')) { // stop if none
+	//if (!isPressed.contains('w') && !isPressed.contains('s')) { // stop if none
+	if (!contains(isPressed, 'w') && !contains(isPressed, 's')) { // stop if none
 		player->SetVelY(0);
 	}
 	//////////////////////////////////////////////////////////
-	if (isPressed.contains('y')) {
+	//if (isPressed.contains('y')) {
+	if (contains(isPressed, 'y')) {
 		player->Shoot();
 	}
-	if (isPressed.contains('x')) {
+	//if (isPressed.contains('x')) {
+	if (contains(isPressed, 'x')) {
 		player->Hit();
 	}
 	//////////////////////////////////////////////////////////

@@ -1,0 +1,10 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-3.28/Modules/CheckIncludeFile.cmake
+C:/Program Files/CMake/share/cmake-3.28/Modules/CheckLibraryExists.cmake
+C:/Program Files/CMake/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.28/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.28/Modules/FindThreads.cmake
+F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-src/googlemock/CMakeLists.txt
+F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-src/googlemock/cmake/gmock.pc.in
+F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-src/googlemock/cmake/gmock_main.pc.in

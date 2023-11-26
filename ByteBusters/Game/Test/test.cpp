@@ -1,4 +1,12 @@
+#pragma once
+
+#define SDL_MAIN_HANDLED
+
+//google test is... see Game.cpp
+#define _SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
+
 #include <gtest/gtest.h>
+#include "Game.h"
 #include "Player.h"
 #include "Map.h"
 #include "GameObjectManager.h"
@@ -26,7 +34,7 @@ TEST(PlayerTest3, PlayerDamageTest) {
 	delete player1;
 }
 
-TEST(GameObjectTest, GameObjectDestroyTest) { // Objektum állapot ellenõrzés
+TEST(GameObjectTest, GameObjectDestroyTest) { // Objektum törlés ellenõrzés
 	GameObjectManager::CreateGameObject(GameObjectManager::homeless, 0, 0);
 	GameObjectManager::CreateGameObject(GameObjectManager::soldier, 0, 0);
 	GameObjectManager::CreateGameObject(GameObjectManager::joseph, 0, 0);
@@ -39,7 +47,7 @@ TEST(GameObjectTest, GameObjectDestroyTest) { // Objektum állapot ellenõrzés
 	EXPECT_TRUE(GameObjectManager::AreAllListsEmpty());
 }
 
-TEST(MapTest, MapTileTest) { // Map osztály ellenõrzése, hogy jó e a Tile
+TEST(MapTest, MapTileTest) { // Map osztály ellenõrzése, hogy jó-e a Tile
 	Map::Innit(32);
 	EXPECT_EQ(Map::GetTileSize(), 32);
 	Map::Clean();
@@ -47,6 +55,15 @@ TEST(MapTest, MapTileTest) { // Map osztály ellenõrzése, hogy jó e a Tile
 }
 
 int main(int argc, char** argv) {
+
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		// Handle initialization error
+		return -1;
+	}
+
 	::testing::InitGoogleTest(&argc, argv);
+
+	//SDL_Quit();
+
 	return RUN_ALL_TESTS();
 }

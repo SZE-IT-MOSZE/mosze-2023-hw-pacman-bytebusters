@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/googletest-populate"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/d6704698f6aa3ad02931f32d1ff925dc/googletest-populate.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/afb4e8bf693e54789de73d8c9bc73ff8/googletest-populate-complete.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-build.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-configure.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-download.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-install.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-mkdir.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-patch.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-test.rule"
+		},
+		{
+			"file" : "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Build/_deps/googletest-subbuild/CMakeFiles/30a703bcb0cd3deaaf3e503977a381a1/googletest-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"googletest-populate"
+		],
+		"name" : "googletest-populate"
+	}
+}
