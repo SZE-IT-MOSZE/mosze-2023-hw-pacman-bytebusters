@@ -353,4 +353,19 @@ void GameObjectManager::CheckEnemyHit(int x, int y, int range, bool right) { // 
 			}
 		}
 	}
+
+}
+bool GameObjectManager::AreAllListsEmpty() {
+	if (distance(GameObjectManager::meleeEnemies.begin(), meleeEnemies.end()) > 0) return false;
+	if (distance(GameObjectManager::noAttackEnemies.begin(), noAttackEnemies.end()) > 0) return false;
+	if (distance(GameObjectManager::rangedEnemies.begin(), rangedEnemies.end()) > 0) return false;
+
+	if (distance(GameObjectManager::playerProjectiles.begin(), playerProjectiles.end()) > 0) return false;
+	if (distance(GameObjectManager::enemyProjectiles.begin(), enemyProjectiles.end()) > 0) return false;
+
+	if (distance(GameObjectManager::walls.begin(), walls.end()) > 0) return false;
+
+	if (distance(GameObjectManager::items.begin(), items.end()) > 0) return false;
+
+	return true;
 }

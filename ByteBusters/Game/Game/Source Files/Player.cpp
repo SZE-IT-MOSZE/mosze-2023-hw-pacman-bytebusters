@@ -277,3 +277,4 @@ void Player::Reset() {
 	destRect->y = TileSize * PLAYER_SPAWN_Y;
 	hp = 10;
 }
+int Player::GetHP() { return hp; }

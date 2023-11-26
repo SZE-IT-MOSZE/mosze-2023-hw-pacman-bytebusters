@@ -76,6 +76,7 @@ public:
 	static void FlagForDelete(Projectile* f);
 
 	static bool AreAllItemsPickedUp(); //!< Annak az ellenõrzése, hogy az össze itemet fel vette-e a játékosunk
+	static bool AreAllListsEmpty();
 	
 private:
 

@@ -43,6 +43,7 @@
     <ClCompile Include="MazeGenerator\Source Files\readGridFromFile.cpp" />
     <ClCompile Include="MazeGenerator\Source Files\removeEdgeAdjacentBlocks.cpp" />
     <ClCompile Include="MazeGenerator\Source Files\writeGridToFile.cpp" />
+    <ClCompile Include="Test\test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Header Files\Defines.h" />
@@ -97,6 +98,12 @@
     <Image Include="Assets\MensTherapyHotline.jpg" />
     <Image Include="Assets\water.png" />
     <Image Include="Assets\Yusri.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Test\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -187,7 +194,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Game\Header Files;$(ProjectDir)\MazeGenerator\Header Files;$(ProjectDir)\Game\Source Files;$(ProjectDir)\MazeGenerator\Source Files;$(ProjectDir)Dependencies\SDL2_image-2.6.3\include;$(ProjectDir)Dependencies\SDL2-2.28.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Game\Test;$(ProjectDir)\Game\Header Files;$(ProjectDir)\MazeGenerator\Header Files;$(ProjectDir)\Game\Source Files;$(ProjectDir)\MazeGenerator\Source Files;$(ProjectDir)Dependencies\SDL2_image-2.6.3\include;$(ProjectDir)Dependencies\SDL2-2.28.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -221,5 +228,14 @@ XCOPY "$(ProjectDir)Fields" "$(TargetDir)Fields\" /S /Y</Command>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets" Condition="Exists('..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets')" />
+    <Import Project="..\packages\googletest.1.8.3\build\native\googletest.targets" Condition="Exists('..\packages\googletest.1.8.3\build\native\googletest.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\googletest.1.8.3\build\native\googletest.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\googletest.1.8.3\build\native\googletest.targets'))" />
+  </Target>
 </Project>

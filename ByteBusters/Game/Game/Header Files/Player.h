@@ -24,6 +24,7 @@ public:
 	void Reset(); //!< A player alap helyzetbe állítása egy új pálya betöltésekor
 
 	SDL_Rect* getDestRect() { return destRect; } //!< player hitboxának a gettere
+	int GetHP() ; //!< A player HPjának gettere
 
 	// player could have getters for posX and posY since it has to calculate it anyways
 
