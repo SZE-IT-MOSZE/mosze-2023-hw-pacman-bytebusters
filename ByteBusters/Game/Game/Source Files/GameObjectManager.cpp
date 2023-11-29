@@ -6,24 +6,17 @@
 
 Player* GameObjectManager::_player;
 SDL_Rect* GameObjectManager::playerRect;
+
+Enemy* GameObjectManager::_joseph;
+Enemy* GameObjectManager::_yusri;
+
 std::forward_list<Enemy*> GameObjectManager::enemies;
-//std::forward_list<Enemy*> GameObjectManager::meleeEnemies;
-//std::forward_list<Enemy*> GameObjectManager::rangedEnemies;
-//std::forward_list<Enemy*> GameObjectManager::noAttackEnemies;
-
-//std::forward_list<Enemy_Melee*> GameObjectManager::meleeEnemies;
-//std::forward_list<Enemy_Ranged*> GameObjectManager::rangedEnemies;
-//std::forward_list<Enemy_NoAttack*> GameObjectManager::noAttackEnemies;
-
 std::forward_list<Wall*> GameObjectManager::walls;
 std::forward_list<Item*> GameObjectManager::items;
 std::forward_list<Projectile*> GameObjectManager::playerProjectiles;
 std::forward_list<Projectile*> GameObjectManager::enemyProjectiles;
 
 std::set<Enemy*> GameObjectManager::flaggedForDeleteEnemies;
-//std::set<Enemy_Melee*> GameObjectManager::flaggedForDeleteMeleeEnemies;
-//std::set<Enemy_Ranged*> GameObjectManager::flaggedForDeleteRangedEnemies;
-//std::set<Enemy_NoAttack*> GameObjectManager::flaggedForDeleteNoAttackEnemies;
 
 std::set<Wall*> GameObjectManager::flaggedForDeleteWalls;
 std::set<Item*> GameObjectManager::flaggedForDeleteItems;
@@ -34,8 +27,17 @@ void GameObjectManager::SetTileSize(int s) {
 }
 
 bool GameObjectManager::AreAllItemsPickedUp() {
-	//std::cout << "Items left: " << std::distance(items.begin(), items.end()) << "\n";
 	return items.empty();
+}
+
+bool GameObjectManager::AreJosephAndYusriDead()
+{
+	for (auto enemy : enemies)
+	{
+		if (enemy == _joseph) return false;
+		if (enemy == _yusri) return false;
+	}
+	return true;
 }
 
 Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
@@ -63,10 +65,12 @@ void GameObjectManager::CreateGameObject(EnemyTypes t, int x, int y) {
 		enemies.push_front(new Enemy_Ranged(x, y, SLOW_ENEMY_SPEED, TextureManager::Enemy_Soldier, walls, playerProjectiles, _player));
 		break;
 	case GameObjectManager::yusri:
-		enemies.push_front(new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Yusri, walls, playerProjectiles, _player));
+		_yusri = new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Yusri, walls, playerProjectiles, _player);
+		enemies.push_front(_yusri);
 		break;
 	case GameObjectManager::joseph:
-		enemies.push_front(new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Joseph_White, walls, playerProjectiles, _player));
+		_joseph = new Enemy_NoAttack(x, y, FAST_ENEMY_SPEED, TextureManager::Joseph_White, walls, playerProjectiles, _player);
+		enemies.push_front(_joseph);
 		break;
 	default:
 		break;
@@ -98,11 +102,9 @@ void GameObjectManager::CreateGameObject(ProjectileTypes t, int x, int y, int d)
 	switch (t)
 	{
 	case GameObjectManager::playerProjectile:
-		//std::cout << "playerProjectile" << std::endl;
 		playerProjectiles.push_front(new Projectile(x, y, PROJECTILE_SPEED, d, TextureManager::projectile, walls));
 		break;
 	case GameObjectManager::enemyProjectile:
-		//std::cout << "enemyProjectile" << std::endl;
 		enemyProjectiles.push_front(new Projectile(x, y, PROJECTILE_SPEED, d, TextureManager::projectile, walls));
 		break;
 	default:
@@ -197,7 +199,10 @@ void GameObjectManager::ResetPlayer() {
 
 void GameObjectManager::DestroyAllGameObjects() { 
 	DestroyAllExceptPlayer();
-	delete _player;
+	if (_player != nullptr)
+	{
+		delete _player;
+	}
 }
 
 /////////////////////////////////////////////////////////////// FLAGGING AND DELETEION

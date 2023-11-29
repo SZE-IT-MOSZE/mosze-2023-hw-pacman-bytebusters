@@ -44,4 +44,6 @@ public:
 	static SDL_Texture* quit;
 	static SDL_Texture* save;
 	static SDL_Texture* menu;
+
+	static SDL_Texture* heart;
 };

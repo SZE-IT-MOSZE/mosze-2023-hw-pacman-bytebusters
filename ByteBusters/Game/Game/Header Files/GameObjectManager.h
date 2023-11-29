@@ -52,6 +52,7 @@ public:
 	static void CreateGameObject(ItemTypes t, int x, int y); //!< Item létrehozása adott pozícióban
 	static void CreateGameObject(ProjectileTypes t, int x, int y, int d); //!< Item létrehozása adott pozícióban
 
+
 	static void SetTileSize(int size); //!< Cella méret beállítása
 
 	static void RenderAllGameObjects(); //!< Game objektumok renderelése
@@ -71,12 +72,15 @@ public:
 
 	static bool AreAllItemsPickedUp(); //!< Annak az ellenõrzése, hogy az össze itemet fel vette-e a játékosunk
 	
-private:
+	static bool AreJosephAndYusriDead();
 
-	//static int tileSize; // we could save this, but why
+private:
 
 	static Player* _player; //!< a player objetum mutatója
 	static SDL_Rect* playerRect;
+
+	static Enemy* _joseph;
+	static Enemy* _yusri;
 
 	static std::forward_list<Enemy*> enemies; //!< Enemy-k listája
 

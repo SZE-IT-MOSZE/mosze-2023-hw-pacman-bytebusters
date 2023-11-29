@@ -98,8 +98,11 @@ void DefineLevelData() {
 
 #ifdef DEBUGLEVEL
 	lvlData[0].rat = 1;
-
 	lvlData[0].soldier = 1;
+
+	lvlData[9].soldier = 0;
+	lvlData[9].yusri = 1;
+	lvlData[9].joseph = 1;
 #endif // DEBUGLEVEL
 
 	

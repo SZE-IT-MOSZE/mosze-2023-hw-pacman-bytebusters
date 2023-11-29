@@ -38,6 +38,8 @@ SDL_Texture* TextureManager::quit;
 SDL_Texture* TextureManager::save;
 SDL_Texture* TextureManager::menu;
 
+SDL_Texture* TextureManager::heart;
+
 SDL_Texture* TextureManager::LoadTexture(const char* texture) {
 	SDL_Surface* tempSurface = IMG_Load(texture);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, tempSurface);
@@ -81,4 +83,6 @@ void TextureManager::LoadAllTextures() {
 	TextureManager::quit			= LoadTexture("Assets/quit.png");
 	TextureManager::save			= LoadTexture("Assets/save.png");
 	TextureManager::menu			= LoadTexture("Assets/menu.png");
+
+	TextureManager::heart			= LoadTexture("Assets/heart.png");
 }

@@ -7,7 +7,7 @@
 #include "Game.h"
 #include <iostream>
 
-int GameObject::TileSize = 0; // what is the default tilesize, hmm?
+int GameObject::TileSize = 32;
 
 GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
@@ -20,7 +20,7 @@ GameObject::GameObject(int x, int y) {
 	srcRect = new SDL_Rect;
 	srcRect->x = 0;
 	srcRect->y = 0;
-	srcRect->w = srcRect->h = 64; // omg why is this here it shouldnt be here
+	srcRect->w = srcRect->h = 64;
 
 }
 

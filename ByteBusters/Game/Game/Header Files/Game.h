@@ -24,11 +24,11 @@ public:
 	Game();
 	~Game();
 
-	int Init(SDL_Window* window, const int tileRes); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
+	int Init(); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
 	void Render(); //!< A játék megjelenítése/ki renderelése
 	void Start(); //!< A játék indítása
 	void Clean(); //!< Az össze objektum törlése, sub system leállítása a játék bezárása elõtt
-	void HandleEvents(SDL_Event* event); //!< Az események lekezelése
+	void HandleKeyEvents(SDL_Event* event); //!< Az események lekezelése
 	void UpdateThread(); //!< Ezen a szállon fut a frissítés
 
 	void StopUpdate();
@@ -36,27 +36,30 @@ public:
 	void PauseUpdate();
 	void ResumeUpdate();
 
+	void MainLoop();
 
 	bool isPlayerDead();
-
-
 
 	static SDL_Renderer* renderer;
 
 private:
 
-	//UI* ui;
-
-	SDL_Window* window; //!<Mutató az ablakra
-	//Map* map; //!< Mutató a mapra
+	Window* window;
+	UI* ui;
+	Map* map; //!< Mutató a mapra
 	Player* player; //!< Mutató a playerre
-	//std::thread* gameUpdates; //!<Mutató a játék frissítésre
+	std::thread* gameUpdates; //!<Mutató a játék frissítésre
 
 	std::set<char> pressedKeys;
 
 	int tileRes;
 
+	bool isRunning;
+	bool inMenu;
+	bool isPlaying;
+
 	bool update;
 	bool paused;
+	bool confirmPause;
 
 };

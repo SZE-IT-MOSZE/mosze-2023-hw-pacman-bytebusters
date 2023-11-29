@@ -3,18 +3,17 @@
 #include "Game.h"
 #include "TextureManager.h"
 
-Button::Button(Window* window, void (*func)(Uint32), Uint32 UIEvent, int tR, int pos[4], SDL_Texture* t)
+Button::Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, SDL_Texture* t)
 {
-    Rect.x = pos[0] * tR;
-    Rect.y = pos[1] * tR;
-    Rect.w = pos[2] * tR;
-    Rect.h = pos[3] * tR;
+
+    Rect.x = x * tR;
+    Rect.y = y * tR;
+    Rect.w = w * tR;
+    Rect.h = h * tR;
 
     objTexture = t;
 
-    SDLWindowSurface = SDL_GetWindowSurface(window->GetWindow());
     Update();
-    std::cout << "button created" << "\n";
 
     this->funcP = func;
 
@@ -23,18 +22,14 @@ Button::Button(Window* window, void (*func)(Uint32), Uint32 UIEvent, int tR, int
     isHovered = false;
 }
 
-Button::Button(Window* window, void (*func)(), int tR, int pos[4], SDL_Texture* t)
+Button::Button(void (*func)(), int tR, int x, int y, int w, int h, SDL_Texture* t)
 {
-    Rect.x = pos[0] * tR;
-    Rect.y = pos[1] * tR;
-    Rect.w = pos[2] * tR;
-    Rect.h = pos[3] * tR;
+    Rect.x = x * tR;
+    Rect.y = y * tR;
+    Rect.w = w * tR;
+    Rect.h = h * tR;
 
     objTexture = t;
-
-    SDLWindowSurface = SDL_GetWindowSurface(window->GetWindow());
-    Update();
-    std::cout << "button created" << "\n";
 
     this->func = func;
 
@@ -43,37 +38,23 @@ Button::Button(Window* window, void (*func)(), int tR, int pos[4], SDL_Texture* 
     isHovered = false;
 }
 
-//Button::Button(SDL_Window* window, void (*func)())
-//{
-//    objTexture = TextureManager::err_;
-//
-//    SDLWindowSurface = SDL_GetWindowSurface(window);
-//    Update();
-//    std::cout << "button created" << "\n";
-//
-//    this->func = func;
-//}
-
 bool Button::HandleEvent(const SDL_Event* Event) {
     if (Event->type == SDL_MOUSEBUTTONDOWN && Event->button.button == SDL_BUTTON_LEFT && isHovered)
     {
-        std::cout << "button pressed" << "\n";
         if (UIEvent == (Uint32)-1)
         {
-            func(); // call the function pressed into the button
+            func(); // call the function passed into the button
         }
         else {
             funcP(UIEvent);
         }
-        
     }
     else if (Event->type == SDL_MOUSEMOTION) [[likely]]
     {
         if (isHovered != IsWithinBounds(Event->motion.x, Event->motion.y)) {
             isHovered = !isHovered;
-            Update(); std::cout << "hover" << "\n";
+            Update(); 
         }
-
         return isHovered;
     }
     return false;
