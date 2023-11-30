@@ -4,18 +4,15 @@
 
 int main(int argc, char* argv[]) {
 
-	Game* game = new Game();
+	std::shared_ptr<Game> game = Game::GetInstance();
 
 	if (game->Init() != 0)
 	{
 		std::cout << "Game initialization failed. Application quitting. \n";
-		delete game;
 		return -1;
 	}
 
 	game->MainLoop(); // only returns if the application is quitting
-
-	delete game;
 
 	std::cout << _CrtDumpMemoryLeaks();
 

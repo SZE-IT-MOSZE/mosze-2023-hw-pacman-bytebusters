@@ -4,7 +4,19 @@
 #include "generateMaze.h"
 #include "Defines.h"
 
-SDL_Renderer* Game::renderer = nullptr;
+SDL_Renderer* Game::renderer{ nullptr };
+
+std::shared_ptr<Game> Game::pinstance_{ nullptr };
+std::mutex Game::mutex_;
+
+std::shared_ptr<Game> Game::GetInstance() {
+	std::lock_guard<std::mutex> lock(mutex_);
+	if (!pinstance_) {
+		pinstance_ = std::make_shared<Game>();
+	}
+	return pinstance_;
+}
+
 
 Game::Game()
 {
@@ -23,7 +35,6 @@ Game::Game()
 	gameUpdates = nullptr;
 	player = nullptr;
 	tileRes = 32;
-
 }
 
 Game::~Game() 
@@ -32,6 +43,7 @@ Game::~Game()
 	delete window;
 	delete map;
 	delete ui;
+	std::cout << "Game destroctor called \n";
 }
 
 int Game::Init()

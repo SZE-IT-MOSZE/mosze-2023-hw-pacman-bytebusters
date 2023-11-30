@@ -16,41 +16,40 @@
 #include "Button.h"
 
 #include "UI.h"
+#include <mutex>
 
 class Game {
 
 public:
 
-	Game();
-	~Game();
+	static std::shared_ptr<Game> GetInstance();
+	Game(Game& other) = delete;
+	void operator=(const Game&) = delete;
 
 	int Init(); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
-	void Render(); //!< A játék megjelenítése/ki renderelése
-	void Start(); //!< A játék indítása
-	void Clean(); //!< Az össze objektum törlése, sub system leállítása a játék bezárása elõtt
 	void HandleKeyEvents(SDL_Event* event); //!< Az események lekezelése
 	void UpdateThread(); //!< Ezen a szállon fut a frissítés
 
 	void StopUpdate();
-	void StartUpdate(); // not the best name, it just sets the variable that lets it run when update is created
 	void PauseUpdate();
 	void ResumeUpdate();
 
 	void MainLoop();
 
-	bool isPlayerDead();
-
 	static SDL_Renderer* renderer;
-
+	
+	~Game();
+	Game();
 private:
+	static std::shared_ptr<Game> pinstance_;
+	static std::mutex mutex_;
+	
 
 	Window* window;
 	UI* ui;
 	Map* map; //!< Mutató a mapra
 	Player* player; //!< Mutató a playerre
 	std::thread* gameUpdates; //!<Mutató a játék frissítésre
-
-	std::set<char> pressedKeys;
 
 	int tileRes;
 
