@@ -47,6 +47,18 @@ void ToMenu(Uint32 UIEvent) {
 	std::cout << "ToMenu \n";
 }
 
+std::shared_ptr<UI> UI::instance_{ nullptr };
+std::mutex UI::mutex_;
+
+std::shared_ptr<UI> UI::GetInstance(const int tR) {
+	std::lock_guard<std::mutex> lock(mutex_);
+	if (!instance_) {
+		instance_ = std::shared_ptr<UI>(new UI(tR));
+		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	}
+	return instance_;
+}
+
 UI::UI(int tR)
 {
 	returnValue = 0;

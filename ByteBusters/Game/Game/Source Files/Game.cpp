@@ -6,21 +6,21 @@
 
 SDL_Renderer* Game::renderer{ nullptr };
 
-std::shared_ptr<Game> Game::pinstance_{ nullptr };
+std::shared_ptr<Game> Game::instance_{ nullptr };
 std::mutex Game::mutex_;
 
 std::shared_ptr<Game> Game::GetInstance() {
 	std::lock_guard<std::mutex> lock(mutex_);
-	if (!pinstance_) {
-		pinstance_ = std::make_shared<Game>();
+	if (!instance_) {
+		instance_ = std::shared_ptr<Game>(new Game()); 
+		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
 	}
-	return pinstance_;
+	return instance_;
 }
 
 
 Game::Game()
 {
-
 	isRunning = true;
 	inMenu = true;
 	isPlaying = false;
@@ -40,23 +40,19 @@ Game::Game()
 Game::~Game() 
 {
 	SDL_DestroyRenderer(renderer);
-	delete window;
-	delete map;
-	delete ui;
 	std::cout << "Game destroctor called \n";
 }
 
 int Game::Init()
 {	
-	window = new Window();
+	window = Window::GetInstance();
 	if (window->Init("DEER - MURDER - HORROR - BLOOD - GORE(The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, false) != 0)
 	{
 		std::cout << "Window creation failed. \n";
-		delete window;  //safe clean
 		return -1;
 	}
 
-	this->tileRes = window->GetTileRes();
+	tileRes = window->GetTileRes();
 
 	renderer = SDL_CreateRenderer(window->GetWindow(), -1, 0);
 	if (renderer)
@@ -66,27 +62,21 @@ int Game::Init()
 	else 
 	{
 		std::cout << "Renderer creation failed." << std::endl;
-		delete window;
 		return -1;
 	}
 
 	TextureManager::LoadAllTextures();
 
-	ui = new UI(window->GetTileRes());
+	ui = UI::GetInstance(window->GetTileRes());
 	if (ui->Init() != 0)
 	{
 		std::cout << "UI creation failed. \n";
-		delete window;
-		delete ui;
 		return -1;
 	}
 
-
 	GameObjectManager::SetTileSize(tileRes);
 
-	map = new Map(tileRes);
-
-	map->Innit(); // doesnt make sense
+	map = Map::GetInstance(tileRes);
 
 	return 0;
 }

@@ -3,15 +3,35 @@
 #include "Window.h"
 #include <iostream>
 
+std::shared_ptr<Window> Window::instance_{ nullptr };
+std::mutex Window::mutex_;
+
+std::shared_ptr<Window> Window::GetInstance() {
+	std::lock_guard<std::mutex> lock(mutex_);
+	if (!instance_) {
+		instance_ = std::shared_ptr<Window>(new Window());
+		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	}
+	return instance_;
+}
+
 Window::Window()
 {
+	scaledScreenHeight = 720;
+	scaledScreenWidth = 720;
 
+	tileRes = 32;
+	window = nullptr;
+
+	windowHeight = 480;
+	windowWidth = 704;
 }
 
 Window::~Window()
 {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	std::cout << "Window destructor called\n";
 }
 
 int Window::Init(const char* title, const int xPos, const int yPos, const bool fullscreen) {
@@ -54,8 +74,8 @@ int Window::Init(const char* title, const int xPos, const int yPos, const bool f
 	else { // this fits 4K
 		tileRes = 128;
 	}
-	windowHeight = tileRes * ROWS; //map size again
-	windowWidth = tileRes * (COLS+2);  //map size again
+	windowHeight = tileRes * ROWS;
+	windowWidth = tileRes * (COLS+2);
 
 	//15*32 = 480
 	//15*48 = 720

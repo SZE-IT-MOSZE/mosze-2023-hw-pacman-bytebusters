@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[]) {
 
-	std::shared_ptr<Game> game = Game::GetInstance();
+	std::shared_ptr<Game> game = Game::GetInstance(); 
 
 	if (game->Init() != 0)
 	{

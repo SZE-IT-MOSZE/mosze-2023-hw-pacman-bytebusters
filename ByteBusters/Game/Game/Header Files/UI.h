@@ -2,6 +2,7 @@
 #include "Button.h"
 #include "Window.h"
 #include <vector>
+#include <mutex>
 
 #define TITLE 0,  0,  22, 6
 #define START 9,  7,  4,  1
@@ -15,8 +16,11 @@
 class UI
 {
 public:
-	UI(int tR);
+	static std::shared_ptr<UI> GetInstance(const int tR);
+	UI(UI& other) = delete;
+	void operator=(const UI&) = delete;
 	~UI();
+
 	int Init();
 	void RenderMainMenu();
 	void RenderGameMenu();
@@ -26,8 +30,11 @@ public:
 	Uint32 Get_UI_EVENT() { return UIEvent; }
 
 private:
-	int tileRes;
+	UI(const int tR);
+	static std::shared_ptr<UI> instance_;
+	static std::mutex mutex_;
 
+	int tileRes;
 	int returnValue;
 
 	std::vector<Button*> menuButtons;

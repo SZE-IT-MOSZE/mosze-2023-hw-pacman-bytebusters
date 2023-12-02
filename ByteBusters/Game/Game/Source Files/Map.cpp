@@ -2,33 +2,28 @@
 #include "Defines.h"
 
 #include "Map.h"
-#include "TextureManager.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <filesystem>
 
-//post-build events -> XCOPY "$(ProjectDir)Fields" "$(TargetDir)Fields\" /S /Y after all, it wasnt needed
+std::shared_ptr<Map> Map::instance_{ nullptr };
+std::mutex Map::mutex_;
 
-struct levelData {
-	GameObjectManager::WallTypes wallType = GameObjectManager::concrete02;
-	SDL_Texture* path = TextureManager::dirt;
-	int ape = 0;
-	int deer = 0;
-	int homeless = 0;
-	int joseph = 0;
-	int rat = 0;
-	int soldier = 0;
-	int yusri = 0;
-};
+std::shared_ptr<Map> Map::GetInstance(const int tileSize) {
+	std::lock_guard<std::mutex> lock(mutex_);
+	if (!instance_) {
+		instance_ = std::shared_ptr<Map>(new Map(tileSize));
+		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	}
+	return instance_;
+}
 
-Map::Map(const int size)
+Map::Map(const int tS)
 {
 	path = TextureManager::err_;
 
-	lvl = 0;
-
-	tileSize = size;
+	tileSize = tS;
 
 	pathToFields = "Fields";
 
@@ -38,18 +33,7 @@ Map::Map(const int size)
 
 	destRectDraw->w = destRectDraw->h = tileSize;
 	destRectDraw->x = destRectDraw->y = 0;
-}
 
-Map::~Map() 
-{
-	delete destRectDraw;
-}
-
-
-levelData lvlData[MAPS]; //index level.txt from 1, index lvlData from 0. it's a bit weird i admit.
-						//why is the struct and the variable declaration floating in the cpp file?
-
-void DefineLevelData() {
 	///////////// DEEP JUNGLE /////////////
 	lvlData[0].wallType = GameObjectManager::concrete02;
 	lvlData[0].path = TextureManager::jungle;
@@ -105,13 +89,11 @@ void DefineLevelData() {
 	lvlData[9].joseph = 1;
 #endif // DEBUGLEVEL
 
-	
 }
 
-void Map::Innit() {
-	// very big and important Innit
-	DefineLevelData();
-
+Map::~Map() 
+{
+	delete destRectDraw;
 }
 
 void Map::Clean() {
@@ -175,9 +157,9 @@ void Map::SaveMapNumber(int mapNum) {
 
 int Map::LoadMap(int l) { // could be separated into 2 individual functions
 
-	lvl = l;
+	int lvl = l;
 
-	path = lvlData[lvl-1].path;
+	path = lvlData[lvl - 1].path;
 
 	std::ifstream ReadLevel(pathToFields + "\\" + std::to_string(lvl) + ".txt"); // open the level file
 

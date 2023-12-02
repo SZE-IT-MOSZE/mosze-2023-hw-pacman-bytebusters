@@ -25,6 +25,7 @@ public:
 	static std::shared_ptr<Game> GetInstance();
 	Game(Game& other) = delete;
 	void operator=(const Game&) = delete;
+	~Game();
 
 	int Init(); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
 	void HandleKeyEvents(SDL_Event* event); //!< Az események lekezelése
@@ -38,16 +39,16 @@ public:
 
 	static SDL_Renderer* renderer;
 	
-	~Game();
-	Game();
+
 private:
-	static std::shared_ptr<Game> pinstance_;
+	Game();
+	static std::shared_ptr<Game> instance_;
 	static std::mutex mutex_;
 	
 
-	Window* window;
-	UI* ui;
-	Map* map; //!< Mutató a mapra
+	std::shared_ptr<Window> window;
+	std::shared_ptr<UI> ui;
+	std::shared_ptr<Map> map; //!< Mutató a mapra
 	Player* player; //!< Mutató a playerre
 	std::thread* gameUpdates; //!<Mutató a játék frissítésre
 
