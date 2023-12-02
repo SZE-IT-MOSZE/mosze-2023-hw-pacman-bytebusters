@@ -7,15 +7,20 @@
 #include "Game.h"
 #include <iostream>
 
-int GameObject::TileSize = 32;
+#include "GameObjectManager.h" // forward declared in header
+
+int GameObject::tileRes = 32;
+std::weak_ptr<GameObjectManager> GameObject::gom;
 
 GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
 
+	gom = GameObjectManager::GetInstance(0);
+
 	destRect = new SDL_Rect;
 	destRect->x = x;
 	destRect->y = y;
-	destRect->w = destRect->h = TileSize;
+	destRect->w = destRect->h = tileRes;
 
 	srcRect = new SDL_Rect;
 	srcRect->x = 0;
@@ -34,5 +39,5 @@ void GameObject::Render() {
 }
 
 void GameObject::setTileSize(int s) {
-	TileSize = s;
+	tileRes = s;
 }

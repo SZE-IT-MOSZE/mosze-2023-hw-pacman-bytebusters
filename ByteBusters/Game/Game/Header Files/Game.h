@@ -49,6 +49,8 @@ private:
 	std::shared_ptr<Window> window;
 	std::shared_ptr<UI> ui;
 	std::shared_ptr<Map> map; //!< Mutató a mapra
+	std::shared_ptr<GameObjectManager> gom;
+
 	Player* player; //!< Mutató a playerre
 	std::thread* gameUpdates; //!<Mutató a játék frissítésre
 

@@ -18,7 +18,7 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	xvel = yvel = 0;
 	
 
-	speed = s * TileSize / DIVIDE_BY_THIS;
+	speed = s * tileRes / DIVIDE_BY_THIS;
 
 	distance = 0;
 	visionDistance = 0;
@@ -31,13 +31,6 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	frameCounter = 0;				// frame counter
 	row = 0;						// animation to display
 	facingRight = true;
-	
-	/*enemySheetData = new int[4][2]{
-		{3, 200},
-		{3, 200},
-		{5, 100},
-		{5, 100},
-	};*/
 
 	enemySheetData = nullptr;
 

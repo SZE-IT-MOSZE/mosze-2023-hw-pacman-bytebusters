@@ -11,6 +11,7 @@ public:
 
 private:
 	void Attack();
+	void ShootProjectile(int d);
 
 	enum anim {
 		Idle_R = 0,

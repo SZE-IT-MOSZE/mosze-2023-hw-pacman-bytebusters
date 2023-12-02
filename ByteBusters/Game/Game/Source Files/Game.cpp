@@ -74,7 +74,7 @@ int Game::Init()
 		return -1;
 	}
 
-	GameObjectManager::SetTileSize(tileRes);
+	gom = GameObjectManager::GetInstance(tileRes);
 
 	map = Map::GetInstance(tileRes);
 
@@ -147,7 +147,7 @@ void Game::MainLoop()
 
 		if (!isRunning) break; // dont go further if the user has quit the application
 		
-		player = GameObjectManager::CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
+		player = gom->CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
 		map->LoadMap(currentLvl);
 		gameUpdates = new std::thread(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 		while (isPlaying) { // the user is in the game
@@ -183,24 +183,24 @@ void Game::MainLoop()
 			//------------------------------------------------------------------------------
 			SDL_RenderClear(Game::renderer);
 			map->DrawMap();
-			GameObjectManager::RenderAllGameObjects();
+			gom->RenderAllGameObjects();
 			ui->SetHP(player->GetHP());
 			ui->RenderGameMenu();
 			SDL_RenderPresent(Game::renderer);
 			//------------------------------------------------------------------------------
-			if (GameObjectManager::AreAllItemsPickedUp())
+			if (gom->AreAllItemsPickedUp())
 			{
 				if (currentLvl < 10) 
 				{
 					PauseUpdate(); // only returns if paused (no join, theread is waiting, it didnt quit)
-					GameObjectManager::DestroyAllExceptPlayer();
+					gom->DestroyAllExceptPlayer();
 					player->Reset();
 					++currentLvl;
 					map->LoadMap(currentLvl);
 					std::cout << "Current Level: " << currentLvl << "\n";
 					ResumeUpdate();
 				}
-				else if (GameObjectManager::AreJosephAndYusriDead())
+				else if (gom->AreJosephAndYusriDead())
 				{
 					StopUpdate();
 					isPlaying = false;
@@ -212,7 +212,7 @@ void Game::MainLoop()
 			if (player->GetHP() <= 0)
 			{
 				PauseUpdate(); // only returns if paused (no join, theread is waiting, it didnt quit)
-				GameObjectManager::DestroyAllExceptPlayer();
+				gom->DestroyAllExceptPlayer();
 				player->Reset();
 				map->LoadMap(currentLvl);
 				std::cout << "Current Level: " << currentLvl << "\n";
@@ -223,7 +223,7 @@ void Game::MainLoop()
 			if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
 		}
 		delete gameUpdates;
-		GameObjectManager::DestroyAllGameObjects();
+		gom->DestroyAllGameObjects();
 		
 	}
 }
@@ -262,7 +262,7 @@ void Game::UpdateThread() {
 		while (!paused) {
 			frameStart = SDL_GetTicks();
 			//------------------------------------------------------------------------------
-			GameObjectManager::UpdateAllGameObjects();
+			gom->UpdateAllGameObjects();
 			//------------------------------------------------------------------------------
 			frameTime = SDL_GetTicks() - frameStart;
 			if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);

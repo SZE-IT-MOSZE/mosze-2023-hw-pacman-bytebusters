@@ -28,8 +28,16 @@ void Enemy_Ranged::Update() {
 	for (Projectile* projectile : projectiles)
 	{
 		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
-			GameObjectManager::FlagForDelete(this);
-			GameObjectManager::FlagForDelete(projectile);
+			if (auto lockedPtr = gom.lock())
+			{
+				lockedPtr->FlagForDelete(this);
+				lockedPtr->FlagForDelete(projectile);
+			}
+			else
+			{
+				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+			}
+			break;
 			break;
 		}
 	}
@@ -58,7 +66,7 @@ void Enemy_Ranged::Update() {
 
 	CalculatePositions(); // CALL FIRST !!!!!!!!!
 
-	if ( (playerPosX >= posX - TileSize / 2 && playerPosX <= posX + TileSize / 2) || (playerPosY >= posY - TileSize / 2 && playerPosY <= posY + TileSize / 2) )
+	if ( (playerPosX >= posX - tileRes / 2 && playerPosX <= posX + tileRes / 2) || (playerPosY >= posY - tileRes / 2 && playerPosY <= posY + tileRes / 2) )
 	{
 		if (CheckLineOfSight()) 
 		{
@@ -76,32 +84,43 @@ void Enemy_Ranged::Attack(){
 	uninterruptibleAnimation = true;
 
 	CalculatePositions();
-	if (abs(playerPosX - posX) <= TileSize/2)
+	if (abs(playerPosX - posX) <= tileRes/2)
 	{
 		if (posY >= playerPosY) {
 			row = Attack_U;
-			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::up);
+			ShootProjectile(Projectile::up);
 		}
 		else if (posY < playerPosY)
 		{
 			row = Attack_D;
-			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::down);
+			ShootProjectile(Projectile::down);
 		}
 	}
-	else if (abs(playerPosY - posY) <= TileSize)
+	else if (abs(playerPosY - posY) <= tileRes)
 	{
 		if (posX <= playerPosX) {
 			row = Attack_R;
-			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::right);
+			ShootProjectile(Projectile::right);
 		}
 		else if (posX > playerPosX)
 		{
 			row = Attack_L;
-			GameObjectManager::CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, Projectile::left);
+			ShootProjectile(Projectile::left);
 		}
 	} 
+	//else
+	//{
+	//	std::cout << "ATTACK WAS CALLED BUT NO PLAYER TO SHOOT" << std::endl;
+	//}
+}
+
+void Enemy_Ranged::ShootProjectile(int d) {
+	if (auto lockedPtr = gom.lock())
+	{
+		lockedPtr->CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, d);
+	}
 	else
 	{
-		std::cout << "ATTACK WAS CALLED BUT NO PLAYER TO SHOOT" << std::endl;
+		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 	}
 }

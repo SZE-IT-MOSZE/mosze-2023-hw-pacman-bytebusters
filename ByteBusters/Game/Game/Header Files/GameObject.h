@@ -1,5 +1,8 @@
 #pragma once
 #include "SDL.h"
+#include <memory>
+
+class GameObjectManager;
 
 class GameObject {
 
@@ -16,11 +19,11 @@ public:
 	SDL_Rect* GetDestRect() { return destRect; }
 
 protected:
-	static int TileSize;
+	static int tileRes;
+	static std::weak_ptr<GameObjectManager> gom;
 
 	SDL_Rect* destRect;
 	SDL_Rect* srcRect;
-	//SDL_Rect* hitbox;
 
 	SDL_Texture* objTexture;
 

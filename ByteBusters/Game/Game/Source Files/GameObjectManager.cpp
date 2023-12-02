@@ -4,26 +4,30 @@
 #include <iostream>
 #include "Defines.h"
 
-Player* GameObjectManager::_player;
-SDL_Rect* GameObjectManager::playerRect;
+std::shared_ptr<GameObjectManager> GameObjectManager::instance_{ nullptr };
+std::mutex GameObjectManager::mutex_;
 
-Enemy* GameObjectManager::_joseph;
-Enemy* GameObjectManager::_yusri;
+std::shared_ptr<GameObjectManager> GameObjectManager::GetInstance(const int tR) {
+	std::lock_guard<std::mutex> lock(mutex_);
+	if (!instance_) {
+		instance_ = std::shared_ptr<GameObjectManager>(new GameObjectManager(tR));
+		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	}
+	return instance_;
+}
 
-std::forward_list<Enemy*> GameObjectManager::enemies;
-std::forward_list<Wall*> GameObjectManager::walls;
-std::forward_list<Item*> GameObjectManager::items;
-std::forward_list<Projectile*> GameObjectManager::playerProjectiles;
-std::forward_list<Projectile*> GameObjectManager::enemyProjectiles;
+GameObjectManager::GameObjectManager(const int tR) {
+	GameObject::setTileSize(tR);
 
-std::set<Enemy*> GameObjectManager::flaggedForDeleteEnemies;
+	_player = nullptr;
+	playerRect = nullptr;
 
-std::set<Wall*> GameObjectManager::flaggedForDeleteWalls;
-std::set<Item*> GameObjectManager::flaggedForDeleteItems;
-std::set<Projectile*> GameObjectManager::flaggedForDeleteProjectiles;
+	_joseph = nullptr;
+	_yusri = nullptr;
+}
 
-void GameObjectManager::SetTileSize(int s) {
-	GameObject::setTileSize(s);
+GameObjectManager::~GameObjectManager() {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 bool GameObjectManager::AreAllItemsPickedUp() {
@@ -144,10 +148,6 @@ void GameObjectManager::UpdateAllGameObjects() {
 	{
 		enemy->Update();
 	}
-	/*for (Wall* wall : walls) //why would i do this?
-	{
-		wall->Update();
-	}*/
 	for (auto item : items)
 	{
 		item->Update();
@@ -230,13 +230,6 @@ void GameObjectManager::DeleteFlagged() { // (for items a lighter built in versi
 		delete f;
 	}
 	flaggedForDeleteEnemies.clear();
-
-	/*for (Wall* f : flaggedForDeleteWalls) // why would we do this? i know. but im not telling.
-	{
-		walls.remove(f);
-		delete f;
-	}
-	flaggedForDeleteWalls.clear();*/
 
 	/*for (Item* f : flaggedForDeleteItems)
 	{

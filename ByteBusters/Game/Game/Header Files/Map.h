@@ -30,10 +30,11 @@ public:
 
 private:
 
-	Map(int tS); //!<  Létrehoz egy példányt az osztályból, amely a megadott cella méretet fogja használni
+	Map(int tR); //!<  Létrehoz egy példányt az osztályból, amely a megadott cella méretet fogja használni
 	static std::shared_ptr<Map> instance_;
 	static std::mutex mutex_;
 
+	std::shared_ptr<GameObjectManager> gom;
 
 	std::string pathToFields;
 	std::string pathToTextures;

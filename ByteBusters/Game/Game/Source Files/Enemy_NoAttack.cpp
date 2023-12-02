@@ -14,7 +14,7 @@ Enemy_NoAttack::Enemy_NoAttack(int x, int y, int s, SDL_Texture* t, std::forward
 		{5, 100},
 	};
 
-	visionDistance = TileSize * 5;
+	visionDistance = tileRes * 5;
 }
 
 Enemy_NoAttack::~Enemy_NoAttack() {
@@ -25,8 +25,16 @@ void Enemy_NoAttack::Update() {
 	for (Projectile* projectile : projectiles)
 	{
 		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
-			GameObjectManager::FlagForDelete(this);
-			GameObjectManager::FlagForDelete(projectile);
+			if (auto lockedPtr = gom.lock())
+			{
+				lockedPtr->FlagForDelete(this);
+				lockedPtr->FlagForDelete(projectile);
+			}
+			else
+			{
+				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+			}
+			break;
 			break;
 		}
 	}

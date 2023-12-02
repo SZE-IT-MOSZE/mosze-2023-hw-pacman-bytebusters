@@ -19,11 +19,13 @@ std::shared_ptr<Map> Map::GetInstance(const int tileSize) {
 	return instance_;
 }
 
-Map::Map(const int tS)
+Map::Map(const int tR)
 {
-	path = TextureManager::err_;
+	tileSize = tR;
 
-	tileSize = tS;
+	gom = GameObjectManager::GetInstance(tR);
+
+	path = TextureManager::err_;
 
 	pathToFields = "Fields";
 
@@ -235,10 +237,10 @@ void Map::SpawnGameObjects(int lvl) {
 			switch (map[r][c])
 			{
 			case 1:
-				GameObjectManager::CreateGameObject(lvlData[lvl].wallType, c * tileSize, r * tileSize);
+				gom->CreateGameObject(lvlData[lvl].wallType, c * tileSize, r * tileSize);
 				break;
 			case 2:
-				GameObjectManager::CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
+				gom->CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
 				break;
 			default:
 				break;
@@ -250,31 +252,31 @@ void Map::SpawnGameObjects(int lvl) {
 	//spawn enemies
 	for (size_t i = 0; i < lvlData[lvl].ape; i++)
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::ape, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::ape, tileSize, tileSize);
 	}
 	for (size_t i = 0; i < lvlData[lvl].deer; i++)
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::deer, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::deer, tileSize, tileSize);
 	}
 	for (size_t i = 0; i < lvlData[lvl].homeless; i++)
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::homeless, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::homeless, tileSize, tileSize);
 	}
 	for (size_t i = 0; i < lvlData[lvl].joseph; i++)
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::joseph, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::joseph, tileSize, tileSize);
 	}
 	for (size_t i = 0; i < lvlData[lvl].rat; i++)
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::rat, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::rat, tileSize, tileSize);
 	}
 	for (size_t i = 0; i < lvlData[lvl].soldier; i++)
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::soldier, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::soldier, tileSize, tileSize);
 	}
 	for (size_t i = 0; i < lvlData[lvl].yusri; i++)
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::yusri, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::yusri, tileSize, tileSize);
 	}
 }
 

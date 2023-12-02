@@ -25,7 +25,7 @@ Shoot_L 5 100
 Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i, std::forward_list<Projectile*>& p) : walls(w), items(i), projectiles(p), GameObject(x, y) {
 	objTexture = t;
 
-	std::cout << "player tile size: " << TileSize << "\n";
+	std::cout << "player tile size: " << tileRes << "\n";
 
 	xvel = 0;
 	yvel = 0;
@@ -43,7 +43,7 @@ Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w,
 	frameCounter = 0;				// frame counter
 	row = 0;						// animation to display
 
-	speed = s * TileSize/DIVIDE_BY_THIS;
+	speed = s * tileRes/DIVIDE_BY_THIS;
 }
 
 Player::~Player() {
@@ -58,10 +58,16 @@ void Player::Update() {
 	for (Projectile* projectile : projectiles)
 	{
 		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
-			GameObjectManager::FlagForDelete(projectile);
-			std::cout << "HIT" << std::endl;
+			if (auto lockedPtr = gom.lock())
+			{
+				lockedPtr->FlagForDelete(projectile);
+			}
+			else
+			{
+				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+			}
 			DamagePlayer();
-			//break;
+			break;
 		}
 	}
 
@@ -243,27 +249,38 @@ void Player::Shoot() {
 	case up:
 		//std::cout << "shoot up" << std::endl;
 		row = Shoot_U;
-		GameObjectManager::CreateGameObject(GameObjectManager::playerProjectile, posX, posY, Projectile::up);
+		ShootProjectile(Projectile::up);
 		break;
 	case down:
 		//std::cout << "shoot down" << std::endl;
 		row = Shoot_D;
-		GameObjectManager::CreateGameObject(GameObjectManager::playerProjectile, posX, posY, Projectile::down);
+		ShootProjectile(Projectile::down);
 		break;
 	case left:
 		//std::cout << "shoot left" << std::endl;
 		row = Shoot_L;
-		GameObjectManager::CreateGameObject(GameObjectManager::playerProjectile, posX, posY, Projectile::left);
+		ShootProjectile(Projectile::left);
 		break;
 	case right:
 		//std::cout << "shoot right" << std::endl;
 		row = Shoot_R;
-		GameObjectManager::CreateGameObject(GameObjectManager::playerProjectile, posX, posY, Projectile::right);
+		ShootProjectile(Projectile::right);
 		break;
 	default:
 		break;
 	}
 	
+}
+
+void Player::ShootProjectile(int d) {
+	if (auto lockedPtr = gom.lock())
+	{
+		lockedPtr->CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, d);
+	}
+	else
+	{
+		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+	}
 }
 
 void Player::Hit() { // no up or down hit animation
@@ -277,7 +294,14 @@ void Player::Hit() { // no up or down hit animation
 	{
 		row = Hit_L;
 	}
-	GameObjectManager::CheckEnemyHit(destRect->x + destRect->w / 2, destRect->y + destRect->y / 2, 2 * TileSize, facingRight);
+	if (auto lockedPtr = gom.lock())
+	{
+		lockedPtr->CheckEnemyHit(destRect->x + destRect->w / 2, destRect->y + destRect->y / 2, 2 * tileRes, facingRight);
+	}
+	else
+	{
+		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+	}
 }
 
 
@@ -287,8 +311,8 @@ void Player::DamagePlayer() {
 }
 
 void Player::Reset() {
-	destRect->x = TileSize * PLAYER_SPAWN_X;
-	destRect->y = TileSize * PLAYER_SPAWN_Y;
+	destRect->x = tileRes * PLAYER_SPAWN_X;
+	destRect->y = tileRes * PLAYER_SPAWN_Y;
 	hp = 10;
 }
 

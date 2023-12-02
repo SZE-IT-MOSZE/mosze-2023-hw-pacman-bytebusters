@@ -12,9 +12,15 @@
 #include <forward_list>
 #include <set>
 
+#include <mutex>
 
 class GameObjectManager {
 public:
+
+	static std::shared_ptr<GameObjectManager> GetInstance(const int tR);
+	GameObjectManager(GameObjectManager& other) = delete;
+	void operator=(const GameObjectManager&) = delete;
+	~GameObjectManager();
 
 	enum PlayerTypes //!< player típusok arra az esetre ha több játékos lesz
 	{
@@ -46,55 +52,55 @@ public:
 		enemyProjectile
 	};
 
-	static Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pointer vissza adása
-	static void CreateGameObject(EnemyTypes t, int x, int y); //!< Ellenség léterhozása adott pozícióban
-	static void CreateGameObject(WallTypes t, int x, int y); //!< Fal létrehozása adott pozícióban
-	static void CreateGameObject(ItemTypes t, int x, int y); //!< Item létrehozása adott pozícióban
-	static void CreateGameObject(ProjectileTypes t, int x, int y, int d); //!< Item létrehozása adott pozícióban
 
 
-	static void SetTileSize(int size); //!< Cella méret beállítása
+	Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pointer vissza adása
+	void CreateGameObject(EnemyTypes t, int x, int y); //!< Ellenség léterhozása adott pozícióban
+	void CreateGameObject(WallTypes t, int x, int y); //!< Fal létrehozása adott pozícióban
+	void CreateGameObject(ItemTypes t, int x, int y); //!< Item létrehozása adott pozícióban
+	void CreateGameObject(ProjectileTypes t, int x, int y, int d); //!< Item létrehozása adott pozícióban
 
-	static void RenderAllGameObjects(); //!< Game objektumok renderelése
-	static void UpdateAllGameObjects(); //!< Az objektumok frissítése
-	static void DestroyAllGameObjects(); //!< Az összes objektum törlése
-	static void DestroyAllExceptPlayer(); //!< Az össze objektum törlése kivétel a játékos
+	void RenderAllGameObjects(); //!< Game objektumok renderelése
+	void UpdateAllGameObjects(); //!< Az objektumok frissítése
+	void DestroyAllGameObjects(); //!< Az összes objektum törlése
+	void DestroyAllExceptPlayer(); //!< Az össze objektum törlése kivétel a játékos
 
-	static void ResetPlayer();
+	void ResetPlayer();
 
-	static void CheckEnemyHit(int x, int y, int range, bool r);
+	void CheckEnemyHit(int x, int y, int range, bool r);
 
-	static void FlagForDelete(Enemy* f);		
-													
-	static void FlagForDelete(Wall* f);			////my head hurts. really. im in phisical pain (idk how you spell physichal)
-	static void FlagForDelete(Item* f);			//im off to play WOT
-	static void FlagForDelete(Projectile* f);	//will continue tomorrow
+	void FlagForDelete(Enemy* f);				
+	void FlagForDelete(Wall* f);			////my head hurts. really. im in phisical pain (idk how you spell physichal)
+	void FlagForDelete(Item* f);			//im off to play WOT
+	void FlagForDelete(Projectile* f);	//will continue tomorrow
 
-	static bool AreAllItemsPickedUp(); //!< Annak az ellenõrzése, hogy az össze itemet fel vette-e a játékosunk
+	bool AreAllItemsPickedUp(); //!< Annak az ellenõrzése, hogy az össze itemet fel vette-e a játékosunk
 	
-	static bool AreJosephAndYusriDead();
+	bool AreJosephAndYusriDead();
 
 private:
 
-	static Player* _player; //!< a player objetum mutatója
-	static SDL_Rect* playerRect;
+	GameObjectManager(int tR);
+	static std::shared_ptr<GameObjectManager> instance_;
+	static std::mutex mutex_;
 
-	static Enemy* _joseph;
-	static Enemy* _yusri;
+	Player* _player; //!< a player objetum mutatója
+	SDL_Rect* playerRect;
 
-	static std::forward_list<Enemy*> enemies; //!< Enemy-k listája
+	Enemy* _joseph;
+	Enemy* _yusri;
 
-	static std::forward_list<Wall*> walls; //!< Falak listája
-	static std::forward_list<Item*> items; //!< Itemek listája
-	static std::forward_list<Projectile*> playerProjectiles;
-	static std::forward_list<Projectile*> enemyProjectiles;
+	std::forward_list<Enemy*> enemies; //!< Enemy-k listája 
+	std::forward_list<Wall*> walls; //!< Falak listája
+	std::forward_list<Item*> items; //!< Itemek listája
+	std::forward_list<Projectile*> playerProjectiles;
+	std::forward_list<Projectile*> enemyProjectiles;
 
-	static std::set<Enemy*> flaggedForDeleteEnemies;
-	
-	static std::set<Wall*> flaggedForDeleteWalls;
-	static std::set<Item*> flaggedForDeleteItems;
-	static std::set<Projectile*> flaggedForDeleteProjectiles;
+	std::set<Enemy*> flaggedForDeleteEnemies;
+	std::set<Wall*> flaggedForDeleteWalls;
+	std::set<Item*> flaggedForDeleteItems;
+	std::set<Projectile*> flaggedForDeleteProjectiles;
 
-	static void DeleteFlagged();
+	void DeleteFlagged();
 
 };

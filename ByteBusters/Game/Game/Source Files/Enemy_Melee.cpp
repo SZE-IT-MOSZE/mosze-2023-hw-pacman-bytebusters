@@ -17,8 +17,8 @@ Enemy_Melee::Enemy_Melee(int x, int y, int s, SDL_Texture* t, std::forward_list<
 		{3, 200},
 	};
 
-	visionDistance = TileSize * 5;
-	attackDistance = TileSize;
+	visionDistance = tileRes * 5;
+	attackDistance = tileRes;
 }
 
 Enemy_Melee::~Enemy_Melee() {
@@ -29,8 +29,15 @@ void Enemy_Melee::Update() {
 	for (Projectile* projectile : projectiles)
 	{
 		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
-			GameObjectManager::FlagForDelete(this);
-			GameObjectManager::FlagForDelete(projectile);
+			if (auto lockedPtr = gom.lock())
+			{
+				lockedPtr->FlagForDelete(this);
+				lockedPtr->FlagForDelete(projectile);
+			} 
+			else
+			{
+				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+			}
 			break;
 		}
 	}

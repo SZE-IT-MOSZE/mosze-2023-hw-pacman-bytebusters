@@ -8,12 +8,9 @@
 
 
 
-Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w) : walls(w), GameObject(x - (TileSize / PROJECTILE_SIZE_REDUCTION) / 2, y - (TileSize / PROJECTILE_SIZE_REDUCTION) / 2)
 //projectile spawns centered on given position
+Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w) : walls(w), GameObject(x - (tileRes / PROJECTILE_SIZE_REDUCTION) / 2, y - (tileRes / PROJECTILE_SIZE_REDUCTION) / 2)
 {
-
-	//std::cout << "Projectile Created" << std::endl;
-
 	objTexture = t;
 
 	xvel = yvel = 0;
@@ -40,12 +37,12 @@ Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_
 		break;
 	}
 
-	destRect->w = destRect->h = TileSize / PROJECTILE_SIZE_REDUCTION;
+	destRect->w = destRect->h = tileRes / PROJECTILE_SIZE_REDUCTION;
 	srcRect->w = srcRect->h = PROJECTILE_SPRITE_SIZE;
 
 	//todo, destrect to actual position
 
-	speed = s * TileSize / DIVIDE_BY_THIS;
+	speed = s * tileRes / DIVIDE_BY_THIS;
 	/*std::cout << "speed: " << speed << std::endl;
 	if (speed > PROJECTILESPRITESIZE)
 	{
@@ -66,7 +63,14 @@ void Projectile::Update()
 	for (Wall* wall : walls)
 	{
 		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			GameObjectManager::FlagForDelete(this);
+			if (auto lockedPtr = gom.lock())
+			{
+				lockedPtr->FlagForDelete(this);
+			}
+			else
+			{
+				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+			}
 			return;
 		}
 	}

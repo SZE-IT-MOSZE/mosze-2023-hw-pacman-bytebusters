@@ -11,7 +11,7 @@ public:
 	Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i, std::forward_list<Projectile*>& p); //!< Konstruktor ami azt mutatja, hogy a player tud a falakról és az itemekrõl
 	~Player();
 
-	void Update() override;//!< Minden framen hívjuk ez tartalmazza a ütközés érzékelést és a játékos pozíciójána frissítését
+	void Update() override;//!< Minden framen hívjuk ez tartalmazza az ütközés érzékelést és a játékos pozíciójána frissítését
 	void Render() override;//!< Csak a játékos renderelése és megjelenítése
 
 	void SetVelX(int v); //!< A player sebessége az X tengelyen mozogva
@@ -29,7 +29,7 @@ public:
 private:
 	std::forward_list<Wall*>& walls; //!< Pálya falak listája
 	std::forward_list<Item*>& items; //!< A gyújthetõ elemek listája
-	std::forward_list<Projectile*>& projectiles; //!< A gyújthetõ elemek listája
+	std::forward_list<Projectile*>& projectiles;
 
 	int xvel; //!< X sebesség
 	int yvel; //!< Y sebesség
@@ -45,4 +45,5 @@ private:
 	int frameCounter;	// frame counter
 	int row;			// animation to display
 
+	void ShootProjectile(int d);
 };
