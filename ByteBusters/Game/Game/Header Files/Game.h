@@ -42,7 +42,7 @@ public:
 
 private:
 	Game();
-	static std::shared_ptr<Game> instance_;
+	static std::weak_ptr<Game> instance_;
 	static std::mutex mutex_;
 	
 
@@ -52,7 +52,7 @@ private:
 	std::shared_ptr<GameObjectManager> gom;
 
 	Player* player; //!< Mutató a playerre
-	std::thread* gameUpdates; //!<Mutató a játék frissítésre
+	std::unique_ptr<std::thread> gameUpdates;
 
 	int tileRes;
 

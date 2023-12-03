@@ -1,6 +1,6 @@
 #pragma once
 //DEBUG
-//#define DEBUGLEVEL
+#define DEBUGLEVEL
 #define STARTERLEVEL 1
 
 //game
@@ -31,6 +31,8 @@
 
 //enemy
 #define ENEMY_SPRITE_SIZE 64
+#define VISIONDISTANCE 5
+#define ATTACKDISTANCE 1
 
 //events
 #define EVENT_START 1 

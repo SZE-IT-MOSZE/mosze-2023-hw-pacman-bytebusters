@@ -6,18 +6,18 @@
 
 SDL_Renderer* Game::renderer{ nullptr };
 
-std::shared_ptr<Game> Game::instance_{ nullptr };
+std::weak_ptr<Game> Game::instance_;
 std::mutex Game::mutex_;
 
 std::shared_ptr<Game> Game::GetInstance() {
 	std::lock_guard<std::mutex> lock(mutex_);
-	if (!instance_) {
-		instance_ = std::shared_ptr<Game>(new Game()); 
-		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	std::shared_ptr<Game> sharedInstance;
+	if (!(sharedInstance = instance_.lock())) {
+		sharedInstance = std::shared_ptr<Game>(new Game());
+		instance_ = sharedInstance;
 	}
-	return instance_;
+	return sharedInstance;
 }
-
 
 Game::Game()
 {
@@ -46,7 +46,7 @@ Game::~Game()
 int Game::Init()
 {	
 	window = Window::GetInstance();
-	if (window->Init("DEER - MURDER - HORROR - BLOOD - GORE(The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, false) != 0)
+	if (window->Init("DEER MURDER HORROR BLOOD GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, false) != 0)
 	{
 		std::cout << "Window creation failed. \n";
 		return -1;
@@ -149,7 +149,7 @@ void Game::MainLoop()
 		
 		player = gom->CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
 		map->LoadMap(currentLvl);
-		gameUpdates = new std::thread(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
+		gameUpdates = std::make_unique<std::thread>(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 		while (isPlaying) { // the user is in the game
 			frameStart = SDL_GetTicks();
 			//------------------------------------------------------------------------------
@@ -222,9 +222,6 @@ void Game::MainLoop()
 			frameTime = SDL_GetTicks() - frameStart;
 			if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
 		}
-		delete gameUpdates;
-		gom->DestroyAllGameObjects();
-		
 	}
 }
 
@@ -244,6 +241,8 @@ void Game::ResumeUpdate() {
 }
 
 void Game::UpdateThread() {
+
+	std::cout << "Thread Created\n";
 
 	constexpr int UPS = _UPS;
 	constexpr int frameDelay = 1000 / UPS;
@@ -269,6 +268,9 @@ void Game::UpdateThread() {
 		}
 		
 	}
+
+	std::cout << "Thread Quit\n";
+
 }
 
 void Game::HandleKeyEvents(SDL_Event* event)

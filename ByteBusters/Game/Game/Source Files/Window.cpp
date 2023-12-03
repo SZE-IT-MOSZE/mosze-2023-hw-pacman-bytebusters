@@ -3,16 +3,17 @@
 #include "Window.h"
 #include <iostream>
 
-std::shared_ptr<Window> Window::instance_{ nullptr };
+std::weak_ptr<Window> Window::instance_;
 std::mutex Window::mutex_;
 
 std::shared_ptr<Window> Window::GetInstance() {
 	std::lock_guard<std::mutex> lock(mutex_);
-	if (!instance_) {
-		instance_ = std::shared_ptr<Window>(new Window());
-		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	std::shared_ptr<Window> sharedInstance;
+	if (!(sharedInstance = instance_.lock())) {
+		sharedInstance = std::shared_ptr<Window>(new Window());
+		instance_ = sharedInstance;
 	}
-	return instance_;
+	return sharedInstance;
 }
 
 Window::Window()

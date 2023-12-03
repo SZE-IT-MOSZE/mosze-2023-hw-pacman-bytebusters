@@ -6,29 +6,28 @@
 #include <iostream>
 
 
-Enemy_NoAttack::Enemy_NoAttack(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p) : Enemy(x, y, s, t, w, pr, p) {
-	enemySheetData = new int[4][2]{
+Enemy_NoAttack::Enemy_NoAttack(int x, int y, int s, SDL_Texture* t) : Enemy(x, y, s, t) {
+	enemySheetData = {
 		{3, 200},
 		{3, 200},
 		{5, 100},
 		{5, 100},
 	};
 
-	visionDistance = tileRes * 5;
+	visionDistance = tileRes * VISIONDISTANCE;
 }
 
 Enemy_NoAttack::~Enemy_NoAttack() {
-	delete[] enemySheetData;
 }
 
 void Enemy_NoAttack::Update() {
-	for (Projectile* projectile : projectiles)
+	for (auto& projectile : *projectiles)
 	{
-		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
+		if (SDL_HasIntersection(&dstRect, projectile->GetDestRectPtr())) {
 			if (auto lockedPtr = gom.lock())
 			{
 				lockedPtr->FlagForDelete(this);
-				lockedPtr->FlagForDelete(projectile);
+				lockedPtr->FlagForDelete(projectile.get());
 			}
 			else
 			{
@@ -41,27 +40,26 @@ void Enemy_NoAttack::Update() {
 
 	//if (uninterruptibleAnimation) return;
 
-	destRect->x += xvel * speed;
+	dstRect.x += xvel * speed;
 
-	for (Wall* wall : walls)
+	for (auto& wall : *walls)
 	{
-		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->x -= xvel * speed;
+		if (SDL_HasIntersection(&dstRect, wall->GetDestRectPtr())) {
+			dstRect.x -= xvel * speed;
 			break;
 		}
 	}
 
-	destRect->y += yvel * speed;
+	dstRect.y += yvel * speed;
 
-	for (Wall* wall : walls)
+	for (auto& wall : *walls)
 	{
-		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->y -= yvel * speed;
+		if (SDL_HasIntersection(&dstRect, wall->GetDestRectPtr())) {
+			dstRect.y -= yvel * speed;
 			break;
 		}
 	}
 
-	CalculatePositions(); // CALL FIRST !!!!!!!!!
 	distance = CalculateDistance();
 
 	if (distance < visionDistance)
@@ -74,19 +72,19 @@ void Enemy_NoAttack::Update() {
 }
 
 void Enemy_NoAttack::RunAway() {
-	if (playerRect->x >= destRect->x)
+	if (playerRect->x >= dstRect.x)
 	{
 		xvel = -1;
 	}
-	else if (playerRect->x < destRect->x) {
+	else if (playerRect->x < dstRect.x) {
 		xvel = 1;
 	}
 
-	if (playerRect->y >= destRect->y)
+	if (playerRect->y >= dstRect.y)
 	{
 		yvel = -1;
 	}
-	else if (playerRect->y < destRect->y) {
+	else if (playerRect->y < dstRect.y) {
 		yvel = 1;
 	}
 }

@@ -14,6 +14,7 @@
 
 #include <mutex>
 
+
 class GameObjectManager {
 public:
 
@@ -52,8 +53,6 @@ public:
 		enemyProjectile
 	};
 
-
-
 	Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pointer vissza adása
 	void CreateGameObject(EnemyTypes t, int x, int y); //!< Ellenség léterhozása adott pozícióban
 	void CreateGameObject(WallTypes t, int x, int y); //!< Fal létrehozása adott pozícióban
@@ -62,12 +61,11 @@ public:
 
 	void RenderAllGameObjects(); //!< Game objektumok renderelése
 	void UpdateAllGameObjects(); //!< Az objektumok frissítése
-	void DestroyAllGameObjects(); //!< Az összes objektum törlése
 	void DestroyAllExceptPlayer(); //!< Az össze objektum törlése kivétel a játékos
 
 	void ResetPlayer();
 
-	void CheckEnemyHit(int x, int y, int range, bool r);
+	void CheckEnemyHit(int range, bool r);
 
 	void FlagForDelete(Enemy* f);				
 	void FlagForDelete(Wall* f);			////my head hurts. really. im in phisical pain (idk how you spell physichal)
@@ -78,28 +76,35 @@ public:
 	
 	bool AreJosephAndYusriDead();
 
+	std::forward_list<std::unique_ptr<Enemy>>*		GetEnemies() { return &enemies; }
+	std::forward_list<std::unique_ptr<Wall>>*		GetWalls() { return &walls; }
+	std::forward_list<std::unique_ptr<Item>>*		GetItems() { return &items; }
+	std::forward_list<std::unique_ptr<Projectile>>*	GetPlayerProjectiles() { return &playerProjectiles; }
+	std::forward_list<std::unique_ptr<Projectile>>*	GetEnemyProjectiles() { return &enemyProjectiles; }
+	Player* GetPlayer() { return _player.get(); }
+
 private:
 
 	GameObjectManager(int tR);
-	static std::shared_ptr<GameObjectManager> instance_;
+	static std::weak_ptr<GameObjectManager> instance_;
 	static std::mutex mutex_;
 
-	Player* _player; //!< a player objetum mutatója
-	SDL_Rect* playerRect;
+	std::unique_ptr<Player> _player; //!< a player objetum mutatója
+	const SDL_Rect* playerRect;
 
 	Enemy* _joseph;
 	Enemy* _yusri;
 
-	std::forward_list<Enemy*> enemies; //!< Enemy-k listája 
-	std::forward_list<Wall*> walls; //!< Falak listája
-	std::forward_list<Item*> items; //!< Itemek listája
-	std::forward_list<Projectile*> playerProjectiles;
-	std::forward_list<Projectile*> enemyProjectiles;
+	std::forward_list<std::unique_ptr<Enemy>>		enemies; //!< Enemy-k listája 
+	std::forward_list<std::unique_ptr<Wall>>		walls; //!< Falak listája
+	std::forward_list<std::unique_ptr<Item>>		items; //!< Itemek listája
+	std::forward_list<std::unique_ptr<Projectile>>	playerProjectiles;
+	std::forward_list<std::unique_ptr<Projectile>>	enemyProjectiles;
 
-	std::set<Enemy*> flaggedForDeleteEnemies;
-	std::set<Wall*> flaggedForDeleteWalls;
-	std::set<Item*> flaggedForDeleteItems;
-	std::set<Projectile*> flaggedForDeleteProjectiles;
+	std::set<Enemy*>				flaggedForDeleteEnemies;
+	std::set<Wall*>					flaggedForDeleteWalls;
+	std::set<Item*>					flaggedForDeleteItems;
+	std::set<Projectile*>			flaggedForDeleteProjectiles;
 
 	void DeleteFlagged();
 

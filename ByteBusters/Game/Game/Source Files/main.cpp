@@ -2,9 +2,8 @@
 #include "Game.h"
 #include <iostream>
 
-int main(int argc, char* argv[]) {
-
-	std::shared_ptr<Game> game = Game::GetInstance(); 
+int CustomScope() {
+	std::shared_ptr<Game> game = Game::GetInstance();
 
 	if (game->Init() != 0)
 	{
@@ -13,9 +12,19 @@ int main(int argc, char* argv[]) {
 	}
 
 	game->MainLoop(); // only returns if the application is quitting
+}
 
-	std::cout << _CrtDumpMemoryLeaks();
+int main(int argc, char* argv[]) {
+	
+	CustomScope();
+
+	if (_CrtDumpMemoryLeaks())
+	{
+		std::cout << "MEMORY LEAKS DETECTED !!!\n";
+	} 
+	else {
+		std::cout << "No memory leaks.\n";
+	}
 
 	return 0;
 }
-

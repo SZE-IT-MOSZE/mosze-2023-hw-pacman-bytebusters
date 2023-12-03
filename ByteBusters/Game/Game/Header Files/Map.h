@@ -31,7 +31,7 @@ public:
 private:
 
 	Map(int tR); //!<  Létrehoz egy példányt az osztályból, amely a megadott cella méretet fogja használni
-	static std::shared_ptr<Map> instance_;
+	static std::weak_ptr<Map> instance_;
 	static std::mutex mutex_;
 
 	std::shared_ptr<GameObjectManager> gom;

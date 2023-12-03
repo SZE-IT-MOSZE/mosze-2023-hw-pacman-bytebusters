@@ -6,7 +6,8 @@
 class Projectile : public GameObject
 {
 public:
-	Projectile(int x, int y, int s, int d, SDL_Texture* t, std::forward_list<Wall*>& w); //projectile spawns centered on given position
+	//projectile spawns centered on given position
+	Projectile(int x, int y, int s, int d, SDL_Texture* t); 
 	~Projectile();
 	void Update() override;
 	void Render() override;
@@ -21,7 +22,7 @@ public:
 private:
 	int xvel, yvel;
 	int speed;
-	std::forward_list<Wall*>& walls;
+	const std::forward_list<std::unique_ptr<Wall>>* walls;
 
-	int frame;	// frame
+	int frame;
 };

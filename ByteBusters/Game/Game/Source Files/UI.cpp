@@ -47,16 +47,17 @@ void ToMenu(Uint32 UIEvent) {
 	std::cout << "ToMenu \n";
 }
 
-std::shared_ptr<UI> UI::instance_{ nullptr };
+std::weak_ptr<UI> UI::instance_;
 std::mutex UI::mutex_;
 
 std::shared_ptr<UI> UI::GetInstance(const int tR) {
 	std::lock_guard<std::mutex> lock(mutex_);
-	if (!instance_) {
-		instance_ = std::shared_ptr<UI>(new UI(tR));
-		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	std::shared_ptr<UI> sharedInstance;
+	if (!(sharedInstance = instance_.lock())) {
+		sharedInstance = std::shared_ptr<UI>(new UI(tR));
+		instance_ = sharedInstance;
 	}
-	return instance_;
+	return sharedInstance;
 }
 
 UI::UI(int tR)
@@ -66,8 +67,6 @@ UI::UI(int tR)
 	playerHP = 0;
 
 	UIEvent = (Uint32)-1;
-	titleRect = nullptr;
-	HPDisplay = nullptr;
 }
 
 UI::~UI()
@@ -80,7 +79,6 @@ UI::~UI()
 		delete e;
 	}
 	gameButtons.clear();
-	delete titleRect;
 }
 
 int UI::Init() {
@@ -97,17 +95,15 @@ int UI::Init() {
 	gameButtons.push_back(new Button(ToMenu, UIEvent, tileRes, MENU, TextureManager::menu));
 
 	constexpr int pos[4] = { TITLE }; // it's fine
-	titleRect = new SDL_Rect();
-	titleRect->x = pos[0] * tileRes;
-	titleRect->y = pos[1] * tileRes;
-	titleRect->w = pos[2] * tileRes;
-	titleRect->h = pos[3] * tileRes;
-
-	HPDisplay = new SDL_Rect();
-	HPDisplay->x = 0;
-	HPDisplay->y = 0;
-	HPDisplay->w = tileRes;
-	HPDisplay->h = tileRes;
+	titleRect.x = pos[0] * tileRes;
+	titleRect.y = pos[1] * tileRes;
+	titleRect.w = pos[2] * tileRes;
+	titleRect.h = pos[3] * tileRes;
+			 
+	HPDisplay.x = 0;
+	HPDisplay.y = 0;
+	HPDisplay.w = tileRes;
+	HPDisplay.h = tileRes;
 	return 0;
 }
 
@@ -115,7 +111,7 @@ void UI::RenderMainMenu() {
 	for (auto e : menuButtons) {
 		e->Render();
 	}
-	TextureManager::Draw(TextureManager::title, NULL, titleRect);
+	TextureManager::Draw(TextureManager::title, NULL, &titleRect);
 }
 
 void UI::RenderGameMenu() {
@@ -145,8 +141,8 @@ void UI::SetHP(int hp)
 void UI::DisplayHP() {
 	for (size_t i = 0; i < playerHP; i++)
 	{
-		HPDisplay->x = HP_X * tileRes + (i % 2) * tileRes;
-		HPDisplay->y = HP_Y * tileRes + (i / 2) * tileRes;
-		TextureManager::Draw(TextureManager::heart, NULL, HPDisplay);
+		HPDisplay.x = HP_X * tileRes + (i % 2) * tileRes;
+		HPDisplay.y = HP_Y * tileRes + (i / 2) * tileRes;
+		TextureManager::Draw(TextureManager::heart, NULL, &HPDisplay);
 	}
 }

@@ -4,23 +4,23 @@
 #include "Wall.h"
 #include "Projectile.h"
 #include <forward_list>
+#include <vector>
 
 
 class Enemy : public GameObject {
 public:
-	Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p); //!< Enemy konstruktor az enemy létrehozására
+	Enemy(int x, int y, int s, SDL_Texture* t); //!< Enemy konstruktor az enemy létrehozására
 	virtual ~Enemy();
 
 	virtual void Update() override = 0; //!< Enemy frissítése
 	void Render() override; //!< Enemy renderelése
 
 protected: 
-	Player* player; //player is still a pointer. only lists are references
-	SDL_Rect* playerRect;
-	std::forward_list<Wall*>& walls;
-	std::forward_list<Projectile*>& projectiles;
+	Player* player; // this should be const too
+	const SDL_Rect* playerRect;
+	const std::forward_list<std::unique_ptr<Wall>>* walls;
+	const std::forward_list<std::unique_ptr<Projectile>>* projectiles;
 
-	void CalculatePositions(); // !!!!!!!!! CALL BEFORE CalculateDistance() AND CheckLineOfSight()
 	int CalculateDistance(); // easier calculation, check first instead of CheckLineOfSight()
 	bool CheckLineOfSight(); // overwrites positions calculated in CalculatePositions(), CALL LAST!!! //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és, hogy látó távolságon bellül van-e
 	void Wander(); //!< Az enemy barangolása az adott pályán 
@@ -28,8 +28,8 @@ protected:
 	int xvel, yvel;
 	int speed;
 
-	int playerPosX, playerPosY; //!< A játékos pozíciója a pályán belül
-	int posX, posY;
+	SDL_Point playerPos;
+	SDL_Point thisPos;
 
 	int distance;
 	int visionDistance; //!< Az enemy látótávolsága
@@ -43,7 +43,9 @@ protected:
 	int row;			// animation to display
 	bool facingRight;
 
-	int(*enemySheetData)[2];
+	//int(*enemySheetData)[2];
+
+	std::vector<std::vector<int>> enemySheetData;
 
 private:
 

@@ -31,7 +31,7 @@ public:
 
 private:
 	UI(const int tR);
-	static std::shared_ptr<UI> instance_;
+	static std::weak_ptr<UI> instance_;
 	static std::mutex mutex_;
 
 	int tileRes;
@@ -39,8 +39,8 @@ private:
 
 	std::vector<Button*> menuButtons;
 	std::vector<Button*> gameButtons;
-	SDL_Rect* titleRect;
-	SDL_Rect* HPDisplay;
+	SDL_Rect titleRect;
+	SDL_Rect HPDisplay;
 
 	Uint32 UIEvent;
 

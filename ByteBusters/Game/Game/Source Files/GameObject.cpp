@@ -17,27 +17,31 @@ GameObject::GameObject(int x, int y) {
 
 	gom = GameObjectManager::GetInstance(0);
 
-	destRect = new SDL_Rect;
-	destRect->x = x;
-	destRect->y = y;
-	destRect->w = destRect->h = tileRes;
-
-	srcRect = new SDL_Rect;
-	srcRect->x = 0;
-	srcRect->y = 0;
-	srcRect->w = srcRect->h = 64;
+	dstRect.x = x;
+	dstRect.y = y;
+	dstRect.w = dstRect.h = tileRes;
+		   
+	srcRect.x = 0;
+	srcRect.y = 0;
+	srcRect.w = srcRect.h = 64;
 
 }
 
 GameObject::~GameObject() {
-	delete destRect;
-	delete srcRect;
+
 }
 
 void GameObject::Render() {
-	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
+	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }
 
 void GameObject::setTileSize(int s) {
 	tileRes = s;
+}
+
+SDL_Point GameObject::GetCenterPosition() {
+	SDL_Point pos;
+	pos.x = dstRect.x + dstRect.w / 2;
+	pos.y = dstRect.y + dstRect.h / 2;
+	return pos;
 }

@@ -7,16 +7,17 @@
 #include <string>
 #include <filesystem>
 
-std::shared_ptr<Map> Map::instance_{ nullptr };
+std::weak_ptr<Map> Map::instance_;
 std::mutex Map::mutex_;
 
 std::shared_ptr<Map> Map::GetInstance(const int tileSize) {
 	std::lock_guard<std::mutex> lock(mutex_);
-	if (!instance_) {
-		instance_ = std::shared_ptr<Map>(new Map(tileSize));
-		//cant use make_shared() without some "black magic" to make the private constructor visible for make_shared()
+	std::shared_ptr<Map> sharedInstance;
+	if (!(sharedInstance = instance_.lock())) {
+		sharedInstance = std::shared_ptr<Map>(new Map(tileSize));
+		instance_ = sharedInstance;
 	}
-	return instance_;
+	return sharedInstance;
 }
 
 Map::Map(const int tR)

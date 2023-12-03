@@ -22,7 +22,20 @@ Shoot_L 5 100
 
 */
 
-Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i, std::forward_list<Projectile*>& p) : walls(w), items(i), projectiles(p), GameObject(x, y) {
+Player::Player(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
+
+	if (auto lockedPtr = gom.lock())
+	{
+		walls = lockedPtr->GetWalls();
+		projectiles = lockedPtr->GetEnemyProjectiles();
+		items = lockedPtr->GetItems();
+	}
+	else
+	{
+		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+	}
+
+
 	objTexture = t;
 
 	std::cout << "player tile size: " << tileRes << "\n";
@@ -34,7 +47,7 @@ Player::Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w,
 
 	hp = 10;
 
-	srcRect->w = srcRect->h = PLAYER_SPRITE_SIZE;
+	srcRect.w = srcRect.h = PLAYER_SPRITE_SIZE;
 
 	uninterruptibleAnimation = false;
 
@@ -53,14 +66,12 @@ Player::~Player() {
 
 void Player::Update() {
 
-	//place enemy collision/hit check above here
-
-	for (Projectile* projectile : projectiles)
+	for (auto& projectile : *projectiles)
 	{
-		if (SDL_HasIntersection(destRect, projectile->GetDestRect())) {
+		if (SDL_HasIntersection(&dstRect, projectile->GetDestRectPtr())) {
 			if (auto lockedPtr = gom.lock())
 			{
-				lockedPtr->FlagForDelete(projectile);
+				lockedPtr->FlagForDelete(projectile.get());
 			}
 			else
 			{
@@ -73,31 +84,37 @@ void Player::Update() {
 
 	if (uninterruptibleAnimation) return; // if an uninterruptible animation is playing the character does not move
 		
-	destRect->x += xvel * speed;
-	for (Wall* wall : walls)
+	dstRect.x += xvel * speed;
+	for (auto& wall : *walls)
 	{
-		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->x -= xvel * speed;
+		if (SDL_HasIntersection(&dstRect, wall->GetDestRectPtr())) {
+			dstRect.x -= xvel * speed;
 			break;
 		}
 	}
 
-	destRect->y += yvel * speed;
-	for (Wall* wall : walls)
+	dstRect.y += yvel * speed;
+	for (auto& wall : *walls)
 	{
-		if (SDL_HasIntersection(destRect, wall->GetDestRect())) {
-			destRect->y -= yvel * speed;
+		if (SDL_HasIntersection(&dstRect, wall->GetDestRectPtr())) {
+			dstRect.y -= yvel * speed;
 			break;
 		}
 	}
 
-	for (Item* item : items)
+	for (auto& item : *items)
 	{
-		if (SDL_HasIntersection(destRect, item->GetDestRect())) {
+		if (SDL_HasIntersection(&dstRect, item->GetDestRectPtr())) {
 			//std::cout << "Item Pickup" << std::endl;
-			items.remove(item);
-			delete item;
-			break; // ABSOLUTELY NECESSARY
+			if (auto lockedPtr = gom.lock())
+			{
+				lockedPtr->FlagForDelete(item.get());
+			}
+			else
+			{
+				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+			}
+			break;
 		}
 	}
 }
@@ -185,9 +202,9 @@ void Player::Render() {
 			}
 		}
 		
-		if (srcRect->y != row * PLAYER_SPRITE_SIZE) { // if animation change happened
+		if (srcRect.y != row * PLAYER_SPRITE_SIZE) { // if animation change happened
 			frameCounter = 0;	// reset counter
-			srcRect->y = row * PLAYER_SPRITE_SIZE; // set new animation
+			srcRect.y = row * PLAYER_SPRITE_SIZE; // set new animation
 		}
 		else // if not
 		{ 
@@ -199,10 +216,10 @@ void Player::Render() {
 			}
 
 		}
-		srcRect->x = frameCounter * PLAYER_SPRITE_SIZE; // finally, set the frame to display
+		srcRect.x = frameCounter * PLAYER_SPRITE_SIZE; // finally, set the frame to display
 	}
 
-	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
+	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }
 
 enum Direction { // note: this is not the direction specified in projectile
@@ -239,8 +256,8 @@ void Player::SetVelY(int v) {
 }
 
 void Player::Shoot() {
-	posX = destRect->x + destRect->w / 2;
-	posY = destRect->y + destRect->h / 2;
+	posX = dstRect.x + dstRect.w / 2;
+	posY = dstRect.y + dstRect.h / 2;
 
 	if (uninterruptibleAnimation) return;
 	uninterruptibleAnimation = true;
@@ -275,7 +292,7 @@ void Player::Shoot() {
 void Player::ShootProjectile(int d) {
 	if (auto lockedPtr = gom.lock())
 	{
-		lockedPtr->CreateGameObject(GameObjectManager::enemyProjectile, posX, posY, d);
+		lockedPtr->CreateGameObject(GameObjectManager::playerProjectile, posX, posY, d);
 	}
 	else
 	{
@@ -296,7 +313,7 @@ void Player::Hit() { // no up or down hit animation
 	}
 	if (auto lockedPtr = gom.lock())
 	{
-		lockedPtr->CheckEnemyHit(destRect->x + destRect->w / 2, destRect->y + destRect->y / 2, 2 * tileRes, facingRight);
+		lockedPtr->CheckEnemyHit(2 * tileRes, facingRight);
 	}
 	else
 	{
@@ -307,12 +324,11 @@ void Player::Hit() { // no up or down hit animation
 
 void Player::DamagePlayer() {
 	--hp;
-	std::cout << "Health Points: " << hp << std::endl;
 }
 
 void Player::Reset() {
-	destRect->x = tileRes * PLAYER_SPAWN_X;
-	destRect->y = tileRes * PLAYER_SPAWN_Y;
+	dstRect.x = tileRes * PLAYER_SPAWN_X;
+	dstRect.y = tileRes * PLAYER_SPAWN_Y;
 	hp = 10;
 }
 

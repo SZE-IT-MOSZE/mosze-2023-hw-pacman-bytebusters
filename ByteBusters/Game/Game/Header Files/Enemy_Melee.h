@@ -5,7 +5,7 @@
 class Enemy_Melee : public Enemy
 {
 public:
-	Enemy_Melee(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p);
+	Enemy_Melee(int x, int y, int s, SDL_Texture* t);
 	~Enemy_Melee();
 
 	void Update() override;

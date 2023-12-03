@@ -1,19 +1,24 @@
 #pragma once
 #include "Enemy.h"
-//#include "GameObjectManager.h"
 #include "Game.h"
 #include <iostream>
 #include "Defines.h"
 
 
-Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Projectile*>& pr, Player* p) : walls(w), projectiles(pr), GameObject(x, y) {
+Enemy::Enemy(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
 	objTexture = t;
 
-	player = p;
-	playerRect = player->GetDestRect();
-
-	playerPosX = playerPosY = 0;
-	posX = posY = 0;
+	if (auto lockedPtr = gom.lock())
+	{
+		player = lockedPtr->GetPlayer();
+		playerRect = player->GetDestRectPtr();
+		walls = lockedPtr->GetWalls();
+		projectiles = lockedPtr->GetPlayerProjectiles();
+	}
+	else
+	{
+		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+	}
 
 	xvel = yvel = 0;
 	
@@ -32,12 +37,9 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, s
 	row = 0;						// animation to display
 	facingRight = true;
 
-	enemySheetData = nullptr;
-
 }
 
 Enemy::~Enemy() {
-
 }
 
 //bool printed = false;
@@ -103,9 +105,9 @@ void Enemy::Render() {
 			}
 		}
 
-		if (srcRect->y != row * ENEMY_SPRITE_SIZE) { // if animation change happened
+		if (srcRect.y != row * ENEMY_SPRITE_SIZE) { // if animation change happened
 			frameCounter = 0;	// reset counter
-			srcRect->y = row * ENEMY_SPRITE_SIZE; // set new animation
+			srcRect.y = row * ENEMY_SPRITE_SIZE; // set new animation
 		}
 		else // if not
 		{
@@ -117,30 +119,24 @@ void Enemy::Render() {
 			}
 
 		}
-		srcRect->x = frameCounter * ENEMY_SPRITE_SIZE; // finally, set the frame to display
+		srcRect.x = frameCounter * ENEMY_SPRITE_SIZE; // finally, set the frame to display
 	}
 
-	SDL_RenderCopy(Game::renderer, objTexture, srcRect, destRect);
-}
-
-void Enemy::CalculatePositions() {
-	playerPosX = playerRect->x + playerRect->w / 2;
-	playerPosY = playerRect->y + playerRect->h / 2;
-
-	posX = destRect->x + destRect->w / 2;
-	posY = destRect->y + destRect->h / 2;
+	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }
 
 int Enemy::CalculateDistance() {
-	//std::cout << playerPosX << "," << playerPosY << " | " << posX << "," << posY << " | " << "dist: " << distance << std::endl;
-	return (int)sqrt( pow( (playerPosX - posX), 2) + pow( (playerPosY - posY), 2) ); // math class was useful after all
+	playerPos = player->GetCenterPosition();
+	thisPos = GetCenterPosition();
+	return (int)sqrt( pow( (playerPos.x - thisPos.x), 2) + pow( (playerPos.y - thisPos.y), 2) ); // math class was useful after all
 }
 
 bool Enemy::CheckLineOfSight() {
-
-	for (Wall* wall : walls)
+	playerPos = player->GetCenterPosition();
+	thisPos = GetCenterPosition();
+	for (auto& wall : *walls)
 	{
-		if (SDL_IntersectRectAndLine(wall->GetDestRect(), &playerPosX, &playerPosY, &posX, &posY)) {	
+		if (SDL_IntersectRectAndLine(wall->GetDestRectPtr(), &(playerPos.x), &(playerPos.y), &(thisPos.x), &(thisPos.y))) {
 			//std::cout << "False" << std::endl;
 			return false;
 		}

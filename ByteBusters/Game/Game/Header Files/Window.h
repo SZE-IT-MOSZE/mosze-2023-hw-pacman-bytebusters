@@ -17,7 +17,7 @@ public:
 
 private:
 	Window();
-	static std::shared_ptr<Window> instance_;
+	static std::weak_ptr<Window> instance_;
 	static std::mutex mutex_;
 
 	int scaledScreenHeight, scaledScreenWidth;

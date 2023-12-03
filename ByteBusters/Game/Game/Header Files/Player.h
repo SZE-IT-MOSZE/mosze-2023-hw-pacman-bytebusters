@@ -8,7 +8,7 @@
 
 class Player : public GameObject { //!< A játékos karakter osztálya
 public:
-	Player(int x, int y, int s, SDL_Texture* t, std::forward_list<Wall*>& w, std::forward_list<Item*>& i, std::forward_list<Projectile*>& p); //!< Konstruktor ami azt mutatja, hogy a player tud a falakról és az itemekrõl
+	Player(int x, int y, int s, SDL_Texture* t); //!< Konstruktor ami azt mutatja, hogy a player tud a falakról és az itemekrõl
 	~Player();
 
 	void Update() override;//!< Minden framen hívjuk ez tartalmazza az ütközés érzékelést és a játékos pozíciójána frissítését
@@ -27,9 +27,9 @@ public:
 	// player could have getters for posX and posY since it has to calculate it anyways
 
 private:
-	std::forward_list<Wall*>& walls; //!< Pálya falak listája
-	std::forward_list<Item*>& items; //!< A gyújthetõ elemek listája
-	std::forward_list<Projectile*>& projectiles;
+	const std::forward_list<std::unique_ptr<Wall>>* walls; //!< Pálya falak listája
+	const std::forward_list<std::unique_ptr<Item>>* items; //!< A gyújthetõ elemek listája
+	const std::forward_list<std::unique_ptr<Projectile>>* projectiles;
 
 	int xvel; //!< X sebesség
 	int yvel; //!< Y sebesség
