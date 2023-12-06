@@ -71,13 +71,7 @@ UI::UI(int tR)
 
 UI::~UI()
 {
-	for (auto e : menuButtons) {
-		delete e;
-	}
 	menuButtons.clear();
-	for (auto e : gameButtons) {
-		delete e;
-	}
 	gameButtons.clear();
 }
 
@@ -88,18 +82,18 @@ int UI::Init() {
 		return -1;
 	}
 
-	menuButtons.push_back(new Button(StartGame, UIEvent, tileRes, START, TextureManager::start));
-	menuButtons.push_back(new Button(LoadGame, UIEvent, tileRes, LOAD, TextureManager::load));
-	menuButtons.push_back(new Button(QuitGame, tileRes, QUIT, TextureManager::quit));
-	gameButtons.push_back(new Button(SaveGame, UIEvent, tileRes, SAVE, TextureManager::save));
-	gameButtons.push_back(new Button(ToMenu, UIEvent, tileRes, MENU, TextureManager::menu));
+	menuButtons.push_back(std::make_unique<Button>(StartGame, UIEvent, tileRes, START, START_HOVER, TextureManager::start, TextureManager::start_hover));
+	menuButtons.push_back(std::make_unique<Button>(LoadGame, UIEvent, tileRes, LOAD, LOAD_HOVER, TextureManager::load, TextureManager::load_hover));
+	menuButtons.push_back(std::make_unique<Button>(QuitGame, tileRes, QUIT, QUIT_HOVER, TextureManager::quit, TextureManager::quit_hover));
+	gameButtons.push_back(std::make_unique<Button>(SaveGame, UIEvent, tileRes, SAVE, SAVE_HOVER, TextureManager::save, TextureManager::save_hover));
+	gameButtons.push_back(std::make_unique<Button>(ToMenu, UIEvent, tileRes, MENU, MENU_HOVER, TextureManager::menu, TextureManager::menu_hover));
 
 	constexpr int pos[4] = { TITLE }; // it's fine
 	titleRect.x = pos[0] * tileRes;
 	titleRect.y = pos[1] * tileRes;
 	titleRect.w = pos[2] * tileRes;
 	titleRect.h = pos[3] * tileRes;
-			 
+
 	HPDisplay.x = 0;
 	HPDisplay.y = 0;
 	HPDisplay.w = tileRes;
@@ -108,27 +102,27 @@ int UI::Init() {
 }
 
 void UI::RenderMainMenu() {
-	for (auto e : menuButtons) {
+	TextureManager::Draw(TextureManager::title, NULL, &titleRect); // render first because it overlays the buttons
+	for (auto& e : menuButtons) {
 		e->Render();
 	}
-	TextureManager::Draw(TextureManager::title, NULL, &titleRect);
 }
 
 void UI::RenderGameMenu() {
-	for (auto e : gameButtons) {
+	for (auto& e : gameButtons) {
 		e->Render();
 	}
 	DisplayHP();
 }
 
 void UI::HandleMainMenuEvents(const SDL_Event* event) {
-	for (auto e : menuButtons) {
+	for (auto& e : menuButtons) {
 		e->HandleEvent(event);
 	}
 }
 
 void UI::HandleGameMenuEvents(const SDL_Event* event) {
-	for (auto e : gameButtons) {
+	for (auto& e : gameButtons) {
 		e->HandleEvent(event);
 	}
 }

@@ -5,12 +5,10 @@
 
 class Button {
 public:
-    Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, SDL_Texture* t);
-    Button(void (*func)(), int tR, int x, int y, int w, int h, SDL_Texture* t);
+    Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th);
+    Button(void (*func)(), int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th);
 
-    //Button(SDL_Window* window, void (*func)(), int tR, int pos[4]);
-
-    bool HandleEvent(const SDL_Event* Event);
+    void HandleEvent(const SDL_Event* Event);
 
     void Render();
 
@@ -21,10 +19,14 @@ private:
 
     void Update();
 
-    SDL_Texture* objTexture;
+    SDL_Texture* objTexture_display;
+    SDL_Texture* objTexture_hover;
+    SDL_Texture* objTexture_basic;
 
     bool isHovered;
-    SDL_Rect Rect;
+    SDL_Rect dstRect_display;
+    SDL_Rect dstRect_hover;
+    SDL_Rect dstRect_basic;
 
     //SDL_Surface* SDLWindowSurface{ nullptr };
 

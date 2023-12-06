@@ -4,14 +4,19 @@
 #include <vector>
 #include <mutex>
 
-#define TITLE 0,  0,  22, 6
-#define START 9,  7,  4,  1
-#define LOAD  9,  9,  4,  1
-#define QUIT  9,  11, 4,  1
-#define SAVE  20, 6,  2,  1
-#define MENU  20, 8,  2,  1
+#define TITLE		0,  0,  22, 15
+#define START		9,  3,  4,  1
+#define START_HOVER 9,  3,  5,  1
+#define LOAD		9,  5,  4,  1
+#define LOAD_HOVER  9,  5,  5,  1
+#define QUIT		9,  7, 4,  1
+#define QUIT_HOVER  9,  7, 5,  1
+#define SAVE		20, 3,  2,  1
+#define SAVE_HOVER  20, 3,  2,  1
+#define MENU		20, 5,  2,  1
+#define MENU_HOVER  20, 5,  2,  1
 #define HP_X 20
-#define HP_Y 10
+#define HP_Y 7
 
 class UI
 {
@@ -37,8 +42,8 @@ private:
 	int tileRes;
 	int returnValue;
 
-	std::vector<Button*> menuButtons;
-	std::vector<Button*> gameButtons;
+	std::vector<std::unique_ptr<Button>> menuButtons;
+	std::vector<std::unique_ptr<Button>> gameButtons;
 	SDL_Rect titleRect;
 	SDL_Rect HPDisplay;
 

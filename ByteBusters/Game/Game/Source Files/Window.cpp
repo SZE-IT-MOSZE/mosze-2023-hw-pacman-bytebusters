@@ -36,6 +36,7 @@ Window::~Window()
 }
 
 int Window::Init(const char* title, const int xPos, const int yPos, const bool fullscreen) {
+
 	if ((SDL_Init(SDL_INIT_VIDEO) == -1)) {
 		printf("Could not initialize SDL: %s.\n", SDL_GetError());
 		return -1;

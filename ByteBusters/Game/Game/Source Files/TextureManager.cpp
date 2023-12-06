@@ -33,10 +33,15 @@ SDL_Texture* TextureManager::err_;
 
 SDL_Texture* TextureManager::title;
 SDL_Texture* TextureManager::start;
+SDL_Texture* TextureManager::start_hover;
 SDL_Texture* TextureManager::load;
+SDL_Texture* TextureManager::load_hover;
 SDL_Texture* TextureManager::quit;
+SDL_Texture* TextureManager::quit_hover;
 SDL_Texture* TextureManager::save;
+SDL_Texture* TextureManager::save_hover;
 SDL_Texture* TextureManager::menu;
+SDL_Texture* TextureManager::menu_hover;
 
 SDL_Texture* TextureManager::heart;
 
@@ -77,12 +82,17 @@ void TextureManager::LoadAllTextures() {
 
 	TextureManager::err_			= LoadTexture("Assets/err_.png");
 
-	TextureManager::title			= LoadTexture("Assets/title.png");
-	TextureManager::start			= LoadTexture("Assets/start.png");
-	TextureManager::load			= LoadTexture("Assets/load.png");
-	TextureManager::quit			= LoadTexture("Assets/quit.png");
-	TextureManager::save			= LoadTexture("Assets/save.png");
-	TextureManager::menu			= LoadTexture("Assets/menu.png");
+	TextureManager::title			= LoadTexture("Assets/Menu_V2.png");
+	TextureManager::start			= LoadTexture("Assets/Menu_New_Game_bsc.png");
+	TextureManager::start_hover		= LoadTexture("Assets/Menu_New_Game_Deerly.png");
+	TextureManager::load			= LoadTexture("Assets/Menu_Load_Game_bsc.png");
+	TextureManager::load_hover		= LoadTexture("Assets/Menu_Load_Game_Deerly.png");
+	TextureManager::quit			= LoadTexture("Assets/Menu_Quit_bsc.png");
+	TextureManager::quit_hover		= LoadTexture("Assets/Menu_Quit_Deerly.png");
+	TextureManager::save			= LoadTexture("Assets/Menu_Save_bsc.png");
+	TextureManager::save_hover		= LoadTexture("Assets/Menu_Save_gold.png");
+	TextureManager::menu			= LoadTexture("Assets/Menu_Menu_bsc.png");
+	TextureManager::menu_hover		= LoadTexture("Assets/Menu_Menu_gold.png");
 
 	TextureManager::heart			= LoadTexture("Assets/heart.png");
 }

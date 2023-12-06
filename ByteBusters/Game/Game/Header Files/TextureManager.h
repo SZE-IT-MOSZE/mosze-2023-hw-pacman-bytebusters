@@ -40,10 +40,16 @@ public:
 	//menu
 	static SDL_Texture* title;
 	static SDL_Texture* start;
+	static SDL_Texture* start_hover;
 	static SDL_Texture* load;
+	static SDL_Texture* load_hover;
 	static SDL_Texture* quit;
+	static SDL_Texture* quit_hover;
 	static SDL_Texture* save;
+	static SDL_Texture* save_hover;
 	static SDL_Texture* menu;
+	static SDL_Texture* menu_hover;
 
 	static SDL_Texture* heart;
+
 };

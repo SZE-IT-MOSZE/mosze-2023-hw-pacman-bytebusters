@@ -3,42 +3,53 @@
 #include "Game.h"
 #include "TextureManager.h"
 
-Button::Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, SDL_Texture* t)
+Button::Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th)
 {
+    dstRect_basic.x = x * tR;
+    dstRect_basic.y = y * tR;
+    dstRect_basic.w = w * tR;
+    dstRect_basic.h = h * tR;
 
-    Rect.x = x * tR;
-    Rect.y = y * tR;
-    Rect.w = w * tR;
-    Rect.h = h * tR;
+    dstRect_hover.x = xh * tR;
+    dstRect_hover.y = yh * tR;
+    dstRect_hover.w = wh * tR;
+    dstRect_hover.h = hh * tR;
 
-    objTexture = t;
+    objTexture_basic = t;
+    objTexture_hover = th;
 
-    Update();
+    isHovered = false;
 
     this->funcP = func;
-
     this->UIEvent = UIEvent;
 
-    isHovered = false;
+    Update();
 }
 
-Button::Button(void (*func)(), int tR, int x, int y, int w, int h, SDL_Texture* t)
+Button::Button(void (*func)(), int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th)
 {
-    Rect.x = x * tR;
-    Rect.y = y * tR;
-    Rect.w = w * tR;
-    Rect.h = h * tR;
+    dstRect_basic.x = x * tR;
+    dstRect_basic.y = y * tR;
+    dstRect_basic.w = w * tR;
+    dstRect_basic.h = h * tR;
 
-    objTexture = t;
+    dstRect_hover.x = xh * tR;
+    dstRect_hover.y = yh * tR;
+    dstRect_hover.w = wh * tR;
+    dstRect_hover.h = hh * tR;
+
+    objTexture_basic = t;
+    objTexture_hover = th;
+
+    isHovered = false;
 
     this->func = func;
-
     this->UIEvent = (Uint32)-1;
 
-    isHovered = false;
+    Update();
 }
 
-bool Button::HandleEvent(const SDL_Event* Event) {
+void Button::HandleEvent(const SDL_Event* Event) {
     if (Event->type == SDL_MOUSEBUTTONDOWN && Event->button.button == SDL_BUTTON_LEFT && isHovered)
     {
         if (UIEvent == (Uint32)-1)
@@ -55,32 +66,40 @@ bool Button::HandleEvent(const SDL_Event* Event) {
             isHovered = !isHovered;
             Update(); 
         }
-        return isHovered;
+        return;// isHovered;
     }
-    return false;
+    return;// false;
 }
 
 bool Button::IsWithinBounds(int x, int y) {
     // Too far left
-    if (x < Rect.x) return false;
+    if (x < dstRect_basic.x) return false;
 
     // Too far right
-    if (x > Rect.x + Rect.w) return false;
+    if (x > dstRect_basic.x + dstRect_basic.w) return false;
 
     // Too high
-    if (y < Rect.y) return false;
+    if (y < dstRect_basic.y) return false;
 
     // Too low
-    if (y > Rect.y + Rect.h) return false;
+    if (y > dstRect_basic.y + dstRect_basic.h) return false;
 
     // Inside rectangle
     return true;
 }
 
 void Button::Update() {
-    
+    if (isHovered)
+    {
+        dstRect_display = dstRect_hover;
+        objTexture_display = objTexture_hover;
+    }
+    else {
+        dstRect_display = dstRect_basic;
+        objTexture_display = objTexture_basic;
+    }
 }
 
 void Button::Render() {
-    SDL_RenderCopy(Game::renderer, objTexture, NULL, &Rect);
+    SDL_RenderCopy(Game::renderer, objTexture_display, NULL, &dstRect_display);
 }
