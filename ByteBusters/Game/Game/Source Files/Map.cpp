@@ -22,7 +22,7 @@ std::shared_ptr<Map> Map::GetInstance(const int tileSize) {
 
 Map::Map(const int tR)
 {
-	tileSize = tR;
+	tileRes = tR;
 
 	gom = GameObjectManager::GetInstance(tR);
 
@@ -34,7 +34,7 @@ Map::Map(const int tR)
 
 	destRectDraw = new SDL_Rect;
 
-	destRectDraw->w = destRectDraw->h = tileSize;
+	destRectDraw->w = destRectDraw->h = tileRes;
 	destRectDraw->x = destRectDraw->y = 0;
 
 	///////////// DEEP JUNGLE /////////////
@@ -238,10 +238,10 @@ void Map::SpawnGameObjects(int lvl) {
 			switch (map[r][c])
 			{
 			case 1:
-				gom->CreateGameObject(lvlData[lvl].wallType, c * tileSize, r * tileSize);
+				gom->CreateGameObject(lvlData[lvl].wallType, c * tileRes, r * tileRes);
 				break;
 			case 2:
-				gom->CreateGameObject(GameObjectManager::item, c * tileSize, r * tileSize);
+				gom->CreateGameObject(GameObjectManager::item, c * tileRes, r * tileRes);
 				break;
 			default:
 				break;
@@ -253,31 +253,31 @@ void Map::SpawnGameObjects(int lvl) {
 	//spawn enemies
 	for (size_t i = 0; i < lvlData[lvl].ape; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::ape, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::ape, tileRes, tileRes);
 	}
 	for (size_t i = 0; i < lvlData[lvl].deer; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::deer, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::deer, tileRes, tileRes);
 	}
 	for (size_t i = 0; i < lvlData[lvl].homeless; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::homeless, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::homeless, tileRes, tileRes);
 	}
 	for (size_t i = 0; i < lvlData[lvl].joseph; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::joseph, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::joseph, tileRes, tileRes);
 	}
 	for (size_t i = 0; i < lvlData[lvl].rat; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::rat, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::rat, tileRes, tileRes);
 	}
 	for (size_t i = 0; i < lvlData[lvl].soldier; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::soldier, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::soldier, tileRes, tileRes);
 	}
 	for (size_t i = 0; i < lvlData[lvl].yusri; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::yusri, tileSize, tileSize);
+		gom->CreateGameObject(GameObjectManager::yusri, tileRes, tileRes);
 	}
 }
 
@@ -290,8 +290,8 @@ void Map::DrawMap() {
 			{
 			case 0: // path
 			case 2: // item
-				destRectDraw->x = c * tileSize;
-				destRectDraw->y = r * tileSize;
+				destRectDraw->x = c * tileRes;
+				destRectDraw->y = r * tileRes;
 				TextureManager::Draw(path, NULL, destRectDraw);
 				break;
 			default:

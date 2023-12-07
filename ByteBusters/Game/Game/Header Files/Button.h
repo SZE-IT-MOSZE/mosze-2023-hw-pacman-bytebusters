@@ -5,12 +5,12 @@
 
 class Button {
 public:
-    Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th);
-    Button(void (*func)(), int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th);
+    Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th); //!< Button konstruktor, kattintásra végrehajtandó funkció, egyedi UI_Event, pozíció-méret hover/no-hover, textúra hover/no-hover 
+    Button(void (*func)(), int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th); //!< Button konstruktor, kattintásra végrehajtandó funkció, pozíció-méret hover/no-hover, textúra hover/no-hover
 
-    void HandleEvent(const SDL_Event* Event);
+    void HandleEvent(const SDL_Event* Event); //!< Egérmozgás, kattintás lekezelése 
 
-    void Render();
+    void Render(); //!< Megjelenítés
 
 private:
 
@@ -27,8 +27,6 @@ private:
     SDL_Rect dstRect_display;
     SDL_Rect dstRect_hover;
     SDL_Rect dstRect_basic;
-
-    //SDL_Surface* SDLWindowSurface{ nullptr };
 
     void (*funcP)(Uint32);
     void (*func)();

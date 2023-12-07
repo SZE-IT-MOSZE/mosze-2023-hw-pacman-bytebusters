@@ -21,7 +21,6 @@ public:
 	~Map();
 
 	void Clean();
-	//takes in the level number (what file to load)
 	void SaveMapNumber(int mapNum);
 	int LoadMapNumber();
 	int LoadMap(int lvl); //!< Betöltjük az adott pályát 	
@@ -43,7 +42,7 @@ private:
 
 	SDL_Texture* path;
 
-	int tileSize; //!< Cella mérete		
+	int tileRes; //!< Cella mérete		
 	int map[ROWS][COLS]; //! < Itt tároljuk el az adott pályát	
 
 	struct levelData {
