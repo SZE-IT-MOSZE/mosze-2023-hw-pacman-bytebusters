@@ -1,8 +1,25 @@
-#include "generateMaze.h"
+﻿#include "generateMaze.h"
 
 #define MAPS 10
 
 //#define DEBUG
+/**
+ * @file generateMaze.h
+ * @brief A generateMaze fuggveny implementacioja.
+ *
+ * implementalja a generateMaze fuggvenyt, amely felelos palyak generalasert es
+ * mentesert fajlokba.
+ */
+
+ /**
+  * @brief Fuggveny prototipusa a palya generalashoz.
+  *
+  * Ez a fuggveny labirintusokat general különböző Tetris alakzatokbol, majd
+  * ellenorzi az elerhetoseget es modositja a racs szeleit. Ha a labirintus
+  * megfelelo, elmenti azt egy fajlba.
+  *
+  * @return Igaz, ha a labirintus generalas sikeres volt.
+  */
 
 bool generateMaze() {
     
