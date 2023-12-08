@@ -28,10 +28,6 @@ GameObjectManager::GameObjectManager(const int tR) {
 	_yusri = nullptr;
 }
 
-GameObjectManager::~GameObjectManager() {
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-}
-
 bool GameObjectManager::AreAllItemsPickedUp() {
 	return items.empty();
 }

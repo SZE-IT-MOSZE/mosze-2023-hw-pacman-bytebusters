@@ -7,9 +7,9 @@
 class TextureManager {
 public:
 
-	static SDL_Texture* LoadTexture(const char* fileName);
-	static void LoadAllTextures();
-	static void Draw(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* destRect);
+	static SDL_Texture* LoadTexture (const char* fileName); //!< Textúra beolvasása png-bõl
+	static void LoadAllTextures(); //!< Összes textúra betöltése
+	static void Draw(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* destRect); //!< Textúra kirajzolása képernyõre
 
 	//player
 	static SDL_Texture* Deerly;

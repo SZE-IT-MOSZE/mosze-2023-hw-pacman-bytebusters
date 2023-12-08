@@ -1,7 +1,6 @@
 #pragma once
 #include "Enemy_NoAttack.h"
 #include "GameObjectManager.h"
-//#include "Game.h"
 #include "Defines.h"
 #include <iostream>
 
@@ -15,9 +14,6 @@ Enemy_NoAttack::Enemy_NoAttack(int x, int y, int s, SDL_Texture* t) : Enemy(x, y
 	};
 
 	visionDistance = tileRes * VISIONDISTANCE;
-}
-
-Enemy_NoAttack::~Enemy_NoAttack() {
 }
 
 void Enemy_NoAttack::Update() {
@@ -34,14 +30,10 @@ void Enemy_NoAttack::Update() {
 				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 			}
 			break;
-			break;
 		}
 	}
 
-	//if (uninterruptibleAnimation) return;
-
 	dstRect.x += xvel * speed;
-
 	for (auto& wall : *walls)
 	{
 		if (SDL_HasIntersection(&dstRect, wall->GetDestRectPtr())) {
@@ -51,7 +43,6 @@ void Enemy_NoAttack::Update() {
 	}
 
 	dstRect.y += yvel * speed;
-
 	for (auto& wall : *walls)
 	{
 		if (SDL_HasIntersection(&dstRect, wall->GetDestRectPtr())) {

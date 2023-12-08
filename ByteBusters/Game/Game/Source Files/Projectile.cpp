@@ -5,8 +5,12 @@
 #include "Game.h"
 #include "Defines.h"
 
-
-
+enum projectileFrameDirection {
+	up = 3,
+	down = 1,
+	right = 0,
+	left = 2
+};
 
 //projectile spawns centered on given position
 Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t) : GameObject(x - (tileRes / PROJECTILE_SIZE_REDUCTION) / 2, y - (tileRes / PROJECTILE_SIZE_REDUCTION) / 2)
@@ -25,19 +29,19 @@ Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t) : GameObject(
 	xvel = yvel = 0;
 	switch (d)
 	{
-	case up:
+	case GameObjectManager::up:
 		frame = up;
 		yvel = -1;
 		break;
-	case down:
+	case GameObjectManager::down:
 		frame = down;
 		yvel = 1;
 		break;
-	case left:
+	case GameObjectManager::left:
 		frame = left;
 		xvel = -1;
 		break;
-	case right:
+	case GameObjectManager::right:
 		frame = right;
 		xvel = 1;
 		break;
@@ -58,11 +62,6 @@ Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t) : GameObject(
 		std::cout << "TOO HIGH PROJECTILE SPEED!!!" << std::endl;
 	}*/
 
-}
-
-Projectile::~Projectile()
-{
-	//std::cout << "Projectile destructor called" << std::endl;
 }
 
 void Projectile::Update()

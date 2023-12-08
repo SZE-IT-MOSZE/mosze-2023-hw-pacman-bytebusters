@@ -14,38 +14,32 @@ class Map {
 
 public:
 
-	static std::shared_ptr<Map> GetInstance(const int tileSize);
-	Map(Map& other) = delete;
-	void operator=(const Map&) = delete;
+	static std::shared_ptr<Map> GetInstance(const int tileSize); //!< Singleton instance
+	Map(Map& other) = delete; //!< Törölt copy konstruktor
+	void operator=(const Map&) = delete; //!< Törölt = operátor
+	~Map() {}; //!< Destruktor
 
-	~Map();
-
-	void Clean();
-	void SaveMapNumber(int mapNum);
-	int LoadMapNumber();
-	int LoadMap(int lvl); //!< Betöltjük az adott pályát 	
-	void SpawnGameObjects(int lvl);
+	void SaveMapNumber(int mapNum); //!< Adott pályaszám mentése file-ba
+	int LoadMapNumber(); //!< Mentett pályaszám betöltése file-ból
+	int LoadMap(int lvl); //!< Adott pálya betöltése
+	void SpawnGameObjects(int lvl); //!< Objektumok létehozása az adott pályához
 	void DrawMap(); //!< Az adott pálya hátterének a kirajzolása
 
 private:
 
-	Map(int tR); //!<  Létrehoz egy példányt az osztályból, amely a megadott cella méretet fogja használni
-	static std::weak_ptr<Map> instance_;
-	static std::mutex mutex_;
+	Map(int tR); //!< Konstruktor, cellaméret
+	static std::weak_ptr<Map> instance_; //!< Singleton instance
+	static std::mutex mutex_; //!< Thread guard
 
-	std::shared_ptr<GameObjectManager> gom;
+	std::shared_ptr<GameObjectManager> gom; //!< GameObjectManager osztály példánya
+	std::string pathToFields; //!< Pálya file-ok elérése útja
+	SDL_Rect destRectDraw; //!< Háttér kirajzolásához szükséges
+	SDL_Texture* path; //!< Aktuális háttér
 
-	std::string pathToFields;
-	std::string pathToTextures;
+	int tileRes; //!< Cella méret
+	int map[ROWS][COLS]; //!< Aktuális pálya tárolása
 
-	SDL_Rect* destRectDraw;
-
-	SDL_Texture* path;
-
-	int tileRes; //!< Cella mérete		
-	int map[ROWS][COLS]; //! < Itt tároljuk el az adott pályát	
-
-	struct levelData {
+	struct levelData { //!< Egy pálya adatai alapértékekkel
 		GameObjectManager::WallTypes wallType = GameObjectManager::concrete02;
 		SDL_Texture* path = TextureManager::dirt;
 		int ape = 0;
@@ -57,6 +51,6 @@ private:
 		int yusri = 0;
 	};
 
-	levelData lvlData[MAPS];
+	levelData lvlData[MAPS]; //!< Összes pálya adatai
 
 };

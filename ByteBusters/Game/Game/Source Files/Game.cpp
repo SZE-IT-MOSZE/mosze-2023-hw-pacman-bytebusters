@@ -40,7 +40,7 @@ Game::Game()
 Game::~Game() 
 {
 	SDL_DestroyRenderer(renderer);
-	std::cout << "Game destroctor called \n";
+	//std::cout << "Game destroctor called \n";
 }
 
 int Game::Init()
@@ -275,51 +275,111 @@ void Game::UpdateThread() {
 
 void Game::HandleKeyEvents(SDL_Event* event)
 {
+	/*
+	IMPORTANT !!!
+
+	According to SDL documentation the KEYDOWN and KEYUP events should
+	only occure once when the key is pressed down or released, however,
+	the event triggeres once when the key is pressed/released, then
+	after a short delay (~0.5s) the event is constantly triggered for seemingly
+	no reason. This caused weird glitches, thus the following system had to be implemented:
+
+	-The KEYDOWN event inserts (and keeps trying to insert) a value into a <set> which can only contain that value once.
+	-If the set contains that value, a respective fuction is called.
+	-The KEYUP event removes that value from the set.
+
+	// May expand later to only trigger once when the key is pressed or released, how it should actually work, but for now it functions fine.
+
+	// Might be my fault that this happenes, but I dont know why. :/
+
+	*/
+
 	switch (event->type)
 	{
 	case SDL_KEYDOWN:
 		switch (event->key.keysym.sym) {
 		case SDLK_LEFT:
-			player->SetVelX(-1);
+			isPressed.insert('a');
 			break;
 		case SDLK_RIGHT:
-			player->SetVelX(1);
+			isPressed.insert('d');
 			break;
 		case SDLK_UP:
-			player->SetVelY(-1);
+			isPressed.insert('w');
 			break;
 		case SDLK_DOWN:
-			player->SetVelY(1);
+			isPressed.insert('s');
 			break;
 		case SDLK_y:
-			player->Shoot();
+			isPressed.insert('y');
 			break;
 		case SDLK_x:
-			player->Hit();
+			isPressed.insert('x');
 			break;
 		default:
 			break;
 		}
 		break;
+
 	case SDL_KEYUP:
 		switch (event->key.keysym.sym) {
 		case SDLK_LEFT:
-			player->SetVelX(0);
+			isPressed.erase('a');
 			break;
 		case SDLK_RIGHT:
-			player->SetVelX(0);
+			isPressed.erase('d');
 			break;
 		case SDLK_UP:
-			player->SetVelY(0);
+			isPressed.erase('w');
 			break;
 		case SDLK_DOWN:
-			player->SetVelY(0);
+			isPressed.erase('s');
+			break;
+		case SDLK_y:
+			isPressed.erase('y');
+			break;
+		case SDLK_x:
+			isPressed.erase('x');
 			break;
 		default:
 			break;
 		}
 		break;
+
 	default:
 		break;
 	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('w')) {
+		player->SetVelY(-1);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('a')) {
+		player->SetVelX(-1);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('s')) {
+		player->SetVelY(1);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('d')) {
+		player->SetVelX(1);
+	}
+	//////////////////////////////////////////////////////////
+	if (!isPressed.contains('d') && !isPressed.contains('a')) { // stop if none
+		player->SetVelX(0);
+	}
+	//////////////////////////////////////////////////////////
+	if (!isPressed.contains('w') && !isPressed.contains('s')) { // stop if none
+		player->SetVelY(0);
+	}
+	//////////////////////////////////////////////////////////
+	if (isPressed.contains('y')) {
+		player->Shoot();
+	}
+	if (isPressed.contains('x')) {
+		player->Hit();
+	}
+	//////////////////////////////////////////////////////////
+
 }

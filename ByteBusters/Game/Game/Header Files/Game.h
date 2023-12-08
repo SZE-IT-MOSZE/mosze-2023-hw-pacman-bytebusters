@@ -22,46 +22,47 @@ class Game {
 
 public:
 
-	static std::shared_ptr<Game> GetInstance();
-	Game(Game& other) = delete;
-	void operator=(const Game&) = delete;
-	~Game();
+	static std::shared_ptr<Game> GetInstance(); //!< Singleton GetInstance
+	Game(Game& other) = delete; //!< Törölt copy konstruktor
+	void operator=(const Game&) = delete; //!< Törölt = operátor
+	~Game(); //!< Destruktor
 
-	int Init(); //!< A játék inicializálása a képernyõn megfelelõ pozícióban,megfelelõ mérettel
-	void HandleKeyEvents(SDL_Event* event); //!< Az események lekezelése
-	void UpdateThread(); //!< Ezen a szállon fut a frissítés
+	int Init(); //!< A játék inicializálása, ablak létrehozása, textúrák betöltése, Map és GemeObjectManager osztály inicializálása
+	void HandleKeyEvents(SDL_Event* event); //!< Események lekezelése
+	void UpdateThread(); //!< Funkció, ami külön szálon frissíti a játékbeli objektumokat
 
-	void StopUpdate();
-	void PauseUpdate();
-	void ResumeUpdate();
+	void StopUpdate(); //!< Frissítés megállítésa
+	void PauseUpdate(); //!< Frissítés szüneteltetése
+	void ResumeUpdate(); //!< Frissítés újraindítása
 
-	void MainLoop();
+	void MainLoop(); //!< A fõ cilus, amiben a menü is van
 
-	static SDL_Renderer* renderer;
+	static SDL_Renderer* renderer; //!< Rendered, amit az objektumok használnak
 	
 
 private:
-	Game();
-	static std::weak_ptr<Game> instance_;
-	static std::mutex mutex_;
+	Game(); //!< Privát konstruktor
+	static std::weak_ptr<Game> instance_; //!< Singleton instance
+	static std::mutex mutex_; //!< Thread guard
 	
 
-	std::shared_ptr<Window> window;
-	std::shared_ptr<UI> ui;
-	std::shared_ptr<Map> map; //!< Mutató a mapra
-	std::shared_ptr<GameObjectManager> gom;
+	std::shared_ptr<Window> window; //!< Ablak osztály példánya
+	std::shared_ptr<UI> ui; //!< UI osztály példánya
+	std::shared_ptr<Map> map; //!< Map osztály példánya
+	std::shared_ptr<GameObjectManager> gom; //!< GameObjectManager osztály példánya
 
-	Player* player; //!< Mutató a playerre
-	std::unique_ptr<std::thread> gameUpdates;
+	Player* player; //!< Mutató a Player-re input-okhoz
+	std::unique_ptr<std::thread> gameUpdates; //!< Frissítési szál
 
-	int tileRes;
+	int tileRes; //!< Cella mérete
 
-	bool isRunning;
-	bool inMenu;
-	bool isPlaying;
+	bool isRunning; //!< Fut-e az applikáció
+	bool inMenu; //!< A menüben van-e a felhsználó
+	bool isPlaying; //!< Játszik-e a felhasználó
 
-	bool update;
-	bool paused;
-	bool confirmPause;
+	bool update; //!< A frissítés megy
+	bool paused; //!< A frisítés szüneteltetve van
+	bool confirmPause; //!< A frissítés szüneteltetésének megerõsítése
 
+	std::set<char> isPressed;
 };

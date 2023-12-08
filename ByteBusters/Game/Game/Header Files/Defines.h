@@ -24,6 +24,7 @@
 #define PLAYER_SPRITE_SIZE 64
 #define PLAYER_SPAWN_X 18
 #define PLAYER_SPAWN_Y 13
+#define PLAYER_HIT_DISTANCE 2
 
 //projectile
 #define PROJECTILE_SPRITE_SIZE 16

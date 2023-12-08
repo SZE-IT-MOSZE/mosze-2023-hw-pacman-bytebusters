@@ -32,10 +32,8 @@ Map::Map(const int tR)
 
 	std::filesystem::create_directory(pathToFields); // if Fields does not exist create it. No need to check if it exists, nothing will happen then
 
-	destRectDraw = new SDL_Rect;
-
-	destRectDraw->w = destRectDraw->h = tileRes;
-	destRectDraw->x = destRectDraw->y = 0;
+	destRectDraw.w = destRectDraw.h = tileRes;
+	destRectDraw.x = destRectDraw.y = 0;
 
 	///////////// DEEP JUNGLE /////////////
 	lvlData[0].wallType = GameObjectManager::concrete02;
@@ -92,15 +90,6 @@ Map::Map(const int tR)
 	lvlData[9].joseph = 1;
 #endif // DEBUGLEVEL
 
-}
-
-Map::~Map() 
-{
-	delete destRectDraw;
-}
-
-void Map::Clean() {
-	// ok
 }
 
 int Map::LoadMapNumber() {
@@ -290,9 +279,9 @@ void Map::DrawMap() {
 			{
 			case 0: // path
 			case 2: // item
-				destRectDraw->x = c * tileRes;
-				destRectDraw->y = r * tileRes;
-				TextureManager::Draw(path, NULL, destRectDraw);
+				destRectDraw.x = c * tileRes;
+				destRectDraw.y = r * tileRes;
+				TextureManager::Draw(path, NULL, &destRectDraw);
 				break;
 			default:
 				break;

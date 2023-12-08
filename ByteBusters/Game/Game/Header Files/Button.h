@@ -15,22 +15,22 @@ public:
 private:
 
 
-    bool IsWithinBounds(int x, int y);
+    bool IsWithinBounds(int x, int y); //!< Egér pozíció evaluálása
 
-    void Update();
+    void Update(); //!< Textúra cserélése, ha rajta van az egér a gombon
 
-    SDL_Texture* objTexture_display;
-    SDL_Texture* objTexture_hover;
-    SDL_Texture* objTexture_basic;
+    SDL_Texture* objTexture_display; //!< Aktuális textúra
+    SDL_Texture* objTexture_hover; //!< Textúra amikor rajta van az egér
+    SDL_Texture* objTexture_basic; //!< Textúra amikor nincs rajta az egér
 
-    bool isHovered;
-    SDL_Rect dstRect_display;
-    SDL_Rect dstRect_hover;
-    SDL_Rect dstRect_basic;
+    bool isHovered; //!< Rajta van-e az egér
+    SDL_Rect dstRect_display; //!< Aktuális pozíció és méret
+    SDL_Rect dstRect_hover; //!< Pozíció és méret amikor rajta van az egér
+    SDL_Rect dstRect_basic; //!< Pozíció és méret amikor nincs rajta az egér
 
-    void (*funcP)(Uint32);
-    void (*func)();
+    void (*funcP)(Uint32); //!< gomb funkciója, egyedi Event-et push-ol
+    void (*func)(); //!< gomb funkciója
 
-    Uint32 UIEvent;
+    Uint32 UIEvent; //!< Egyedi event azonosító
 
 };

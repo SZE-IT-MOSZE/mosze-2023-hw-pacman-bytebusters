@@ -9,47 +9,46 @@
 
 class Enemy : public GameObject {
 public:
-	Enemy(int x, int y, int s, SDL_Texture* t); //!< Enemy konstruktor az enemy létrehozására
-	virtual ~Enemy();
+	Enemy(int x, int y, int s, SDL_Texture* t); //!< Enemy konstruktor, pozíció, textúra
+	virtual ~Enemy() {}; //!< Virtuális enemy destruktor
 
-	virtual void Update() override = 0; //!< Enemy frissítése
-	void Render() override; //!< Enemy renderelése
+	virtual void Update() override = 0; //!< Frissítés
+	void Render() override; //!< Megjelenítés
 
 protected: 
-	Player* player; // this should be const too
-	const SDL_Rect* playerRect;
-	const std::forward_list<std::unique_ptr<Wall>>* walls;
-	const std::forward_list<std::unique_ptr<Projectile>>* projectiles;
+	Player* player; //!< Player mutató
+	const SDL_Rect* playerRect; //!< Player hitbox
+	const std::forward_list<std::unique_ptr<Wall>>* walls; //!< Falak
+	const std::forward_list<std::unique_ptr<Projectile>>* projectiles; //!< Player lövedékei
 
-	int CalculateDistance(); // easier calculation, check first instead of CheckLineOfSight()
-	bool CheckLineOfSight(); // overwrites positions calculated in CalculatePositions(), CALL LAST!!! //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és, hogy látó távolságon bellül van-e
-	void Wander(); //!< Az enemy barangolása az adott pályán 
+	int CalculateDistance(); //!< Enemy és Player távolsága
+	bool CheckLineOfSight(); //!< Azt ellenõrizzük, hogy az enemy látja-e a játékost és hogy látótávolságon belül van-e
+	void Wander(); //!< Enemy barangolása
 
-	int xvel, yvel;
-	int speed;
+	int xvel, yvel; //!< Enemy sebessége tengelyek mentén
+	int speed; //!< Enemy sebesség szorzója
 
-	SDL_Point playerPos;
-	SDL_Point thisPos;
+	SDL_Point playerPos; //!< Player pozíciója
+	SDL_Point thisPos; //!< Enemy pozíciója
 
-	int distance;
-	int visionDistance; //!< Az enemy látótávolsága
-	int attackDistance;
+	int distance; //!< Távolség Enemy és Player között
+	int visionDistance; //!< Enemy látótávolsága
+	int attackDistance; //!< Enemy támadási távolsága
 
-	bool uninterruptibleAnimation = false; 
+	bool uninterruptibleAnimation = false; //!< Megszakíthatalan animáció, pl.: lövés, ütés
 
 	Uint32 frameStart;	// start of render
 	int frameDelay;		// length between two renders of this object in milliseconds
 	int frameCounter;	// frame counter
 	int row;			// animation to display
+	int newRow;			// new animation to set if different from previous
 	bool facingRight;
 
-	//int(*enemySheetData)[2];
-
-	std::vector<std::vector<int>> enemySheetData;
+	std::vector<std::vector<int>> enemySheetData; //!< Enemy sprite sheet adatai
 
 private:
 
-	enum anim {
+	enum anim { //!< Animáció kódok
 		Idle_R = 0,
 		Idle_L = 1,
 		Run_R = 2,
@@ -57,20 +56,3 @@ private:
 	};
 
 };
-
-/*
-base enemy - should include wander
-	>Enemy_MeleeAttack
-		>wander
-		>chase
-		>attack
-	>Enemy_RangedAttack 
-		>wander
-		>shoot (attack but different)
-	>Enemy_NoAttack
-		>wander
-		>runaway
-
-
-*/
-//

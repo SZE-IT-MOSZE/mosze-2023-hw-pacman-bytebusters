@@ -15,7 +15,7 @@ std::weak_ptr<GameObjectManager> GameObject::gom;
 GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
 
-	gom = GameObjectManager::GetInstance(0);
+	gom = GameObjectManager::GetInstance(0); // we no make sense here
 
 	dstRect.x = x;
 	dstRect.y = y;
@@ -24,10 +24,6 @@ GameObject::GameObject(int x, int y) {
 	srcRect.x = 0;
 	srcRect.y = 0;
 	srcRect.w = srcRect.h = 64;
-
-}
-
-GameObject::~GameObject() {
 
 }
 

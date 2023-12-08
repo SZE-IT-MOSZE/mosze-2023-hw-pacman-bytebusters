@@ -39,73 +39,50 @@ Enemy::Enemy(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
 
 }
 
-Enemy::~Enemy() {
-}
-
-//bool printed = false;
 void Enemy::Render() {
 	frameDelay = SDL_GetTicks() - frameStart;
-	if (frameDelay > enemySheetData[row][1]) // if time to display next frame
-	{
 
-		//if (true /*!printed*/)
-		//{
-		//	for (size_t i = 0; i < std::size(enemySheetData); i++)
-		//	{
-		//		for (size_t j = 0; j < std::size(enemySheetData[i]); j++)
-		//		{
-		//			std::cout << "[" << enemySheetData[i][j] << "]";
-		//		}
-		//		std::cout << std::endl;
-		//	}
-		//	std::cout << std::endl;
-		//	printed = true;
-		//}
-
-		/*std::cout << "ROW:    " << row << std::endl;
-		std::cout << "FRAMES: " << enemySheetData[row][0] << std::endl;
-		std::cout << "DELAY:  " << enemySheetData[row][1] << std::endl;*/
-
-
-		frameStart = SDL_GetTicks();
-
-		if (!uninterruptibleAnimation) // if NOT playing Shoot or Hit
+	if (!uninterruptibleAnimation) { // if there is no uninterruptible animation
+		if (xvel == 1)
 		{
-			if (xvel == 1) // if going right
-			{
-				facingRight = true;
-				row = Run_R;
-			}
-			else if (xvel == -1) // if going left
-			{
-				facingRight = false;
-				row = Run_L;
-			}
-			else if (yvel != 0) // if NOT going right/left BUT going up/down
-			{
-				if (facingRight) // last direction the character was facing
-				{
-					row = Run_R;
-				}
-				else
-				{
-					row = Run_L;
-				}
-			}
-			else // if NOT moving at all
-			{
-				if (facingRight) // last direction the enemy was facing
-				{
-					row = Idle_R;
-				}
-				else
-				{
-					row = Idle_L;
-				}
-			}
+			facingRight = true;
+		}
+		else if (xvel == -1)
+		{
+			facingRight = false;
 		}
 
-		if (srcRect.y != row * ENEMY_SPRITE_SIZE) { // if animation change happened
+		if (xvel == 0 && yvel == 0) // if standing still
+		{
+			if (facingRight) // faced right last time
+			{
+				newRow = Idle_R;
+			}
+			else // faced left last time
+			{
+				newRow = Idle_L;
+			}
+		}
+		else // if moving
+		{
+			if (facingRight) // faced right last time
+			{
+				newRow = Run_R;
+			}
+			else // faced left last time
+			{
+				newRow = Run_L;
+			}
+		}
+	}
+
+	if (frameDelay > enemySheetData[row][1] || newRow != row) // if time to display next frame OR a change has happened
+	{
+		
+		frameStart = SDL_GetTicks();
+
+		if (newRow != row) { // if animation change happened
+			row = newRow; // set new row
 			frameCounter = 0;	// reset counter
 			srcRect.y = row * ENEMY_SPRITE_SIZE; // set new animation
 		}

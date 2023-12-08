@@ -8,21 +8,14 @@
 #include "GameObjectManager.h"
 #include "Defines.h"
 
-
-
-/*
-Idle_R 5 200
-Idle_L 5 200
-Move_R 3 200
-Move_L 3 200
-Hit_R 7 100
-Hit_L 7 100
-Shoot_R 5 100
-Shoot_L 5 100
-
-*/
-
 Player::Player(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
+
+	lookDirection = GameObjectManager::left;
+	facingRight = false;
+
+	walls = nullptr;
+	projectiles = nullptr;
+	items = nullptr;
 
 	if (auto lockedPtr = gom.lock())
 	{
@@ -35,34 +28,37 @@ Player::Player(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
 		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 	}
 
-
 	objTexture = t;
-
-	std::cout << "player tile size: " << tileRes << "\n";
 
 	xvel = 0;
 	yvel = 0;
-
-	posX = posY = 0;
-
 	hp = 10;
 
 	srcRect.w = srcRect.h = PLAYER_SPRITE_SIZE;
 
 	uninterruptibleAnimation = false;
 
-	frameStart = SDL_GetTicks();	// start of render
-	frameDelay = 0;					// length between two renders of this object in milliseconds
-	frameCounter = 0;				// frame counter
-	row = 0;						// animation to display
+	frameStart = SDL_GetTicks();	
+	frameDelay = 0;					
+	frameCounter = 0;				
+	row = 0;						
+	newRow = 0;						
 
 	speed = s * tileRes/DIVIDE_BY_THIS;
-}
 
-Player::~Player() {
-	std::cout << "player destructor called" << std::endl;
+	sheetData = {
+		{5, 200},
+		{5, 200},
+		{3, 200},
+		{3, 200},
+		{7, 50},
+		{7, 50},
+		{5, 100},
+		{5, 100}, // 5 * 100 = 500
+		{3, 166}, // ? * 3 = 500 
+		{3, 166}, // ? = 166.666...
+	};
 }
-
 
 void Player::Update() {
 
@@ -119,90 +115,77 @@ void Player::Update() {
 	}
 }
 
-/*
-row = offset by size
-name 	row	frames	delay
-Idle_R 	0	5 		200
-Idle_L 	1	5 		200
-Move_R 	2	3 		200
-Move_L 	3	3 		200
-Hit_R 	4	7 		100
-Hit_L 	5	7 		100
-Shoot_R	6	5 		100
-Shoot_L	7	5 		100
-*/
-
-bool facingRight = true;
-
-int sheetData[10][2] = {
-	{5, 200},
-	{5, 200},
-	{3, 200},
-	{3, 200},
-	{7, 50},
-	{7, 50},
-	{5, 100},
-	{5, 100}, // 5 * 100 = 500
-	{3, 166}, // ? * 3 = 500 
-	{3, 166}, // ? = 166.666...
-};
-
-enum anim {
-	Idle_R	= 0,
-	Idle_L	= 1,
-	Run_R	= 2,
-	Run_L	= 3,
-	Hit_R	= 4,
-	Hit_L	= 5,
-	Shoot_R = 6,
-	Shoot_L = 7,
-	Shoot_D = 8,
-	Shoot_U = 9
-};
-
 void Player::Render() {
 	frameDelay = SDL_GetTicks() - frameStart;
-	if (frameDelay > sheetData[row][1]) // if time to display next frame
+
+	//facingRight set in SetVelX();
+	if (!uninterruptibleAnimation) { // if there is no uninterruptible animation
+		if (xvel == 0 && yvel == 0) // if standing still
+		{
+			if (facingRight) // faced right last time
+			{
+				newRow = Idle_R;
+			}
+			else // faced left last time
+			{
+				newRow = Idle_L;
+			}
+		}
+		else // if moving
+		{
+			if (facingRight) // faced right last time
+			{
+				newRow = Run_R;
+			}
+			else // faced left last time
+			{
+				newRow = Run_L;
+			}
+		}
+	}
+
+	//if (!uninterruptibleAnimation) // if NOT playing Shoot or Hit
+	//{
+	//	//if (xvel == 1) // if going right
+	//	//{
+	//	//	facingRight = true;
+	//	//	newRow = Run_R;
+	//	//}
+	//	//else if (xvel == -1) // if going left
+	//	//{
+	//	//	facingRight = false;
+	//	//	newRow = Run_L;
+	//	//}
+	//	//else if (yvel != 0) // if NOT going right/left BUT going up/down
+	//	//{
+	//	//	if (facingRight) // last direction the character was facing
+	//	//	{
+	//	//		newRow = Run_R;
+	//	//	}
+	//	//	else
+	//	//	{
+	//	//		newRow = Run_L;
+	//	//	}
+	//	//}
+	//	//else // if NOT moving at all
+	//	//{
+	//	//	if (facingRight) // last direction the character was facing
+	//	//	{
+	//	//		newRow = Idle_R;
+	//	//	}
+	//	//	else
+	//	//	{
+	//	//		newRow = Idle_L;
+	//	//	}
+	//	//}
+	//}
+
+	if (frameDelay > sheetData[row][1] || newRow != row) // if time to display next frame OR a change has happened
 	{
 		frameStart = SDL_GetTicks();
 
-		if (!uninterruptibleAnimation) // if NOT playing Shoot or Hit
-		{
-			if (xvel == 1) // if going right
-			{
-				facingRight = true;
-				row = Run_R;
-			}
-			else if (xvel == -1) // if going left
-			{
-				facingRight = false;
-				row = Run_L;
-			} 
-			else if (yvel != 0) // if NOT going right/left BUT going up/down
-			{
-				if (facingRight) // last direction the character was facing
-				{
-					row = Run_R;
-				}
-				else 
-				{
-					row = Run_L;
-				}
-			}
-			else // if NOT moving at all
-			{
-				if (facingRight) // last direction the character was facing
-				{
-					row = Idle_R;
-				}
-				else 
-				{
-					row = Idle_L;
-				}
-			}
-		}
-		
-		if (srcRect.y != row * PLAYER_SPRITE_SIZE) { // if animation change happened
+		if (newRow != row) { // if animation change happened
+			row = newRow; // set new row
 			frameCounter = 0;	// reset counter
 			srcRect.y = row * PLAYER_SPRITE_SIZE; // set new animation
 		}
@@ -222,23 +205,16 @@ void Player::Render() {
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }
 
-enum Direction { // note: this is not the direction specified in projectile
-	up = 0,
-	down = 1,
-	right = 2,
-	left = 3
-};
-
-int lookDirection = right;
-
 void Player::SetVelX(int v) { 
 	if (v == 1)
 	{
-		lookDirection = right;
+		facingRight = true;
+		lookDirection = GameObjectManager::right;
 	}
 	else if (v == -1)
 	{
-		lookDirection = left;
+		facingRight = false;
+		lookDirection = GameObjectManager::left;
 	}
 	xvel = v;
 }
@@ -246,42 +222,40 @@ void Player::SetVelX(int v) {
 void Player::SetVelY(int v) {
 	if (v == 1)
 	{
-		lookDirection = down;
+		lookDirection = GameObjectManager::down;
 	}
 	else if (v == -1)
 	{
-		lookDirection = up;
+		lookDirection = GameObjectManager::up;
 	}
 	yvel = v;
 }
 
 void Player::Shoot() {
-	posX = dstRect.x + dstRect.w / 2;
-	posY = dstRect.y + dstRect.h / 2;
-
 	if (uninterruptibleAnimation) return;
 	uninterruptibleAnimation = true;
+
 	switch (lookDirection)
 	{
-	case up:
+	case GameObjectManager::up:
 		//std::cout << "shoot up" << std::endl;
-		row = Shoot_U;
-		ShootProjectile(Projectile::up);
+		newRow = Shoot_U;
+		ShootProjectile(GameObjectManager::up);
 		break;
-	case down:
+	case GameObjectManager::down:
 		//std::cout << "shoot down" << std::endl;
-		row = Shoot_D;
-		ShootProjectile(Projectile::down);
+		newRow = Shoot_D;
+		ShootProjectile(GameObjectManager::down);
 		break;
-	case left:
+	case GameObjectManager::left:
 		//std::cout << "shoot left" << std::endl;
-		row = Shoot_L;
-		ShootProjectile(Projectile::left);
+		newRow = Shoot_L;
+		ShootProjectile(GameObjectManager::left);
 		break;
-	case right:
+	case GameObjectManager::right:
 		//std::cout << "shoot right" << std::endl;
-		row = Shoot_R;
-		ShootProjectile(Projectile::right);
+		newRow = Shoot_R;
+		ShootProjectile(GameObjectManager::right);
 		break;
 	default:
 		break;
@@ -292,7 +266,8 @@ void Player::Shoot() {
 void Player::ShootProjectile(int d) {
 	if (auto lockedPtr = gom.lock())
 	{
-		lockedPtr->CreateGameObject(GameObjectManager::playerProjectile, posX, posY, d);
+		SDL_Point pos = GetCenterPosition();
+		lockedPtr->CreateGameObject(GameObjectManager::playerProjectile, pos.x, pos.y, d);
 	}
 	else
 	{
@@ -303,17 +278,18 @@ void Player::ShootProjectile(int d) {
 void Player::Hit() { // no up or down hit animation
 	if (uninterruptibleAnimation) return;
 	uninterruptibleAnimation = true;
+
 	if (facingRight)
 	{
-		row = Hit_R;
+		newRow = Hit_R;
 	}
 	else
 	{
-		row = Hit_L;
+		newRow = Hit_L;
 	}
 	if (auto lockedPtr = gom.lock())
 	{
-		lockedPtr->CheckEnemyHit(2 * tileRes, facingRight);
+		lockedPtr->CheckEnemyHit(PLAYER_HIT_DISTANCE * tileRes, facingRight);
 	}
 	else
 	{

@@ -18,9 +18,6 @@ Enemy_Melee::Enemy_Melee(int x, int y, int s, SDL_Texture* t) : Enemy(x, y, s, t
 	attackDistance = tileRes * ATTACKDISTANCE;
 }
 
-Enemy_Melee::~Enemy_Melee() {
-}
-
 void Enemy_Melee::Update() {
 	for (auto& projectile : *projectiles)
 	{
@@ -81,16 +78,15 @@ void Enemy_Melee::Update() {
 }
 
 void Enemy_Melee::Attack() {
-	//std::cout << "ATTACK" << std::endl;
 	if (uninterruptibleAnimation) return;
 	uninterruptibleAnimation = true;
 	if (facingRight)
 	{
-		row = Attack_R;
+		newRow = Attack_R;
 	}
 	else
 	{
-		row = Attack_L;
+		newRow = Attack_L;
 	}
 	player->DamagePlayer();
 }

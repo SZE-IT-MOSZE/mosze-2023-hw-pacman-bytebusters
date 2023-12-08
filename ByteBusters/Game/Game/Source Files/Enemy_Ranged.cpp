@@ -18,9 +18,6 @@ Enemy_Ranged::Enemy_Ranged(int x, int y, int s, SDL_Texture* t) : Enemy(x, y, s,
 	};
 }
 
-Enemy_Ranged::~Enemy_Ranged() {
-}
-
 void Enemy_Ranged::Update() {
 	for (auto& projectile : *projectiles)
 	{
@@ -34,7 +31,6 @@ void Enemy_Ranged::Update() {
 			{
 				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 			}
-			break;
 			break;
 		}
 	}
@@ -85,25 +81,25 @@ void Enemy_Ranged::Attack(){
 	if (abs(playerPos.x - thisPos.x) <= tileRes/2)
 	{
 		if (thisPos.y >= playerPos.y) {
-			row = Attack_U;
-			ShootProjectile(Projectile::up);
+			newRow = Attack_U;
+			ShootProjectile(GameObjectManager::up);
 		}
 		else if (thisPos.y < playerPos.y)
 		{
-			row = Attack_D;
-			ShootProjectile(Projectile::down);
+			newRow = Attack_D;
+			ShootProjectile(GameObjectManager::down);
 		}
 	}
 	else if (abs(playerPos.y - thisPos.y) <= tileRes)
 	{
 		if (thisPos.x <= playerPos.x) {
-			row = Attack_R;
-			ShootProjectile(Projectile::right);
+			newRow = Attack_R;
+			ShootProjectile(GameObjectManager::right);
 		}
 		else if (thisPos.x > playerPos.x)
 		{
-			row = Attack_L;
-			ShootProjectile(Projectile::left);
+			newRow = Attack_L;
+			ShootProjectile(GameObjectManager::left);
 		}
 	} 
 	//else

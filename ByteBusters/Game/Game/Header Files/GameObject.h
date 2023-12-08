@@ -8,25 +8,24 @@ class GameObject {
 
 public:
 
-	GameObject(int x, int y);
-	virtual ~GameObject();
+	GameObject(int x, int y); //!< Konstruktor, pozíció
+	virtual ~GameObject() {}; //!< Destruktor
 
-	virtual void Update() {};
-	virtual void Render();
+	virtual void Update() {}; //!< Üres frissítés, alap GameObject nem csinál semmit
+	virtual void Render(); //!< Megjelenítés
 
-	static void setTileSize(int s);
+	static void setTileSize(int s); //!< Cellaméret beállítása minden GameObject-re
 
-	//SDL_Rect GetDestRect() { return dstRect; }
-	const SDL_Rect* GetDestRectPtr() { return &dstRect; }
-	SDL_Point GetCenterPosition();
+	const SDL_Rect* GetDestRectPtr() { return &dstRect; } //!< Hitbox
+	SDL_Point GetCenterPosition(); //!< Pozíció megállapítása
 
 protected:
-	static int tileRes;
-	static std::weak_ptr<GameObjectManager> gom;
+	static int tileRes; //!< Cellaméret
+	static std::weak_ptr<GameObjectManager> gom; //!< GameObjectManager elérés
 
-	SDL_Rect dstRect;
-	SDL_Rect srcRect;
+	SDL_Rect dstRect; //!< Hitbox és megjelenítési célpont
+	SDL_Rect srcRect; //!< Sprite sheet textúra elem
 
-	SDL_Texture* objTexture;
+	SDL_Texture* objTexture; //!< Textúra
 
 };

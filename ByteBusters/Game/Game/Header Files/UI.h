@@ -21,35 +21,34 @@
 class UI
 {
 public:
-	static std::shared_ptr<UI> GetInstance(const int tR);
-	UI(UI& other) = delete;
-	void operator=(const UI&) = delete;
-	~UI();
+	static std::shared_ptr<UI> GetInstance(const int tR); //!< Singleton GetInstance
+	UI(UI& other) = delete; //!< Törölt copy konstruktor
+	void operator=(const UI&) = delete; //!< Törörlt = operátor
+	~UI(); //!< Destruktor
 
-	int Init();
-	void RenderMainMenu();
-	void RenderGameMenu();
-	void SetHP(int hp);
-	void HandleMainMenuEvents(const SDL_Event* event);
-	void HandleGameMenuEvents(const SDL_Event* event);
-	Uint32 Get_UI_EVENT() { return UIEvent; }
+	int Init(); //!< UI inicializálása
+	void RenderMainMenu(); //!< Fõmenü kirajzolása
+	void RenderGameMenu(); //!< Játék közbeni menü kirajzolása
+	void SetHP(int hp); //!< Player HP beállítása
+	void HandleMainMenuEvents(const SDL_Event* event); //!< Események fõmenüben
+	void HandleGameMenuEvents(const SDL_Event* event); //!< Játék közbeni menü események
+	Uint32 Get_UI_EVENT() { return UIEvent; } //!< Egyedi UI event lekérése
 
 private:
-	UI(const int tR);
-	static std::weak_ptr<UI> instance_;
-	static std::mutex mutex_;
+	UI(const int tR); //!< Privát konstruktor, cella méret
+	static std::weak_ptr<UI> instance_; //!< Singleton instance
+	static std::mutex mutex_; //!< Thread guard
 
-	int tileRes;
-	int returnValue;
+	int tileRes; //!< Cella méret
 
-	std::vector<std::unique_ptr<Button>> menuButtons;
-	std::vector<std::unique_ptr<Button>> gameButtons;
-	SDL_Rect titleRect;
-	SDL_Rect HPDisplay;
+	std::vector<std::unique_ptr<Button>> menuButtons; //!< Fõmenü gombok
+	std::vector<std::unique_ptr<Button>> gameButtons; //!< Játék közbeni menü gombok
+	SDL_Rect titleRect; //!< Fõmenü háttér pozíció/méret
+	SDL_Rect HPDisplay; //!< Életpont kijelzés pozíció/méret
 
-	Uint32 UIEvent;
+	Uint32 UIEvent; //!< Egyedi UI Event
 
-	int playerHP;
+	int playerHP; //!< Játékos életpontjai
 
-	void DisplayHP();
+	void DisplayHP(); //!< Életpontok kirajzolása
 };

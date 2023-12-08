@@ -18,16 +18,16 @@
 class GameObjectManager {
 public:
 
-	static std::shared_ptr<GameObjectManager> GetInstance(const int tR);
-	GameObjectManager(GameObjectManager& other) = delete;
-	void operator=(const GameObjectManager&) = delete;
-	~GameObjectManager();
+	static std::shared_ptr<GameObjectManager> GetInstance(const int tR); //!< Singleton GetInstance, cellaméret
+	GameObjectManager(GameObjectManager& other) = delete; //!< Törölt copy konstruktor
+	void operator=(const GameObjectManager&) = delete; //!< Törölt = operátor
+	~GameObjectManager() {}; //!< Destruktor
 
-	enum PlayerTypes //!< player típusok arra az esetre ha több játékos lesz
+	enum PlayerTypes //!< Játékos
 	{
 		player //only one texture
 	};
-	enum EnemyTypes //!< a játékban szereplõ ellenségek típusai
+	enum EnemyTypes //!< Ellenség típusok
 	{
 		ape,
 		deer,
@@ -37,75 +37,81 @@ public:
 		soldier,
 		yusri,
 	};
-	enum WallTypes //!< A cella típusok amik a pályákon szerepelni fognak
+	enum WallTypes //!< Fal típusok
 	{
 		concrete02,
 		water,
 		lava
 	};
-	enum ItemTypes //!< Az item típusok amiket gyûjthetünk egy adott pályán
+	enum ItemTypes //!< Item
 	{
 		item
 	};
-	enum ProjectileTypes // i will work on this mess later
+	enum ProjectileTypes //!< Játékos vagy Ellenség lövedék
 	{
 		playerProjectile,
 		enemyProjectile
 	};
+	enum Direction { //!< Irányok számokra kódolva
+		up = 0,
+		down = 1,
+		right = 2,
+		left = 3
+	};
 
-	Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása pointer vissza adása
+	Player* CreateGameObject(PlayerTypes t, int x, int y); //!< Player létrehozása, pointer vissza adása
 	void CreateGameObject(EnemyTypes t, int x, int y); //!< Ellenség léterhozása adott pozícióban
 	void CreateGameObject(WallTypes t, int x, int y); //!< Fal létrehozása adott pozícióban
 	void CreateGameObject(ItemTypes t, int x, int y); //!< Item létrehozása adott pozícióban
 	void CreateGameObject(ProjectileTypes t, int x, int y, int d); //!< Item létrehozása adott pozícióban
 
-	void RenderAllGameObjects(); //!< Game objektumok renderelése
+	void RenderAllGameObjects(); //!< Game objektumok megjelenítése
 	void UpdateAllGameObjects(); //!< Az objektumok frissítése
-	void DestroyAllExceptPlayer(); //!< Az össze objektum törlése kivétel a játékos
+	void DestroyAllExceptPlayer(); //!< Az össze objektum törlése, kivétel a játékos
 
-	void ResetPlayer();
+	void ResetPlayer(); //!< Játékos visszaállítása alapállapotba
 
-	void CheckEnemyHit(int range, bool r);
+	void CheckEnemyHit(int range, bool r); //!< A játékos megütötte-e az ellenséget, ütés távolság, irány
 
-	void FlagForDelete(Enemy* f);				
-	void FlagForDelete(Wall* f);			////my head hurts. really. im in phisical pain (idk how you spell physichal)
-	void FlagForDelete(Item* f);			//im off to play WOT
-	void FlagForDelete(Projectile* f);	//will continue tomorrow
+	void FlagForDelete(Enemy* f); //!< Ellenség megjelölésre törlésre
+	void FlagForDelete(Wall* f); //!< Fal megjelölésre törlésre
+	void FlagForDelete(Item* f); //!< Item megjelölésre törlésre
+	void FlagForDelete(Projectile* f); //!< Lövedék megjelölésre törlésre
 
-	bool AreAllItemsPickedUp(); //!< Annak az ellenõrzése, hogy az össze itemet fel vette-e a játékosunk
+	bool AreAllItemsPickedUp(); //!< Az össze item-et fel vette-e a játékos
 	
-	bool AreJosephAndYusriDead();
+	bool AreJosephAndYusriDead(); //!< A fõ ellenségek halottak-e 
 
-	std::forward_list<std::unique_ptr<Enemy>>*		GetEnemies() { return &enemies; }
-	std::forward_list<std::unique_ptr<Wall>>*		GetWalls() { return &walls; }
-	std::forward_list<std::unique_ptr<Item>>*		GetItems() { return &items; }
-	std::forward_list<std::unique_ptr<Projectile>>*	GetPlayerProjectiles() { return &playerProjectiles; }
-	std::forward_list<std::unique_ptr<Projectile>>*	GetEnemyProjectiles() { return &enemyProjectiles; }
-	Player* GetPlayer() { return _player.get(); }
+	std::forward_list<std::unique_ptr<Enemy>>*		GetEnemies() { return &enemies; } //!< Ellenségek listájának lekérése
+	std::forward_list<std::unique_ptr<Wall>>*		GetWalls() { return &walls; } //!< Falak listájának lekérése
+	std::forward_list<std::unique_ptr<Item>>*		GetItems() { return &items; } //!< Item-ek listájának lekérése
+	std::forward_list<std::unique_ptr<Projectile>>*	GetPlayerProjectiles() { return &playerProjectiles; } //!< Játékos lövedékek listájának lekérése
+	std::forward_list<std::unique_ptr<Projectile>>*	GetEnemyProjectiles() { return &enemyProjectiles; } //!< Játékos lövedékek listájának lekérése
+	Player* GetPlayer() { return _player.get(); }  //!< Játékos lekérése
 
 private:
 
-	GameObjectManager(int tR);
-	static std::weak_ptr<GameObjectManager> instance_;
-	static std::mutex mutex_;
+	GameObjectManager(int tR); //!< Privát konstruktor
+	static std::weak_ptr<GameObjectManager> instance_; //!< Singleton instance
+	static std::mutex mutex_; //!< Thread guard
 
-	std::unique_ptr<Player> _player; //!< a player objetum mutatója
-	const SDL_Rect* playerRect;
+	std::unique_ptr<Player> _player; //!< Játékos objektum
+	const SDL_Rect* playerRect; //!< Játékos hitbox
 
-	Enemy* _joseph;
-	Enemy* _yusri;
+	Enemy* _joseph; //!< Joseph (fontos ellenség)
+	Enemy* _yusri; //!< yusri (fontos ellenség)
 
-	std::forward_list<std::unique_ptr<Enemy>>		enemies; //!< Enemy-k listája 
+	std::forward_list<std::unique_ptr<Enemy>>		enemies; //!< Ellenségek-k listája 
 	std::forward_list<std::unique_ptr<Wall>>		walls; //!< Falak listája
 	std::forward_list<std::unique_ptr<Item>>		items; //!< Itemek listája
-	std::forward_list<std::unique_ptr<Projectile>>	playerProjectiles;
-	std::forward_list<std::unique_ptr<Projectile>>	enemyProjectiles;
+	std::forward_list<std::unique_ptr<Projectile>>	playerProjectiles; //!< Játékos lövedékeinek listája
+	std::forward_list<std::unique_ptr<Projectile>>	enemyProjectiles; //!< Ellenségek lövedékeinek listája
 
-	std::set<Enemy*>				flaggedForDeleteEnemies;
-	std::set<Wall*>					flaggedForDeleteWalls;
-	std::set<Item*>					flaggedForDeleteItems;
-	std::set<Projectile*>			flaggedForDeleteProjectiles;
+	std::set<Enemy*>				flaggedForDeleteEnemies; //!< Törlésre jelölt ellenségek
+	std::set<Wall*>					flaggedForDeleteWalls; //!< Törlésre jelölt falak
+	std::set<Item*>					flaggedForDeleteItems; //!< Törlésre jelölt item-ek
+	std::set<Projectile*>			flaggedForDeleteProjectiles; //!< Törlésre jelölt lövedékek
 
-	void DeleteFlagged();
+	void DeleteFlagged(); //!< Törlésre jelölt objektumok törlése
 
 };

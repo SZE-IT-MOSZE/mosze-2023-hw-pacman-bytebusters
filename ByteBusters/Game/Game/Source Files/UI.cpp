@@ -62,11 +62,20 @@ std::shared_ptr<UI> UI::GetInstance(const int tR) {
 
 UI::UI(int tR)
 {
-	returnValue = 0;
 	tileRes = tR;	
 	playerHP = 0;
 
 	UIEvent = (Uint32)-1;
+
+	titleRect.x = 0;
+	titleRect.y = 0;
+	titleRect.w = 0;
+	titleRect.h = 0;
+				  
+	HPDisplay.x = 0;
+	HPDisplay.y = 0;
+	HPDisplay.w = 0;
+	HPDisplay.h = 0;
 }
 
 UI::~UI()
