@@ -1,9 +1,9 @@
 #pragma once
+#include "Game.h"
+#include "Defines.h"
 #include "Projectile.h"
 #include "GameObjectManager.h"
 #include <iostream>
-#include "Game.h"
-#include "Defines.h"
 
 enum projectileFrameDirection {
 	up = 3,
@@ -13,17 +13,18 @@ enum projectileFrameDirection {
 };
 
 //projectile spawns centered on given position
-Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t) : GameObject(x - (tileRes / PROJECTILE_SIZE_REDUCTION) / 2, y - (tileRes / PROJECTILE_SIZE_REDUCTION) / 2)
+Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t) : GameObject(x , y) // <- tileRes wont work here
 {
 	objTexture = t;
+
+	dstRect.x -= (tileRes / PROJECTILE_SIZE_REDUCTION) / 2; // tileRes is not known before GameObject constructor gets called
+	dstRect.y -= (tileRes / PROJECTILE_SIZE_REDUCTION) / 2; // tileRes is not known before GameObject constructor gets called
+
+	walls = nullptr;
 
 	if (auto lockedPtr = gom.lock())
 	{
 		walls = lockedPtr->GetWalls();
-	}
-	else
-	{
-		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 	}
 
 	xvel = yvel = 0;
@@ -49,11 +50,10 @@ Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t) : GameObject(
 		frame = up;
 		break;
 	}
+	srcRect.x = frame * PROJECTILE_SPRITE_SIZE; //set the frame to display
 
 	dstRect.w = dstRect.h = tileRes / PROJECTILE_SIZE_REDUCTION;
 	srcRect.w = srcRect.h = PROJECTILE_SPRITE_SIZE;
-
-	//todo, destrect to actual position
 
 	speed = s * tileRes / DIVIDE_BY_THIS;
 	/*std::cout << "speed: " << speed << std::endl;
@@ -75,16 +75,12 @@ void Projectile::Update()
 			{
 				lockedPtr->FlagForDelete(this);
 			}
-			else
-			{
-				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
-			}
 			return;
 		}
 	}
 }
 
 void Projectile::Render() {
-	srcRect.x = frame * PROJECTILE_SPRITE_SIZE; //set the frame to display
+	//SDL_RenderDrawRect(Game::renderer, &dstRect);
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }

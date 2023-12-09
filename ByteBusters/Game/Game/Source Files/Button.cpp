@@ -1,7 +1,6 @@
 #pragma once
-#include "Button.h"
 #include "Game.h"
-#include "TextureManager.h"
+#include "Button.h"
 
 Button::Button(void (*func)(Uint32), Uint32 UIEvent, int tR, int x, int y, int w, int h, int xh, int yh, int wh, int hh, SDL_Texture* t, SDL_Texture* th)
 {

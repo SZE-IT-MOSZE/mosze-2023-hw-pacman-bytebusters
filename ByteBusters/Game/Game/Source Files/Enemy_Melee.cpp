@@ -1,7 +1,7 @@
 #pragma once
+#include "Defines.h"
 #include "Enemy_Melee.h"
 #include "GameObjectManager.h"
-#include "Defines.h"
 #include <iostream>
 
 Enemy_Melee::Enemy_Melee(int x, int y, int s, SDL_Texture* t) : Enemy(x, y, s, t) {
@@ -26,10 +26,6 @@ void Enemy_Melee::Update() {
 			{
 				lockedPtr->FlagForDelete(this);
 				lockedPtr->FlagForDelete(projectile.get());
-			} 
-			else
-			{
-				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 			}
 			break;
 		}
@@ -92,22 +88,22 @@ void Enemy_Melee::Attack() {
 }
 
 void Enemy_Melee::Chase() {
-	if (playerRect->x > dstRect.x)
+	if (playerDestRect->x > dstRect.x)
 	{
 		xvel = 1;
 	}
-	else if (playerRect->x < dstRect.x) {
+	else if (playerDestRect->x < dstRect.x) {
 		xvel = -1;
 	}
 	else {
 		xvel = 0;
 	}
 
-	if (playerRect->y > dstRect.y)
+	if (playerDestRect->y > dstRect.y)
 	{
 		yvel = 1;
 	}
-	else if (playerRect->y < dstRect.y) {
+	else if (playerDestRect->y < dstRect.y) {
 		yvel = -1;
 	}
 	else {

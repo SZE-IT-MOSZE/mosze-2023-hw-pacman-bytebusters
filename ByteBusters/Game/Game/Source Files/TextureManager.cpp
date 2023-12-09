@@ -1,10 +1,10 @@
 #pragma once
-#include "TextureManager.h"
 #include "Game.h"
-#include <iostream>
-#include <fstream>
-#include <string>
 #include "Defines.h"
+#include "TextureManager.h"
+#include <string>
+#include <fstream>
+#include <iostream>
 
 
 SDL_Texture* TextureManager::Deerly;

@@ -1,21 +1,22 @@
 #pragma once
-#include "Defines.h"
-
+#include "Game.h"
 #include "GameObject.h"
 #include "TextureManager.h"
-#include "Map.h"
-#include "Game.h"
-#include <iostream>
-
 #include "GameObjectManager.h" // forward declared in header
-
-int GameObject::tileRes = 32;
-std::weak_ptr<GameObjectManager> GameObject::gom;
+#include <iostream>
 
 GameObject::GameObject(int x, int y) { 
 	objTexture = TextureManager::err_;
 
-	gom = GameObjectManager::GetInstance(0); // we no make sense here
+	gom = GameObjectManager::GetInstance(0);
+	if (auto lockedPtr = gom.lock())
+	{
+		tileRes = lockedPtr->getTileRes();
+	}
+	else
+	{
+		std::cout << "YOU CANNOT CREATE A GAMEOBJECT WITHOUT MANAGER\n";
+	}
 
 	dstRect.x = x;
 	dstRect.y = y;
@@ -29,10 +30,6 @@ GameObject::GameObject(int x, int y) {
 
 void GameObject::Render() {
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
-}
-
-void GameObject::setTileSize(int s) {
-	tileRes = s;
 }
 
 SDL_Point GameObject::GetCenterPosition() {

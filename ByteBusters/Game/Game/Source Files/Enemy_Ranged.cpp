@@ -1,8 +1,7 @@
 #pragma once
+#include "Defines.h"
 #include "Enemy_Ranged.h"
 #include "GameObjectManager.h"
-//#include "Game.h"
-#include "Defines.h"
 #include <iostream>
 
 Enemy_Ranged::Enemy_Ranged(int x, int y, int s, SDL_Texture* t) : Enemy(x, y, s, t) {
@@ -26,10 +25,6 @@ void Enemy_Ranged::Update() {
 			{
 				lockedPtr->FlagForDelete(this);
 				lockedPtr->FlagForDelete(projectile.get());
-			}
-			else
-			{
-				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 			}
 			break;
 		}
@@ -112,9 +107,5 @@ void Enemy_Ranged::ShootProjectile(int d) {
 	if (auto lockedPtr = gom.lock())
 	{
 		lockedPtr->CreateGameObject(GameObjectManager::enemyProjectile, thisPos.x, thisPos.y, d);
-	}
-	else
-	{
-		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 	}
 }

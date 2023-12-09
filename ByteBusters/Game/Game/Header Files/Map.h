@@ -1,14 +1,10 @@
 #pragma once
 #include "SDL.h"
-#include "SDL_image.h"
-#include <string>
-#include "GameObjectManager.h"
 #include "Defines.h"
-#include <mutex>
 #include "TextureManager.h"
-
-
-
+#include "GameObjectManager.h"
+#include <mutex>
+#include <string>
 
 class Map { 
 

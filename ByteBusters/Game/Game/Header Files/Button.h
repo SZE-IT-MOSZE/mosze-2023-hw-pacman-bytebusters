@@ -1,7 +1,6 @@
 #pragma once
 #include "SDL.h"
 #include <iostream>
-#include "Window.h"
 
 class Button {
 public:

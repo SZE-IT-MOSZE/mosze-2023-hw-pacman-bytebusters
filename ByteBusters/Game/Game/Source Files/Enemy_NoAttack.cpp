@@ -1,9 +1,8 @@
 #pragma once
+#include "Defines.h"
 #include "Enemy_NoAttack.h"
 #include "GameObjectManager.h"
-#include "Defines.h"
 #include <iostream>
-
 
 Enemy_NoAttack::Enemy_NoAttack(int x, int y, int s, SDL_Texture* t) : Enemy(x, y, s, t) {
 	enemySheetData = {
@@ -24,10 +23,6 @@ void Enemy_NoAttack::Update() {
 			{
 				lockedPtr->FlagForDelete(this);
 				lockedPtr->FlagForDelete(projectile.get());
-			}
-			else
-			{
-				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 			}
 			break;
 		}
@@ -63,19 +58,19 @@ void Enemy_NoAttack::Update() {
 }
 
 void Enemy_NoAttack::RunAway() {
-	if (playerRect->x >= dstRect.x)
+	if (playerDestRect->x >= dstRect.x)
 	{
 		xvel = -1;
 	}
-	else if (playerRect->x < dstRect.x) {
+	else if (playerDestRect->x < dstRect.x) {
 		xvel = 1;
 	}
 
-	if (playerRect->y >= dstRect.y)
+	if (playerDestRect->y >= dstRect.y)
 	{
 		yvel = -1;
 	}
-	else if (playerRect->y < dstRect.y) {
+	else if (playerDestRect->y < dstRect.y) {
 		yvel = 1;
 	}
 }

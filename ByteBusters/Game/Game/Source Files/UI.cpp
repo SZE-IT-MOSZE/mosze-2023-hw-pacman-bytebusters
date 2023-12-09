@@ -1,7 +1,7 @@
 #pragma once
 #include "UI.h"
-#include "TextureManager.h"
 #include "Defines.h"
+#include "TextureManager.h"
 
 //codes: 0-nothing, 1-start, 2-load, 3-save, 4-menu (quit is basic sdl event)
 void QuitGame() {

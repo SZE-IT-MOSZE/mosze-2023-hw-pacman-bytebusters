@@ -1,6 +1,6 @@
 #pragma once
 //DEBUG
-#define DEBUGLEVEL
+//#define DEBUGLEVEL
 #define STARTERLEVEL 1
 
 //game
@@ -25,6 +25,7 @@
 #define PLAYER_SPAWN_X 18
 #define PLAYER_SPAWN_Y 13
 #define PLAYER_HIT_DISTANCE 2
+//#define HITBOX_SIZE_REDUCTION_PERCENT 40
 
 //projectile
 #define PROJECTILE_SPRITE_SIZE 16

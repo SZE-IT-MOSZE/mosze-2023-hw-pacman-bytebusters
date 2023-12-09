@@ -1,8 +1,7 @@
 #pragma once
-#include "Defines.h"
 #include "Game.h"
-#include "generateMaze.h"
 #include "Defines.h"
+#include "generateMaze.h"
 
 SDL_Renderer* Game::renderer{ nullptr };
 
@@ -40,7 +39,6 @@ Game::Game()
 Game::~Game() 
 {
 	SDL_DestroyRenderer(renderer);
-	//std::cout << "Game destroctor called \n";
 }
 
 int Game::Init()
@@ -147,7 +145,14 @@ void Game::MainLoop()
 
 		if (!isRunning) break; // dont go further if the user has quit the application
 		
-		player = gom->CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
+		if (player)
+		{
+			player->Reset();
+		}
+		else 
+		{
+			player = gom->CreateGameObject(GameObjectManager::player, tileRes * PLAYER_SPAWN_X, tileRes * PLAYER_SPAWN_Y); //only need pointer to call SetVelX/Y at this time
+		}
 		map->LoadMap(currentLvl);
 		gameUpdates = std::make_unique<std::thread>(&Game::UpdateThread, this); // pointer to non-static member function (Game:: necessary), pointer to object (this)
 		while (isPlaying) { // the user is in the game
@@ -222,6 +227,7 @@ void Game::MainLoop()
 			frameTime = SDL_GetTicks() - frameStart;
 			if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
 		}
+		gom->DestroyAllExceptPlayer();
 	}
 }
 

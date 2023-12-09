@@ -1,22 +1,19 @@
 #pragma once
-
+#include "UI.h"
+#include "Map.h"
 #include "SDL.h"
+#include "Enemy.h"
+#include "Button.h"
+#include "Player.h"
+#include "Window.h"
 #include "SDL_image.h"
 #include "GameObject.h"
-#include "Map.h"
-#include <set>
-#include "GameObjectManager.h"
-#include <iostream>
 #include "TextureManager.h"
-#include "GameObject.h"
-#include <thread>
-#include "Player.h"
-#include "Enemy.h"
-
-#include "Button.h"
-
-#include "UI.h"
+#include "GameObjectManager.h"
+#include <set>
 #include <mutex>
+#include <thread>
+#include <iostream>
 
 class Game {
 

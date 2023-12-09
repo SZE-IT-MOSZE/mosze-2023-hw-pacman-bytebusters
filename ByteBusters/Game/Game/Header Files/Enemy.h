@@ -1,10 +1,10 @@
 #pragma once
-#include "GameObject.h"
-#include "Player.h"
 #include "Wall.h"
+#include "Player.h"
+#include "GameObject.h"
 #include "Projectile.h"
-#include <forward_list>
 #include <vector>
+#include <forward_list>
 
 
 class Enemy : public GameObject {
@@ -17,7 +17,7 @@ public:
 
 protected: 
 	Player* player; //!< Player mutató
-	const SDL_Rect* playerRect; //!< Player hitbox
+	const SDL_Rect* playerDestRect; //!< Player hitbox
 	const std::forward_list<std::unique_ptr<Wall>>* walls; //!< Falak
 	const std::forward_list<std::unique_ptr<Projectile>>* projectiles; //!< Player lövedékei
 

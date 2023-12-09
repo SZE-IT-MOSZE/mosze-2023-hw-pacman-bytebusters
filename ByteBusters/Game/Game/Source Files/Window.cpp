@@ -1,6 +1,6 @@
 #pragma once
-#include "Defines.h"
 #include "Window.h"
+#include "Defines.h"
 #include <iostream>
 
 std::weak_ptr<Window> Window::instance_;

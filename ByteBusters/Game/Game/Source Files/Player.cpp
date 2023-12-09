@@ -1,14 +1,20 @@
 #pragma once
-
-#include "Player.h"
-#include "TextureManager.h"
 #include "Map.h"
 #include "Game.h"
-#include <iostream>
-#include "GameObjectManager.h"
+#include "Player.h"
 #include "Defines.h"
+#include "TextureManager.h"
+#include "GameObjectManager.h"
+#include <iostream>
 
 Player::Player(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
+
+	objTexture = t;
+
+	//hitbox.x = x + (tileRes / 100 * (HITBOX_SIZE_REDUCTION_PERCENT / 2));
+	//hitbox.w = tileRes - (tileRes / 100 * HITBOX_SIZE_REDUCTION_PERCENT);
+	//hitbox.y = y + (tileRes / 100 * (HITBOX_SIZE_REDUCTION_PERCENT / 2));
+	//hitbox.h = tileRes - (tileRes / 100 * HITBOX_SIZE_REDUCTION_PERCENT);
 
 	lookDirection = GameObjectManager::left;
 	facingRight = false;
@@ -23,12 +29,6 @@ Player::Player(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
 		projectiles = lockedPtr->GetEnemyProjectiles();
 		items = lockedPtr->GetItems();
 	}
-	else
-	{
-		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
-	}
-
-	objTexture = t;
 
 	xvel = 0;
 	yvel = 0;
@@ -69,10 +69,6 @@ void Player::Update() {
 			{
 				lockedPtr->FlagForDelete(projectile.get());
 			}
-			else
-			{
-				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
-			}
 			DamagePlayer();
 			break;
 		}
@@ -101,14 +97,9 @@ void Player::Update() {
 	for (auto& item : *items)
 	{
 		if (SDL_HasIntersection(&dstRect, item->GetDestRectPtr())) {
-			//std::cout << "Item Pickup" << std::endl;
 			if (auto lockedPtr = gom.lock())
 			{
 				lockedPtr->FlagForDelete(item.get());
-			}
-			else
-			{
-				std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
 			}
 			break;
 		}
@@ -202,6 +193,7 @@ void Player::Render() {
 		srcRect.x = frameCounter * PLAYER_SPRITE_SIZE; // finally, set the frame to display
 	}
 
+	SDL_RenderDrawRect(Game::renderer, &dstRect);
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }
 
@@ -267,11 +259,12 @@ void Player::ShootProjectile(int d) {
 	if (auto lockedPtr = gom.lock())
 	{
 		SDL_Point pos = GetCenterPosition();
+
+		std::cout << "player X: " << pos.x << "\n";
+		std::cout << "player Y: " << pos.y << "\n";
+
 		lockedPtr->CreateGameObject(GameObjectManager::playerProjectile, pos.x, pos.y, d);
-	}
-	else
-	{
-		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
+
 	}
 }
 
@@ -291,10 +284,6 @@ void Player::Hit() { // no up or down hit animation
 	{
 		lockedPtr->CheckEnemyHit(PLAYER_HIT_DISTANCE * tileRes, facingRight);
 	}
-	else
-	{
-		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
-	}
 }
 
 
@@ -305,6 +294,8 @@ void Player::DamagePlayer() {
 void Player::Reset() {
 	dstRect.x = tileRes * PLAYER_SPAWN_X;
 	dstRect.y = tileRes * PLAYER_SPAWN_Y;
+	//hitbox.x = (tileRes * PLAYER_SPAWN_X) + (tileRes / 100 * (HITBOX_SIZE_REDUCTION_PERCENT / 2));
+	//hitbox.y = (tileRes * PLAYER_SPAWN_Y) + (tileRes / 100 * (HITBOX_SIZE_REDUCTION_PERCENT / 2));
 	hp = 10;
 }
 

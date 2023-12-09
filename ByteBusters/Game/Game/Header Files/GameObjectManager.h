@@ -1,19 +1,14 @@
 #pragma once
+#include "Wall.h"
+#include "Item.h"
 #include "Player.h"
-
+#include "Projectile.h"
 #include "Enemy_Melee.h"
 #include "Enemy_Ranged.h"
 #include "Enemy_NoAttack.h"
-
-#include "Wall.h"
-#include "Item.h"
-#include "Projectile.h"
-
-#include <forward_list>
 #include <set>
-
 #include <mutex>
-
+#include <forward_list>
 
 class GameObjectManager {
 public:
@@ -89,14 +84,18 @@ public:
 	std::forward_list<std::unique_ptr<Projectile>>*	GetEnemyProjectiles() { return &enemyProjectiles; } //!< Játékos lövedékek listájának lekérése
 	Player* GetPlayer() { return _player.get(); }  //!< Játékos lekérése
 
+	int getTileRes() { return tileRes; }; //!< Cellaméret lekérése
+
 private:
 
 	GameObjectManager(int tR); //!< Privát konstruktor
 	static std::weak_ptr<GameObjectManager> instance_; //!< Singleton instance
 	static std::mutex mutex_; //!< Thread guard
 
+	int tileRes;
+
 	std::unique_ptr<Player> _player; //!< Játékos objektum
-	const SDL_Rect* playerRect; //!< Játékos hitbox
+	const SDL_Rect* playerDestRect; //!< Játékos hitbox
 
 	Enemy* _joseph; //!< Joseph (fontos ellenség)
 	Enemy* _yusri; //!< yusri (fontos ellenség)

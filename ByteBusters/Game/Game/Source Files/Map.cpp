@@ -1,10 +1,8 @@
 #pragma once
-#include "Defines.h"
-
 #include "Map.h"
-#include <iostream>
-#include <fstream>
 #include <string>
+#include <fstream>
+#include <iostream>
 #include <filesystem>
 
 std::weak_ptr<Map> Map::instance_;

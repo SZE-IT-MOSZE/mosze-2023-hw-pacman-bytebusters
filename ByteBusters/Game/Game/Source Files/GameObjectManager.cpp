@@ -1,8 +1,8 @@
 #pragma once
-#include "GameObjectManager.h"
-#include "TextureManager.h"
-#include <iostream>
 #include "Defines.h"
+#include "TextureManager.h"
+#include "GameObjectManager.h"
+#include <iostream>
 #include <algorithm>
 
 std::weak_ptr<GameObjectManager> GameObjectManager::instance_;
@@ -19,10 +19,10 @@ std::shared_ptr<GameObjectManager> GameObjectManager::GetInstance(const int tR) 
 }
 
 GameObjectManager::GameObjectManager(const int tR) {
-	GameObject::setTileSize(tR);
+	tileRes = tR;
 
 	_player = nullptr;
-	playerRect = nullptr;
+	playerDestRect = nullptr;
 
 	_joseph = nullptr;
 	_yusri = nullptr;
@@ -44,7 +44,7 @@ bool GameObjectManager::AreJosephAndYusriDead()
 
 Player* GameObjectManager::CreateGameObject(PlayerTypes t, int x, int y) {
 	_player = std::make_unique<Player>(x, y, PLAYER_SPEED, TextureManager::Deerly);
-	playerRect = _player->GetDestRectPtr();
+	playerDestRect = _player->GetDestRectPtr();
 	return _player.get();
 }
 
@@ -253,18 +253,18 @@ void GameObjectManager::CheckEnemyHit(int range, bool right) { // okay, this iii
 	for (auto& enemy : enemies)
 	{
 		enemyPos = enemy->GetCenterPosition();
-		if (SDL_HasIntersection(playerRect, enemy->GetDestRectPtr())) {
+		if (SDL_HasIntersection(playerDestRect, enemy->GetDestRectPtr())) {
 			FlagForDelete(enemy.get());
 			continue;
 		}
 		distance = (int)sqrt(pow((playerPos.x - enemyPos.x), 2) + pow((playerPos.y - enemyPos.y), 2)); // make position getters for players and enemyies (all gameobject at that point)
 		if (distance < range)
 		{
-			if ( right && (playerRect->x <= enemyPos.x))
+			if ( right && (playerDestRect->x <= enemyPos.x))
 			{
 				FlagForDelete(enemy.get());
 			}
-			else if (!right && (playerRect->x + playerRect->w >= enemyPos.x))
+			else if (!right && (playerDestRect->x + playerDestRect->w >= enemyPos.x))
 			{
 				FlagForDelete(enemy.get());
 			}

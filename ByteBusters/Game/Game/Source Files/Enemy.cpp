@@ -1,30 +1,32 @@
 #pragma once
-#include "Enemy.h"
 #include "Game.h"
-#include <iostream>
+#include "Enemy.h"
 #include "Defines.h"
+#include <iostream>
 
 
 Enemy::Enemy(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
+
 	objTexture = t;
+
+	newRow = 0;
+	player = nullptr;
+	playerPos.x = playerPos.y = 0;
+	thisPos.x = thisPos.y = 0;
+	playerDestRect = nullptr;
+	projectiles = nullptr;
+	walls = nullptr;
 
 	if (auto lockedPtr = gom.lock())
 	{
 		player = lockedPtr->GetPlayer();
-		playerRect = player->GetDestRectPtr();
+		playerDestRect = player->GetDestRectPtr();
 		walls = lockedPtr->GetWalls();
 		projectiles = lockedPtr->GetPlayerProjectiles();
 	}
-	else
-	{
-		std::cout << "ATTENTION!!! GAMEOBJECT EXISTS WITHOUT MANAGER!!! \n";
-	}
 
 	xvel = yvel = 0;
-	
-
 	speed = s * tileRes / DIVIDE_BY_THIS;
-
 	distance = 0;
 	visionDistance = 0;
 	attackDistance = 0;

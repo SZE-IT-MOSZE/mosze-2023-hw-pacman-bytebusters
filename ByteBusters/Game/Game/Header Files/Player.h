@@ -1,10 +1,10 @@
 #pragma once
-#include "GameObject.h"
-#include <forward_list>
-#include "Wall.h"
 #include "Item.h"
+#include "Wall.h"
 #include "Projectile.h"
+#include "GameObject.h"
 #include <vector>
+#include <forward_list>
 
 
 class Player : public GameObject { //!< A játékos karakter osztálya
