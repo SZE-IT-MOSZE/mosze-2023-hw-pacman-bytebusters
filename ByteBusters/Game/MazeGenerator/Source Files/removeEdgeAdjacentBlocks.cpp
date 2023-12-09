@@ -21,8 +21,8 @@
   */
 void removeEdgeAdjacentBlocks(std::vector<std::vector<int>>& grid) {
     //meret lekerdezese
-    int numRows = grid.size();
-    int numCols = grid[0].size();
+    size_t numRows = grid.size();
+    size_t numCols = grid[0].size();
 
     // felso es also folyosok kinullazasa
     for (int col = 0; col < numCols; col++) { //!< A felsõés alsó sorokat kinullázzuk tehát egy pálya határt szabunk a játékosnak

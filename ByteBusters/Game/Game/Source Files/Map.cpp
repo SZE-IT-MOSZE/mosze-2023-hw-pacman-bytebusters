@@ -238,31 +238,31 @@ void Map::SpawnGameObjects(int lvl) {
 	}
 
 	//spawn enemies
-	for (size_t i = 0; i < lvlData[lvl].ape; i++)
+	for (int i = 0; i < lvlData[lvl].ape; i++)
 	{
 		gom->CreateGameObject(GameObjectManager::ape, tileRes, tileRes);
 	}
-	for (size_t i = 0; i < lvlData[lvl].deer; i++)
+	for (int i = 0; i < lvlData[lvl].deer; i++)
 	{
 		gom->CreateGameObject(GameObjectManager::deer, tileRes, tileRes);
 	}
-	for (size_t i = 0; i < lvlData[lvl].homeless; i++)
+	for (int i = 0; i < lvlData[lvl].homeless; i++)
 	{
 		gom->CreateGameObject(GameObjectManager::homeless, tileRes, tileRes);
 	}
-	for (size_t i = 0; i < lvlData[lvl].joseph; i++)
+	for (int i = 0; i < lvlData[lvl].joseph; i++)
 	{
 		gom->CreateGameObject(GameObjectManager::joseph, tileRes, tileRes);
 	}
-	for (size_t i = 0; i < lvlData[lvl].rat; i++)
+	for (int i = 0; i < lvlData[lvl].rat; i++)
 	{
 		gom->CreateGameObject(GameObjectManager::rat, tileRes, tileRes);
 	}
-	for (size_t i = 0; i < lvlData[lvl].soldier; i++)
+	for (int i = 0; i < lvlData[lvl].soldier; i++)
 	{
 		gom->CreateGameObject(GameObjectManager::soldier, tileRes, tileRes);
 	}
-	for (size_t i = 0; i < lvlData[lvl].yusri; i++)
+	for (int i = 0; i < lvlData[lvl].yusri; i++)
 	{
 		gom->CreateGameObject(GameObjectManager::yusri, tileRes, tileRes);
 	}

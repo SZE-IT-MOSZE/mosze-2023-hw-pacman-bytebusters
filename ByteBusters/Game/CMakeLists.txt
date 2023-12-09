@@ -1,0 +1,51 @@
+cmake_minimum_required(VERSION 3.10)
+project(Game)
+
+#set(SDL2_DIR ${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/cmake)
+#set(SDL2_image_DIR ${CMAKE_SOURCE_DIR}/Dependencies/SDL2_image-2.6.3/cmake)
+
+#find_package(SDL2 REQUIRED)
+#find_package(SDL2_image REQUIRED)
+
+include_directories("${CMAKE_SOURCE_DIR}/Game/Header Files")
+include_directories("${CMAKE_SOURCE_DIR}/MazeGenerator/Header Files")
+include_directories("${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/include")
+include_directories("${CMAKE_SOURCE_DIR}/Dependencies/SDL2_image-2.6.3/include")
+
+
+file(GLOB_RECURSE SOURCES 
+	"${CMAKE_SOURCE_DIR}/Game/Source Files/*.cpp"
+	"${CMAKE_SOURCE_DIR}/MazeGenerator/Source Files/*.cpp"
+	)
+
+add_executable(my_game ${SOURCES})
+
+target_link_libraries(my_game PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2.lib")
+target_link_libraries(my_game PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2main.lib")
+target_link_libraries(my_game PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2_image-2.6.3/lib/x64/SDL2_image.lib")
+
+#target_link_libraries(my_game PRIVATE SDL2 SDL2_image)
+
+target_include_directories(my_game PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
+
+target_compile_features(my_game PRIVATE cxx_std_20)
+
+add_custom_command(TARGET my_game POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                       "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2.dll"
+                       $<TARGET_FILE_DIR:my_game>)
+
+add_custom_command(TARGET my_game POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                       "${CMAKE_SOURCE_DIR}/Dependencies/SDL2_image-2.6.3/lib/x64/SDL2_image.dll"
+                       $<TARGET_FILE_DIR:my_game>)
+
+add_custom_command(TARGET my_game POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       "${CMAKE_SOURCE_DIR}/Assets"
+                       $<TARGET_FILE_DIR:my_game>/Assets)
+
+add_custom_command(TARGET my_game POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       "${CMAKE_SOURCE_DIR}/Fields"
+                       $<TARGET_FILE_DIR:my_game>/Fields)

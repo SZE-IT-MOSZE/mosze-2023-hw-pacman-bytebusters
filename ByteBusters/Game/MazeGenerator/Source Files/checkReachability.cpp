@@ -24,8 +24,8 @@
 //!< depth-first search
 void dfs(const std::vector<std::vector<int>>& grid, int row, int col, std::vector<std::vector<bool>>& visited) {
     //!< A méret lekérése
-    int numRows = grid.size();
-    int numCols = grid[0].size();
+    size_t numRows = grid.size();
+    size_t numCols = grid[0].size();
 
     //!< A lehetséges lépések halmaza egy adott koordinátaról
     int dx[] = { -1, 1, 0, 0 };
@@ -46,8 +46,8 @@ void dfs(const std::vector<std::vector<int>>& grid, int row, int col, std::vecto
 
 bool checkReachability(const std::vector<std::vector<int>>& grid) {
     //!< A meret lekérése
-    int numRows = grid.size();
-    int numCols = grid[0].size();
+    size_t numRows = grid.size();
+    size_t numCols = grid[0].size();
 
     // latogatott cellak tarolasa
     std::vector<std::vector<bool>> visited(numRows, std::vector<bool>(numCols, false));

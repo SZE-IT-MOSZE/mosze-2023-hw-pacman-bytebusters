@@ -20,8 +20,8 @@
   * @param grid Egy referencia egy 2D egész számokból álló vektorra, amely a rácsot képviseli.
   */
 void placeTwos(std::vector<std::vector<int>>& grid) {
-    int numRows = grid.size();
-    int numCols = grid[0].size();
+    size_t numRows = grid.size();
+    size_t numCols = grid[0].size();
 
     // Random inicializálása
     //std::srand(static_cast<unsigned int>(std::time(nullptr)));

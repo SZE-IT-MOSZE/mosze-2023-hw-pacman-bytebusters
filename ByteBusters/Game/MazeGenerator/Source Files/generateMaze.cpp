@@ -27,7 +27,7 @@ bool generateMaze() {
     int files = 1;
     int height = 15;
     int width = 20;
-    double targetDensity = 0.2;
+    float targetDensity = 0.2f;
     while (files <= MAPS) {
         std::vector<std::vector<int>> grid = createGrid(height, width);
 

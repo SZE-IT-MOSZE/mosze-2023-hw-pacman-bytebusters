@@ -18,8 +18,8 @@
   * @param grid Egy referencia egy 2D egész számokból álló vektorra, amely a rácsot képviseli.
   */
 void modifyGridEdges(std::vector<std::vector<int>>& grid) {
-    int numRows = grid.size();
-    int numCols = grid[0].size();
+    size_t numRows = grid.size();
+    size_t numCols = grid[0].size();
 
     // A felső és alsó sorok kinullázása
     for (int col = 0; col < numCols; col++) {

@@ -121,6 +121,9 @@
     <Image Include="Assets\Yusri.png" />
     <Image Include="Assets\Yusri_Sprite_sheet.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

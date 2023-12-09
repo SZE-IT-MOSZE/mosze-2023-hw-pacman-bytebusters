@@ -142,7 +142,7 @@ void UI::SetHP(int hp)
 }
 
 void UI::DisplayHP() {
-	for (size_t i = 0; i < playerHP; i++)
+	for (int i = 0; i < playerHP; i++)
 	{
 		HPDisplay.x = HP_X * tileRes + (i % 2) * tileRes;
 		HPDisplay.y = HP_Y * tileRes + (i / 2) * tileRes;
