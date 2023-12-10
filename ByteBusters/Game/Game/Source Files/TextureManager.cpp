@@ -82,7 +82,7 @@ void TextureManager::LoadAllTextures() {
 
 	TextureManager::err_			= LoadTexture("Assets/err_.png");
 
-	TextureManager::title			= LoadTexture("Assets/Menu_V2.png");
+	TextureManager::title			= LoadTexture("Assets/Menu_V3.png");
 	TextureManager::start			= LoadTexture("Assets/Menu_New_Game_bsc.png");
 	TextureManager::start_hover		= LoadTexture("Assets/Menu_New_Game_Deerly.png");
 	TextureManager::load			= LoadTexture("Assets/Menu_Load_Game_bsc.png");

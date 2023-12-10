@@ -193,7 +193,7 @@ void Player::Render() {
 		srcRect.x = frameCounter * PLAYER_SPRITE_SIZE; // finally, set the frame to display
 	}
 
-	SDL_RenderDrawRect(Game::renderer, &dstRect);
+	//SDL_RenderDrawRect(Game::renderer, &dstRect);
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }
 
