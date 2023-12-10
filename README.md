@@ -6,4 +6,7 @@ Ezt a feladatok a Széchenyi István Egyetem Modern szoftver fejlesztési eszkö
 - Takó István
 - Tárnok Ákos
 
+DoxyGen dokumentációnk HTML formában itt elérhető: 
+[DoxyGen](https://drive.google.com/drive/folders/1n-S2a2zvf04htJDZbIBGGr6EFYUs_8BC?usp=sharing)
+
 mosze-2023-hw-pacman-bytebusters created by GitHub Classroom
