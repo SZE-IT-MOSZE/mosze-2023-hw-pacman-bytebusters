@@ -1,3 +1,3 @@
-F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/CMakeFiles/my_game.dir
+F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/CMakeFiles/DeerGame.dir
 F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/CMakeFiles/ALL_BUILD.dir
 F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/CMakeFiles/ZERO_CHECK.dir

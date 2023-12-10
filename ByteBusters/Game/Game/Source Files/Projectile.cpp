@@ -56,11 +56,6 @@ Projectile::Projectile(int x, int y, int s, int d, SDL_Texture* t) : GameObject(
 	srcRect.w = srcRect.h = PROJECTILE_SPRITE_SIZE;
 
 	speed = s * tileRes / DIVIDE_BY_THIS;
-	/*std::cout << "speed: " << speed << std::endl;
-	if (speed > PROJECTILESPRITESIZE)
-	{
-		std::cout << "TOO HIGH PROJECTILE SPEED!!!" << std::endl;
-	}*/
 
 }
 
@@ -81,6 +76,5 @@ void Projectile::Update()
 }
 
 void Projectile::Render() {
-	//SDL_RenderDrawRect(Game::renderer, &dstRect);
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }

@@ -5,7 +5,6 @@
 
 //codes: 0-nothing, 1-start, 2-load, 3-save, 4-menu (quit is basic sdl event)
 void QuitGame() {
-	std::cout << "QuitGame \n";
 	SDL_Event quitEvent;
 	quitEvent.type = SDL_QUIT;
 	SDL_PushEvent(&quitEvent);
@@ -17,7 +16,6 @@ void StartGame(Uint32 UIEvent) {
 	event.type = UIEvent;
 	event.user.code = EVENT_START;
 	SDL_PushEvent(&event);
-	std::cout << "StartGame \n";
 }
 //codes: 0-nothing, 1-start, 2-load, 3-save, 4-menu (quit is basic sdl event)
 void LoadGame(Uint32 UIEvent) {
@@ -26,7 +24,6 @@ void LoadGame(Uint32 UIEvent) {
 	event.type = UIEvent;
 	event.user.code = EVENT_LOAD;
 	SDL_PushEvent(&event);
-	std::cout<< "LoadGame \n";
 }
 //codes: 0-nothing, 1-start, 2-load, 3-save, 4-menu (quit is basic sdl event)
 void SaveGame(Uint32 UIEvent) {
@@ -35,7 +32,6 @@ void SaveGame(Uint32 UIEvent) {
 	event.type = UIEvent;
 	event.user.code = EVENT_SAVE;
 	SDL_PushEvent(&event);
-	std::cout << "SaveGame \n";
 }
 //codes: 0-nothing, 1-start, 2-load, 3-save, 4-menu (quit is basic sdl event)
 void ToMenu(Uint32 UIEvent) {
@@ -44,7 +40,6 @@ void ToMenu(Uint32 UIEvent) {
 	event.type = UIEvent;
 	event.user.code = EVENT_MENU;
 	SDL_PushEvent(&event);
-	std::cout << "ToMenu \n";
 }
 
 std::weak_ptr<UI> UI::instance_;
@@ -87,7 +82,8 @@ UI::~UI()
 int UI::Init() {
 	UIEvent = SDL_RegisterEvents(1);
 	if (UIEvent == ((Uint32)-1)) {
-		std::cout << "CUSTOM EVENT CREATON FAILED \n";
+		std::cout << "Custom SDL_Event creation failed.\n";
+		std::cout << "Could not initialize UI.\n";
 		return -1;
 	}
 
@@ -107,11 +103,13 @@ int UI::Init() {
 	HPDisplay.y = 0;
 	HPDisplay.w = tileRes;
 	HPDisplay.h = tileRes;
+
+	std::cout << "UI initialized.\n";
 	return 0;
 }
 
 void UI::RenderMainMenu() {
-	TextureManager::Draw(TextureManager::title, NULL, &titleRect); // render first because it overlays the buttons
+	TextureManager::Draw(TextureManager::title, NULL, &titleRect); // render first or it overlays the buttons
 	for (auto& e : menuButtons) {
 		e->Render();
 	}

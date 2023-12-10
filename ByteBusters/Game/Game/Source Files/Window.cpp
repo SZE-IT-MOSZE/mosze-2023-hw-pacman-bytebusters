@@ -1,6 +1,7 @@
 #pragma once
 #include "Window.h"
 #include "Defines.h"
+#include "TextureManager.h"
 #include <iostream>
 
 std::weak_ptr<Window> Window::instance_;
@@ -32,7 +33,7 @@ Window::~Window()
 {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-	std::cout << "Window destructor called\n";
+	std::cout << "Window closed.\n";
 }
 
 int Window::Init(const char* title, const int xPos, const int yPos, const bool fullscreen) {
@@ -55,7 +56,7 @@ int Window::Init(const char* title, const int xPos, const int yPos, const bool f
 	scaledScreenHeight = dm.h;
 
 	if (scaledScreenHeight <= 480) {
-		std::cout << "SCREEN TOO SMALL. GAME CANNOT BE STARTED." << std::endl;
+		std::cout << "Screen too small. Game cannot be started.\n";
 		return -1;
 	}
 	else if (scaledScreenHeight <= 720) {
@@ -95,16 +96,21 @@ int Window::Init(const char* title, const int xPos, const int yPos, const bool f
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		std::cout << "Subsystem:" << std::endl;
-
 		window = SDL_CreateWindow(title, xPos, yPos, windowWidth, windowHeight, flags);
 		if (window)
 		{
-			std::cout << "Window created!" << std::endl;
+			SDL_SetWindowIcon(window, TextureManager::LoadIcon());
+			std::cout << "Window created.\n";
+			return 0;
+		} 
+		else
+		{
+			std::cout << "Could not create window.\n";
+			return -1;
 		}
-		return 0;
 	}
 	else {
+		std::cout << "Could not initialize SDL.\n";
 		return -1;
 	}
 }

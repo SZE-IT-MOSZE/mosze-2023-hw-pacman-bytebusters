@@ -246,7 +246,7 @@ void GameObjectManager::DeleteFlagged() {
 
 }
 
-void GameObjectManager::CheckEnemyHit(int range, bool right) { // okay, this iiiiis a bit bad
+void GameObjectManager::CheckEnemyHit(int range, bool right) { // todo: review this
 	SDL_Point playerPos = _player->GetCenterPosition();
 	SDL_Point enemyPos;
 	int distance;
@@ -257,7 +257,7 @@ void GameObjectManager::CheckEnemyHit(int range, bool right) { // okay, this iii
 			FlagForDelete(enemy.get());
 			continue;
 		}
-		distance = (int)sqrt(pow((playerPos.x - enemyPos.x), 2) + pow((playerPos.y - enemyPos.y), 2)); // make position getters for players and enemyies (all gameobject at that point)
+		distance = (int)sqrt(pow((playerPos.x - enemyPos.x), 2) + pow((playerPos.y - enemyPos.y), 2));
 		if (distance < range)
 		{
 			if ( right && (playerDestRect->x <= enemyPos.x))

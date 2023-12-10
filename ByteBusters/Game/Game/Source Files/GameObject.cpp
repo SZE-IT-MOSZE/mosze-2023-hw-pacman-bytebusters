@@ -15,7 +15,7 @@ GameObject::GameObject(int x, int y) {
 	}
 	else
 	{
-		std::cout << "YOU CANNOT CREATE A GAMEOBJECT WITHOUT MANAGER\n";
+		std::cout << "YOU CANNOT CREATE A GAMEOBJECT WITHOUT MANAGER!\n";
 	}
 
 	dstRect.x = x;

@@ -116,25 +116,20 @@ bool Enemy::CheckLineOfSight() {
 	for (auto& wall : *walls)
 	{
 		if (SDL_IntersectRectAndLine(wall->GetDestRectPtr(), &(playerPos.x), &(playerPos.y), &(thisPos.x), &(thisPos.y))) {
-			//std::cout << "False" << std::endl;
 			return false;
 		}
 	}
-	//std::cout << "True" << std::endl;
 	return true;
 }
 
 int rnd = 0;
 void Enemy::Wander() {
-
 	if (rnd)
 	{
 		rnd--;
 		return;
 	}
-
 	rnd = rand() % (2 * _UPS);
-	//std::cout << rnd << std::endl;
 	int rndForVel = rand() % 9;
 	switch (rndForVel)
 	{
