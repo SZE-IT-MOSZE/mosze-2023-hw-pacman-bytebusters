@@ -99,7 +99,7 @@ void Enemy_Ranged::Attack(){
 	} 
 	//else
 	//{
-	//	std::cout << "ATTACK WAS CALLED BUT NO PLAYER TO SHOOT" << std::endl;
+	//	std::cout << "ATTACK WAS CALLED BUT NO PLAYER TO SHOOT\n";
 	//}
 }
 

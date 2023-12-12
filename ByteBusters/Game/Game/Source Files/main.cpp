@@ -8,11 +8,13 @@ int main(int argc, char* argv[]) {
 
 	if (game->Init() != 0)
 	{
-		std::cout << "Game initialization failed. Application quitting. \n";
+		std::cout << "Error. Application quitting.\n";
 		return -1;
 	}
 
-	game->MainLoop(); // only returns if the application is quitting
+	game->MainLoop(); // Only returns if the application is quitting
+
+	std::cout << "Game closed.\n";
 
 	return 0;
 }

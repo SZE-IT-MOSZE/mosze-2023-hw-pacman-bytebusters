@@ -18,34 +18,34 @@ file(GLOB_RECURSE SOURCES
 	"${CMAKE_SOURCE_DIR}/MazeGenerator/Source Files/*.cpp"
 	)
 
-add_executable(my_game ${SOURCES})
+add_executable(DeerGame ${SOURCES})
 
-target_link_libraries(my_game PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2.lib")
-target_link_libraries(my_game PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2main.lib")
-target_link_libraries(my_game PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2_image-2.6.3/lib/x64/SDL2_image.lib")
+target_link_libraries(DeerGame PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2.lib")
+target_link_libraries(DeerGame PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2main.lib")
+target_link_libraries(DeerGame PRIVATE "${CMAKE_SOURCE_DIR}/Dependencies/SDL2_image-2.6.3/lib/x64/SDL2_image.lib")
 
-#target_link_libraries(my_game PRIVATE SDL2 SDL2_image)
+#target_link_libraries(DeerGame PRIVATE SDL2 SDL2_image)
 
-target_include_directories(my_game PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(DeerGame PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 
-target_compile_features(my_game PRIVATE cxx_std_20)
+target_compile_features(DeerGame PRIVATE cxx_std_20)
 
-add_custom_command(TARGET my_game POST_BUILD
+add_custom_command(TARGET DeerGame POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
                        "${CMAKE_SOURCE_DIR}/Dependencies/SDL2-2.28.4/lib/x64/SDL2.dll"
-                       $<TARGET_FILE_DIR:my_game>)
+                       $<TARGET_FILE_DIR:DeerGame>)
 
-add_custom_command(TARGET my_game POST_BUILD
+add_custom_command(TARGET DeerGame POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
                        "${CMAKE_SOURCE_DIR}/Dependencies/SDL2_image-2.6.3/lib/x64/SDL2_image.dll"
-                       $<TARGET_FILE_DIR:my_game>)
+                       $<TARGET_FILE_DIR:DeerGame>)
 
-add_custom_command(TARGET my_game POST_BUILD
+add_custom_command(TARGET DeerGame POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        "${CMAKE_SOURCE_DIR}/Assets"
-                       $<TARGET_FILE_DIR:my_game>/Assets)
+                       $<TARGET_FILE_DIR:DeerGame>/Assets)
 
-add_custom_command(TARGET my_game POST_BUILD
+add_custom_command(TARGET DeerGame POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        "${CMAKE_SOURCE_DIR}/Fields"
-                       $<TARGET_FILE_DIR:my_game>/Fields)
+                       $<TARGET_FILE_DIR:DeerGame>/Fields)

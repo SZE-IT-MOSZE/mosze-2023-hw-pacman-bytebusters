@@ -173,9 +173,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Build\my_game.vcxproj">
-      <Project>{DDFDCD5C-4856-395C-9319-D2AAA3A0384A}</Project>
-      <Name>my_game</Name>
+    <ProjectReference Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Build\DeerGame.vcxproj">
+      <Project>{29433267-82D0-3701-9808-7B22611A2CC0}</Project>
+      <Name>DeerGame</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

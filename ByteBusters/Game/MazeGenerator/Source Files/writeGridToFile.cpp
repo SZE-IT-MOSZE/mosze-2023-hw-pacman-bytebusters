@@ -25,7 +25,7 @@ void writeGridToFile(const std::vector<std::vector<int>>& grid, const std::strin
     std::ofstream outputFile(filename);
 
     if (!outputFile.is_open()) {
-        std::cerr << "Error: Could not open the file for writing." << std::endl;
+        std::cerr << "Error: Could not open the file for writing.\n";
         return;
     }
 

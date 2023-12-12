@@ -22,11 +22,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DDFDCD5C-4856-395C-9319-D2AAA3A0384A}</ProjectGuid>
+    <ProjectGuid>{29433267-82D0-3701-9808-7B22611A2CC0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
-    <ProjectName>my_game</ProjectName>
+    <ProjectName>DeerGame</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -60,26 +60,26 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Build\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">my_game.dir\Debug\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">my_game</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">DeerGame.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">DeerGame</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Build\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">my_game.dir\Release\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">my_game</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">DeerGame.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">DeerGame</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Build\MinSizeRel\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">my_game.dir\MinSizeRel\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">my_game</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">DeerGame.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">DeerGame</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Build\RelWithDebInfo\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">my_game.dir\RelWithDebInfo\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">my_game</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">DeerGame.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">DeerGame</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
@@ -159,8 +159,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Debug/my_game.lib</ImportLibrary>
-      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Debug/my_game.pdb</ProgramDataBaseFile>
+      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Debug/DeerGame.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Debug/DeerGame.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -242,8 +242,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Release/my_game.lib</ImportLibrary>
-      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Release/my_game.pdb</ProgramDataBaseFile>
+      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Release/DeerGame.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/Release/DeerGame.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -325,8 +325,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/MinSizeRel/my_game.lib</ImportLibrary>
-      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/MinSizeRel/my_game.pdb</ProgramDataBaseFile>
+      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/MinSizeRel/DeerGame.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/MinSizeRel/DeerGame.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -407,8 +407,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/RelWithDebInfo/my_game.lib</ImportLibrary>
-      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/RelWithDebInfo/my_game.pdb</ProgramDataBaseFile>
+      <ImportLibrary>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/RelWithDebInfo/DeerGame.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/RelWithDebInfo/DeerGame.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -485,6 +485,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Map.cpp" />
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Player.cpp" />
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Projectile.cpp" />
+    <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Test.cpp" />
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\TextureManager.cpp" />
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\UI.cpp" />
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Wall.cpp" />

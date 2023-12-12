@@ -96,7 +96,7 @@ int Map::LoadMapNumber() {
 	
 	if (!ReadSave)
 	{
-		std::cout << "ERROR READING FILE: save.txt" << std::endl;
+		std::cout << "Error reading file: save.txt\n";
 		ReadSave.close();
 		return -1;
 	}
@@ -109,17 +109,17 @@ int Map::LoadMapNumber() {
 		}
 		catch (std::invalid_argument& /*e*/) {
 			// if no conversion could be performed
-			std::cout << "invalid_argument in save.txt" << std::endl;
+			std::cout << "invalid_argument in save.txt\n";
 			mapNum = -1;
 		}
 		catch (std::out_of_range& /*e*/) {
 			// if the converted value would fall out of the range
-			std::cout << "out_of_range in save.txt" << std::endl;
+			std::cout << "out_of_range in save.txt\n";
 			mapNum = -1;
 		}
 		catch (...) {
 			// everything else
-			std::cout << "UNEXPECTED_ERROR in save.txt" << std::endl;
+			std::cout << "UNEXPECTED_ERROR in save.txt\n";
 			mapNum = -1;
 		}
 		ReadSave.close();
@@ -131,9 +131,7 @@ int Map::LoadMapNumber() {
 }
 
 void Map::SaveMapNumber(int mapNum) {
-
 	// not creating save.txt
-
 	std::ofstream WriteFile(pathToFields + "\\" + "save.txt");
 
 	if (!WriteFile) {
@@ -155,7 +153,7 @@ int Map::LoadMap(int l) { // could be separated into 2 individual functions
 
 	if (!ReadLevel)
 	{
-		std::cout << "ERROR READING FILE: " << std::to_string(lvl) + ".txt" << std::endl; 
+		std::cout << "ERROR READING FILE: " << std::to_string(lvl) + ".txt\n";
 
 		ReadLevel.close();
 		return -1;
@@ -171,7 +169,7 @@ int Map::LoadMap(int l) { // could be separated into 2 individual functions
 	{
 		if (totalCnt == totalTiles)
 		{
-			std::cout << "WRONG FORMAT: " << std::to_string(lvl) + ".txt" << std::endl;
+			std::cout << "WRONG FORMAT: " << std::to_string(lvl) + ".txt\n";
 			break; //loop quits if the file is too long
 		}
 		if (colCnt == COLS)
@@ -185,17 +183,17 @@ int Map::LoadMap(int l) { // could be separated into 2 individual functions
 		}
 		catch (std::invalid_argument& /*e*/) {
 			// if no conversion could be performed
-			std::cout << "invalid_argument in: Row: " << rowCnt << " Col: " << colCnt<< std::endl;
+			std::cout << "invalid_argument in: Row: " << rowCnt << " Col: " << colCnt << "\n";
 			map[rowCnt][colCnt] = -1;
 		}
 		catch (std::out_of_range& /*e*/) {
 			// if the converted value would fall out of the range
-			std::cout << "out_of_range in: Row: " << rowCnt << " Col: " << colCnt << std::endl;
+			std::cout << "out_of_range in: Row: " << rowCnt << " Col: " << colCnt << "\n";
 			map[rowCnt][colCnt] = -1;
 		}
 		catch (...) {
 			// everything else
-			std::cout << "UNEXPECTED_ERROR in: Row: " << rowCnt << " Col: " << colCnt << std::endl;
+			std::cout << "unexpected_error in: Row: " << rowCnt << " Col: " << colCnt << "\n";
 			map[rowCnt][colCnt] = -1;
 		}
 
@@ -206,7 +204,7 @@ int Map::LoadMap(int l) { // could be separated into 2 individual functions
 
 	if (totalCnt < totalTiles)
 	{
-		std::cout << "WRONG FORMAT: " << std::to_string(lvl) + ".txt" << std::endl;
+		std::cout << "Wrong format: " << std::to_string(lvl) + ".txt\n";
 	}
 
 	ReadLevel.close();
@@ -288,12 +286,3 @@ void Map::DrawMap() {
 		}
 	}
 }
-
-//void Map::ReloadMap() {
-//	if (!(lvl >= 1 && lvl <= 10)) {
-//		lvl = 1;
-//	}
-//	GameObjectManager::DestroyAllExceptPlayer();
-//	GameObjectManager::ResetPlayer();
-//	Map::SpawnGameObjects(lvl - 1);
-//}

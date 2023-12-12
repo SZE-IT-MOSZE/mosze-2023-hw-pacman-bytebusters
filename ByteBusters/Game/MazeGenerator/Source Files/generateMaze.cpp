@@ -34,29 +34,24 @@ bool generateMaze() {
         placeTetrisBlocks(grid, targetDensity);
         removeEdgeAdjacentBlocks(grid);
 
-
         std::ostringstream filenameStream;
         filenameStream << folderPath << files << ".txt";
         std::string filename = filenameStream.str();
 
 #ifdef DEBUG
-        std::cout << filename << std::endl;
+        std::cout << filename << "\n";
 #endif // DEBUG
-
-
-        
-
         bool isReachable = checkReachability(grid);
         if (isReachable) {
             modifyGridEdges(grid);
             placeTwos(grid);
 #ifdef DEBUG
-            std::cout << "Grid: " << files << std::endl;
+            std::cout << "Grid: " << files << "\n";
             printGrid(grid);     
 #endif // DEBUG
             writeGridToFile(grid, filename);
 #ifdef DEBUG
-            std::cout << "Saved grid " << files << " to " << filename << std::endl;
+            std::cout << "Saved grid " << files << " to " << filename << "\n";
 #endif // DEBUG
             files++;
         }

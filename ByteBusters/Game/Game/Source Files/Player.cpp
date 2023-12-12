@@ -32,7 +32,7 @@ Player::Player(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
 
 	xvel = 0;
 	yvel = 0;
-	hp = 10;
+	hp = PLAYER_HP;
 
 	srcRect.w = srcRect.h = PLAYER_SPRITE_SIZE;
 
@@ -108,7 +108,6 @@ void Player::Update() {
 
 void Player::Render() {
 	frameDelay = SDL_GetTicks() - frameStart;
-
 	//facingRight set in SetVelX();
 	if (!uninterruptibleAnimation) { // if there is no uninterruptible animation
 		if (xvel == 0 && yvel == 0) // if standing still
@@ -193,7 +192,7 @@ void Player::Render() {
 		srcRect.x = frameCounter * PLAYER_SPRITE_SIZE; // finally, set the frame to display
 	}
 
-	SDL_RenderDrawRect(Game::renderer, &dstRect);
+	//SDL_RenderDrawRect(Game::renderer, &dstRect);
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
 }
 
@@ -230,22 +229,18 @@ void Player::Shoot() {
 	switch (lookDirection)
 	{
 	case GameObjectManager::up:
-		//std::cout << "shoot up" << std::endl;
 		newRow = Shoot_U;
 		ShootProjectile(GameObjectManager::up);
 		break;
 	case GameObjectManager::down:
-		//std::cout << "shoot down" << std::endl;
 		newRow = Shoot_D;
 		ShootProjectile(GameObjectManager::down);
 		break;
 	case GameObjectManager::left:
-		//std::cout << "shoot left" << std::endl;
 		newRow = Shoot_L;
 		ShootProjectile(GameObjectManager::left);
 		break;
 	case GameObjectManager::right:
-		//std::cout << "shoot right" << std::endl;
 		newRow = Shoot_R;
 		ShootProjectile(GameObjectManager::right);
 		break;
@@ -259,9 +254,6 @@ void Player::ShootProjectile(int d) {
 	if (auto lockedPtr = gom.lock())
 	{
 		SDL_Point pos = GetCenterPosition();
-
-		std::cout << "player X: " << pos.x << "\n";
-		std::cout << "player Y: " << pos.y << "\n";
 
 		lockedPtr->CreateGameObject(GameObjectManager::playerProjectile, pos.x, pos.y, d);
 
@@ -296,7 +288,7 @@ void Player::Reset() {
 	dstRect.y = tileRes * PLAYER_SPAWN_Y;
 	//hitbox.x = (tileRes * PLAYER_SPAWN_X) + (tileRes / 100 * (HITBOX_SIZE_REDUCTION_PERCENT / 2));
 	//hitbox.y = (tileRes * PLAYER_SPAWN_Y) + (tileRes / 100 * (HITBOX_SIZE_REDUCTION_PERCENT / 2));
-	hp = 10;
+	hp = PLAYER_HP;
 }
 
 

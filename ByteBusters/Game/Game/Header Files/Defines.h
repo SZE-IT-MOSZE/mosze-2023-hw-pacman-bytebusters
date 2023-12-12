@@ -4,6 +4,7 @@
 #define STARTERLEVEL 1
 
 //game
+#define WINDOWTITLE "DeerGame by ByteBusters"
 #define _FPS 30
 #define _UPS 30
 
@@ -21,6 +22,7 @@
 #define PROJECTILE_SPEED 10
 
 //player
+#define PLAYER_HP 10
 #define PLAYER_SPRITE_SIZE 64
 #define PLAYER_SPAWN_X 18
 #define PLAYER_SPAWN_Y 13

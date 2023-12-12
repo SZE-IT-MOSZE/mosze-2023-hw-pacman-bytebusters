@@ -37,6 +37,9 @@
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Projectile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="F:\SZE\5\Mosze\mosze-2023-hw-pacman-bytebusters\ByteBusters\Game\Game\Source Files\TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

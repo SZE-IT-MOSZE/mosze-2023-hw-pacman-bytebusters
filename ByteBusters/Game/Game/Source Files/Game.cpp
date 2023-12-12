@@ -44,38 +44,40 @@ Game::~Game()
 int Game::Init()
 {	
 	window = Window::GetInstance();
-	if (window->Init("DEER MURDER HORROR BLOOD GORE (The Game)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, false) != 0)
+	if (window->Init(WINDOWTITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, false) != 0)
 	{
-		std::cout << "Window creation failed. \n";
+		std::cout << "Game initialization failed.\n";
 		return -1;
-	}
+	} 
+	// SDL comes to life here
 
 	tileRes = window->GetTileRes();
 
 	renderer = SDL_CreateRenderer(window->GetWindow(), -1, 0);
 	if (renderer)
 	{
-		std::cout << "Renderer created!" << std::endl;
+		std::cout << "Renderer created.\n";
 	}
 	else 
 	{
-		std::cout << "Renderer creation failed." << std::endl;
+		std::cout << "Could not create renderer.\n";
 		return -1;
 	}
+	//Rederer works here
 
-	TextureManager::LoadAllTextures();
+	TextureManager::LoadAllTextures(); // Needs initialized SDL and working Renderer to load textures
 
 	ui = UI::GetInstance(window->GetTileRes());
 	if (ui->Init() != 0)
 	{
-		std::cout << "UI creation failed. \n";
+		std::cout << "Game initialization failed.\n";
 		return -1;
 	}
 
 	gom = GameObjectManager::GetInstance(tileRes);
-
 	map = Map::GetInstance(tileRes);
 
+	std::cout << "Game ready.\n";
 	return 0;
 }
 
@@ -117,6 +119,7 @@ void Game::MainLoop()
 							inMenu = false;
 							isPlaying = true;
 							currentLvl = STARTERLEVEL;
+							std::cout << "Level " << currentLvl << "\n";
 							generateMaze();
 						break;
 						case EVENT_LOAD:
@@ -125,10 +128,10 @@ void Game::MainLoop()
 							currentLvl = map->LoadMapNumber();
 							if (currentLvl > MAPS || currentLvl < 1) // could be integrated into load function
 							{
-								std::cout << "LOADING SAVE FAILED! \n";
+								std::cout << "Loading save failed.\n";
 								currentLvl = 1;
 							}
-							std::cout << "Current Level: " << currentLvl << "\n";
+							std::cout << "Level " << currentLvl << "\n";
 						break;
 					}
 				}
@@ -202,7 +205,7 @@ void Game::MainLoop()
 					player->Reset();
 					++currentLvl;
 					map->LoadMap(currentLvl);
-					std::cout << "Current Level: " << currentLvl << "\n";
+					std::cout << "Level " << currentLvl << "\n";
 					ResumeUpdate();
 				}
 				else if (gom->AreJosephAndYusriDead())
@@ -220,7 +223,6 @@ void Game::MainLoop()
 				gom->DestroyAllExceptPlayer();
 				player->Reset();
 				map->LoadMap(currentLvl);
-				std::cout << "Current Level: " << currentLvl << "\n";
 				ResumeUpdate();
 			}
 			//------------------------------------------------------------------------------
@@ -248,7 +250,7 @@ void Game::ResumeUpdate() {
 
 void Game::UpdateThread() {
 
-	std::cout << "Thread Created\n";
+	std::cout << "Thread Created.\n";
 
 	constexpr int UPS = _UPS;
 	constexpr int frameDelay = 1000 / UPS;
@@ -275,7 +277,7 @@ void Game::UpdateThread() {
 		
 	}
 
-	std::cout << "Thread Quit\n";
+	std::cout << "Thread Quit.\n";
 
 }
 
@@ -387,5 +389,4 @@ void Game::HandleKeyEvents(SDL_Event* event)
 		player->Hit();
 	}
 	//////////////////////////////////////////////////////////
-
 }
