@@ -17,12 +17,14 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
+#[Dd]ebug/
+#[Dd]ebugPublic/
+#[Rr]elease/
+#[Rr]eleases/
+#x64/
+ByteBusters/Game/x64/
+#x86/
+ByteBusters/Game/x86/
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
@@ -397,14 +399,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Fields folder
 ByteBusters/Game/Fields/
-ByteBusters/Game/Fields/1.txt
-ByteBusters/Game/Fields/2.txt
-ByteBusters/Game/Fields/3.txt
-ByteBusters/Game/Fields/4.txt
-ByteBusters/Game/Fields/5.txt
-ByteBusters/Game/Fields/6.txt
-ByteBusters/Game/Fields/7.txt
-ByteBusters/Game/Fields/8.txt
-ByteBusters/Game/Fields/9.txt
-ByteBusters/Game/Fields/10.txt
+
+#CMakeBuild
+ByteBusters/Game/CMakeBuild
