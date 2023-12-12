@@ -1,9 +1,28 @@
 #include "removeEdgeAdjacentBlocks.h"
 
+
+/**
+ * @file removeEdgeAdjacentBlocks.cpp
+ * @brief A removeEdgeAdjacentBlocks függvény implementációja.
+ *
+ * Ez a fájl tartalmazza a removeEdgeAdjacentBlocks függvény implementációját, amely
+ * a rácson a szélek melletti sorokból törli a falakat, így egy kör folyosót hoz létre.
+ */
+
+ /**
+  * @brief Körfolyosót alakiít ki
+  *
+  * 
+  * Ez a fájl tartalmazza a removeEdgeAdjacentBlocks függvény implementációját, amely
+  * a rácson a szélek melletti sorokból törli a falakat, így egy kör folyosót hoz létre.
+  * 
+  * 
+  * @param grid Egy referencia egy 2D egész számokból álló vektorra, amely a rácsot képviseli.
+  */
 void removeEdgeAdjacentBlocks(std::vector<std::vector<int>>& grid) {
     //meret lekerdezese
-    int numRows = grid.size();
-    int numCols = grid[0].size();
+    size_t numRows = grid.size();
+    size_t numCols = grid[0].size();
 
     // felso es also folyosok kinullazasa
     for (int col = 0; col < numCols; col++) { //!< A felsõés alsó sorokat kinullázzuk tehát egy pálya határt szabunk a játékosnak
