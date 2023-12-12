@@ -22,6 +22,7 @@ void Enemy_Melee::Update() {
 	for (auto& projectile : *projectiles)
 	{
 		if (SDL_HasIntersection(&dstRect, projectile->GetDestRectPtr())) {
+			SendToDeathRow();
 			if (auto lockedPtr = gom.lock())
 			{
 				lockedPtr->FlagForDelete(this);

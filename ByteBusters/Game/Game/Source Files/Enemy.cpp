@@ -173,3 +173,12 @@ void Enemy::Wander() {
 		break;
 	}
 }
+
+void Enemy::SendToDeathRow() {
+	if (auto lockedPtr = gom.lock())
+	{
+		// .size() should be after the end if interpreted as an index, 
+		// but the spritesheet data does not contain the last row where the the static image is, so it points to exactly that
+		lockedPtr->PushToDeathRow(objTexture, dstRect.x, dstRect.y, (int)(enemySheetData.size())); 
+	}
+}

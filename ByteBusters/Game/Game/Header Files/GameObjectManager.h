@@ -5,6 +5,7 @@
 #include "Projectile.h"
 #include "Enemy_Melee.h"
 #include "Enemy_Ranged.h"
+#include "TextureManager.h"
 #include "Enemy_NoAttack.h"
 #include <set>
 #include <mutex>
@@ -86,6 +87,8 @@ public:
 
 	int getTileRes() { return tileRes; }; //!< Cellaméret lekérése
 
+	void PushToDeathRow(SDL_Texture* t, int x, int y, int r);
+
 private:
 
 	GameObjectManager(int tR); //!< Privát konstruktor
@@ -106,6 +109,7 @@ private:
 	std::forward_list<std::unique_ptr<Projectile>>	playerProjectiles; //!< Játékos lövedékeinek listája
 	std::forward_list<std::unique_ptr<Projectile>>	enemyProjectiles; //!< Ellenségek lövedékeinek listája
 
+
 	std::set<Enemy*>				flaggedForDeleteEnemies; //!< Törlésre jelölt ellenségek
 	std::set<Wall*>					flaggedForDeleteWalls; //!< Törlésre jelölt falak
 	std::set<Item*>					flaggedForDeleteItems; //!< Törlésre jelölt item-ek
@@ -113,4 +117,18 @@ private:
 
 	void DeleteFlagged(); //!< Törlésre jelölt objektumok törlése
 
+	// This solution only draws a single image where the enemy died. Simpler, but wont work with death animations.
+	struct DeadEnemy //<! Halott ellenségek kirajzolása
+	{
+		SDL_Texture* deadTexture = TextureManager::err_;
+		int posX = 0;
+		int posY = 0;
+		int sheetRow = 0;
+	};
+
+	std::forward_list<DeadEnemy>	DeathRow; //!< Halott ellenségek kirajzolása
+
+	void DrawDeathRow();
+	SDL_Rect DeadFrameDst;
+	SDL_Rect DeadFrameSrc;
 };

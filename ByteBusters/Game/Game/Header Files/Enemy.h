@@ -15,6 +15,8 @@ public:
 	virtual void Update() override = 0; //!< Frissítés
 	void Render() override; //!< Megjelenítés
 
+	void SendToDeathRow();
+
 protected: 
 	Player* player; //!< Player mutató
 	const SDL_Rect* playerDestRect; //!< Player hitbox

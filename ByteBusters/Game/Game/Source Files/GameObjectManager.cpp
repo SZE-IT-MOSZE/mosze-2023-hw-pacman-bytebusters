@@ -1,4 +1,5 @@
 #pragma once
+#include "Game.h"
 #include "Defines.h"
 #include "TextureManager.h"
 #include "GameObjectManager.h"
@@ -26,6 +27,12 @@ GameObjectManager::GameObjectManager(const int tR) {
 
 	_joseph = nullptr;
 	_yusri = nullptr;
+
+	DeadFrameDst.x = DeadFrameDst.y = 0;
+	DeadFrameDst.w = DeadFrameDst.h = tileRes;
+
+	DeadFrameSrc.x = DeadFrameSrc.y = 0;
+	DeadFrameSrc.w = DeadFrameSrc.h = ENEMY_SPRITE_SIZE;
 }
 
 bool GameObjectManager::AreAllItemsPickedUp() {
@@ -112,11 +119,10 @@ void GameObjectManager::CreateGameObject(ProjectileTypes t, int x, int y, int d)
 	default:
 		break;
 	}
-
 }
 
 void GameObjectManager::RenderAllGameObjects() {
-	
+	DrawDeathRow();
 	for (auto& enemy : enemies)
 	{
 		enemy->Render();
@@ -137,11 +143,13 @@ void GameObjectManager::RenderAllGameObjects() {
 	{
 		projectile->Render();
 	}
-	_player->Render();
+	if (_player)
+	{
+		_player->Render();
+	}
 }
 
 void GameObjectManager::UpdateAllGameObjects() {
-	
 	for (auto& enemy : enemies)
 	{
 		enemy->Update();
@@ -158,8 +166,10 @@ void GameObjectManager::UpdateAllGameObjects() {
 	{
 		projectile->Update();
 	}
-	_player->Update();
-
+	if (_player)
+	{
+		_player->Update();
+	}
 	DeleteFlagged();
 }
 
@@ -169,10 +179,25 @@ void GameObjectManager::DestroyAllExceptPlayer() {
 	items.clear(); // items should be empty at the end of a map
 	playerProjectiles.clear();
 	enemyProjectiles.clear();
+	DeathRow.clear();
 }
 
 void GameObjectManager::ResetPlayer() {
 	_player->Reset();
+}
+
+void GameObjectManager::PushToDeathRow(SDL_Texture* t, int x, int y, int r) {
+	DeathRow.push_front( DeadEnemy { t, x, y, r } );
+}
+
+void GameObjectManager::DrawDeathRow() {
+	for (auto e : DeathRow)
+	{
+		DeadFrameDst.x = e.posX;
+		DeadFrameDst.y = e.posY;
+		DeadFrameSrc.y = e.sheetRow * ENEMY_SPRITE_SIZE;
+		SDL_RenderCopy(Game::renderer, e.deadTexture, &DeadFrameSrc, &DeadFrameDst);
+	}
 }
 
 /////////////////////////////////////////////////////////////// FLAGGING AND DELETEION
@@ -246,6 +271,8 @@ void GameObjectManager::DeleteFlagged() {
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void GameObjectManager::CheckEnemyHit(int range, bool right) { // todo: review this
 	SDL_Point playerPos = _player->GetCenterPosition();
 	SDL_Point enemyPos;
@@ -254,6 +281,7 @@ void GameObjectManager::CheckEnemyHit(int range, bool right) { // todo: review t
 	{
 		enemyPos = enemy->GetCenterPosition();
 		if (SDL_HasIntersection(playerDestRect, enemy->GetDestRectPtr())) {
+			enemy->SendToDeathRow();
 			FlagForDelete(enemy.get());
 			continue;
 		}
@@ -262,10 +290,12 @@ void GameObjectManager::CheckEnemyHit(int range, bool right) { // todo: review t
 		{
 			if ( right && (playerDestRect->x <= enemyPos.x))
 			{
+				enemy->SendToDeathRow();
 				FlagForDelete(enemy.get());
 			}
 			else if (!right && (playerDestRect->x + playerDestRect->w >= enemyPos.x))
 			{
+				enemy->SendToDeathRow();
 				FlagForDelete(enemy.get());
 			}
 		}

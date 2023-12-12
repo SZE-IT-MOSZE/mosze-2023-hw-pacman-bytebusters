@@ -57,13 +57,13 @@ SDL_Surface* TextureManager::LoadIcon() {
 }
 
 void TextureManager::LoadAllTextures() {
-	TextureManager::Deerly			= LoadTexture("Assets/Deerly_vegleges_sprite_sheet.png");
+	TextureManager::Deerly			= LoadTexture("Assets/Deerly_ultimate_sprite_sheet.png");
 	
-	TextureManager::Enemy_Ape		= LoadTexture("Assets/Enemy_Ape_Sprite_sheet.png");
-	TextureManager::Enemy_Deer		= LoadTexture("Assets/Enemy_Deer_Sprite_sheet.png");
-	TextureManager::Enemy_Homeless	= LoadTexture("Assets/Enemy_Homeless_Sprite_sheet.png");
-	TextureManager::Enemy_Rat		= LoadTexture("Assets/Enemy_Rat_Sprite_sheet.png");
-	TextureManager::Enemy_Soldier	= LoadTexture("Assets/Enemy_Mercenary_sprite_sheet.png");
+	TextureManager::Enemy_Ape		= LoadTexture("Assets/Enemy_Ape_Ultimate_Sprite_sheet.png");
+	TextureManager::Enemy_Deer		= LoadTexture("Assets/Enemy_Deer_Ultimate_Sprite_sheet.png");
+	TextureManager::Enemy_Homeless	= LoadTexture("Assets/Enemy_Homeless_Ultimate_Sprite_sheet.png");
+	TextureManager::Enemy_Rat		= LoadTexture("Assets/Enemy_Rat_Ultimate_Sprite_sheet.png");
+	TextureManager::Enemy_Soldier	= LoadTexture("Assets/Enemy_Mercenary_Ultimate_sprite_sheet.png");
 									
 	TextureManager::concrete01		= LoadTexture("Assets/concrete01.png");
 	TextureManager::concrete02		= LoadTexture("Assets/concrete02.png");
@@ -72,14 +72,14 @@ void TextureManager::LoadAllTextures() {
 	TextureManager::water			= LoadTexture("Assets/water.png");
 	TextureManager::dirt			= LoadTexture("Assets/dirt.png");
 									
-	TextureManager::Joseph_White	= LoadTexture("Assets/Josepf_White_Sprite_sheet.png");
-	TextureManager::Yusri			= LoadTexture("Assets/Yusri_Sprite_sheet.png");							
+	TextureManager::Joseph_White	= LoadTexture("Assets/Josepf_White_Ultimate_Sprite_sheet.png");
+	TextureManager::Yusri			= LoadTexture("Assets/Yusri_Ultimate_Sprite_sheet.png");							
 	TextureManager::paper			= LoadTexture("Assets/Burned_diary_page.png");
 	TextureManager::projectile		= LoadTexture("Assets/Projectile_sprite_sheet.png");
 
 	TextureManager::err_			= LoadTexture("Assets/err_.png");
 
-	TextureManager::title			= LoadTexture("Assets/Menu_V3.png");
+	TextureManager::title			= LoadTexture("Assets/Menu_V4.png");
 	TextureManager::start			= LoadTexture("Assets/Menu_New_Game_bsc.png");
 	TextureManager::start_hover		= LoadTexture("Assets/Menu_New_Game_Deerly.png");
 	TextureManager::load			= LoadTexture("Assets/Menu_Load_Game_bsc.png");

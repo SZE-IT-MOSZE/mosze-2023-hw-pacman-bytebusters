@@ -13,7 +13,7 @@ Enemy_Ranged::Enemy_Ranged(int x, int y, int s, SDL_Texture* t) : Enemy(x, y, s,
 		{3, 200},
 		{3, 200},
 		{3, 200},
-		{3, 200}
+		{3, 200},
 	};
 }
 
@@ -21,6 +21,7 @@ void Enemy_Ranged::Update() {
 	for (auto& projectile : *projectiles)
 	{
 		if (SDL_HasIntersection(&dstRect, projectile->GetDestRectPtr())) {
+			SendToDeathRow();
 			if (auto lockedPtr = gom.lock())
 			{
 				lockedPtr->FlagForDelete(this);

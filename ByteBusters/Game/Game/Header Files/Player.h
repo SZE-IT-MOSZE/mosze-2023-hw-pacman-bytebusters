@@ -25,6 +25,9 @@ public:
 	void DamagePlayer(); //!< Player sebzése Enemy által
 	void Reset(); //!< A Player alaphelyzetbe állítása
 
+	// to eliminate this workaround the rendering should be placed on a separate thread too
+	bool isUninterruptibleAnimationPlaying(); //!< Meghalás animáció lejátszása
+
 private:
 	const std::forward_list<std::unique_ptr<Wall>>* walls; //!< Falak listája
 	const std::forward_list<std::unique_ptr<Item>>* items; //!< Item-eek listája
@@ -62,7 +65,9 @@ private:
 		Shoot_R = 6,
 		Shoot_L = 7,
 		Shoot_D = 8,
-		Shoot_U = 9
+		Shoot_U = 9,
+		Death_R = 10,
+		Death_L = 11,
 	};
 
 };

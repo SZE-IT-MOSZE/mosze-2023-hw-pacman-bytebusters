@@ -57,10 +57,13 @@ Player::Player(int x, int y, int s, SDL_Texture* t) : GameObject(x, y) {
 		{5, 100}, // 5 * 100 = 500
 		{3, 166}, // ? * 3 = 500 
 		{3, 166}, // ? = 166.666...
+		{5, 200},
+		{5, 200},
 	};
 }
 
 void Player::Update() {
+	if (hp <= 0) return;
 
 	for (auto& projectile : *projectiles)
 	{
@@ -133,42 +136,6 @@ void Player::Render() {
 			}
 		}
 	}
-
-	//if (!uninterruptibleAnimation) // if NOT playing Shoot or Hit
-	//{
-	//	//if (xvel == 1) // if going right
-	//	//{
-	//	//	facingRight = true;
-	//	//	newRow = Run_R;
-	//	//}
-	//	//else if (xvel == -1) // if going left
-	//	//{
-	//	//	facingRight = false;
-	//	//	newRow = Run_L;
-	//	//}
-	//	//else if (yvel != 0) // if NOT going right/left BUT going up/down
-	//	//{
-	//	//	if (facingRight) // last direction the character was facing
-	//	//	{
-	//	//		newRow = Run_R;
-	//	//	}
-	//	//	else
-	//	//	{
-	//	//		newRow = Run_L;
-	//	//	}
-	//	//}
-	//	//else // if NOT moving at all
-	//	//{
-	//	//	if (facingRight) // last direction the character was facing
-	//	//	{
-	//	//		newRow = Idle_R;
-	//	//	}
-	//	//	else
-	//	//	{
-	//	//		newRow = Idle_L;
-	//	//	}
-	//	//}
-	//}
 
 	if (frameDelay > sheetData[row][1] || newRow != row) // if time to display next frame OR a change has happened
 	{
@@ -263,7 +230,6 @@ void Player::ShootProjectile(int d) {
 void Player::Hit() { // no up or down hit animation
 	if (uninterruptibleAnimation) return;
 	uninterruptibleAnimation = true;
-
 	if (facingRight)
 	{
 		newRow = Hit_R;
@@ -278,9 +244,26 @@ void Player::Hit() { // no up or down hit animation
 	}
 }
 
-
 void Player::DamagePlayer() {
 	--hp;
+	if (hp == 0)
+	{
+		uninterruptibleAnimation = true;
+
+		if (facingRight)
+		{
+			newRow = Death_R;
+		}
+		else
+		{
+			newRow = Death_L;
+		}
+	}
+}
+
+bool Player::isUninterruptibleAnimationPlaying()
+{
+	return uninterruptibleAnimation;
 }
 
 void Player::Reset() {

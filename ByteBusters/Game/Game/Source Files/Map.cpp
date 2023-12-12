@@ -80,10 +80,15 @@ Map::Map(const int tR)
 	lvlData[9].joseph = 1;
 
 #ifdef DEBUGLEVEL
+	lvlData[0].ape = 1;
+	lvlData[0].deer = 1;
+	lvlData[0].homeless = 1;
+	lvlData[0].joseph = 1;
 	lvlData[0].rat = 1;
 	lvlData[0].soldier = 1;
+	lvlData[0].yusri = 1;
 
-	lvlData[9].soldier = 0;
+	lvlData[9].soldier = 1;
 	lvlData[9].yusri = 1;
 	lvlData[9].joseph = 1;
 #endif // DEBUGLEVEL
@@ -238,31 +243,31 @@ void Map::SpawnGameObjects(int lvl) {
 	//spawn enemies
 	for (int i = 0; i < lvlData[lvl].ape; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::ape, tileRes, tileRes);
+		gom->CreateGameObject(GameObjectManager::ape, ENEMY_SPAWN_X * tileRes, ENEMY_SPAWN_Y * tileRes);
 	}
 	for (int i = 0; i < lvlData[lvl].deer; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::deer, tileRes, tileRes);
+		gom->CreateGameObject(GameObjectManager::deer, ENEMY_SPAWN_X * tileRes, ENEMY_SPAWN_Y * tileRes);
 	}
 	for (int i = 0; i < lvlData[lvl].homeless; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::homeless, tileRes, tileRes);
+		gom->CreateGameObject(GameObjectManager::homeless, ENEMY_SPAWN_X * tileRes, ENEMY_SPAWN_Y * tileRes);
 	}
 	for (int i = 0; i < lvlData[lvl].joseph; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::joseph, tileRes, tileRes);
+		gom->CreateGameObject(GameObjectManager::joseph, ENEMY_SPAWN_X * tileRes, ENEMY_SPAWN_Y * tileRes);
 	}
 	for (int i = 0; i < lvlData[lvl].rat; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::rat, tileRes, tileRes);
+		gom->CreateGameObject(GameObjectManager::rat, ENEMY_SPAWN_X * tileRes, ENEMY_SPAWN_Y * tileRes);
 	}
 	for (int i = 0; i < lvlData[lvl].soldier; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::soldier, tileRes, tileRes);
+		gom->CreateGameObject(GameObjectManager::soldier, ENEMY_SPAWN_X * tileRes, ENEMY_SPAWN_Y * tileRes);
 	}
 	for (int i = 0; i < lvlData[lvl].yusri; i++)
 	{
-		gom->CreateGameObject(GameObjectManager::yusri, tileRes, tileRes);
+		gom->CreateGameObject(GameObjectManager::yusri, ENEMY_SPAWN_X * tileRes, ENEMY_SPAWN_Y * tileRes);
 	}
 }
 

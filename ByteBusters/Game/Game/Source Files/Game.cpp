@@ -217,13 +217,16 @@ void Game::MainLoop()
 				}
 			}
 			//------------------------------------------------------------------------------
-			if (player->GetHP() <= 0)
+			if (player->GetHP() <= 0) // must be less or equal
 			{
 				PauseUpdate(); // only returns if paused (no join, theread is waiting, it didnt quit)
-				gom->DestroyAllExceptPlayer();
-				player->Reset();
-				map->LoadMap(currentLvl);
-				ResumeUpdate();
+				if (!player->isUninterruptibleAnimationPlaying())
+				{
+					gom->DestroyAllExceptPlayer();
+					player->Reset();
+					map->LoadMap(currentLvl);
+					ResumeUpdate();
+				}
 			}
 			//------------------------------------------------------------------------------
 			frameTime = SDL_GetTicks() - frameStart;
