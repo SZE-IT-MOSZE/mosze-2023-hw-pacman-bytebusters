@@ -6,6 +6,11 @@ Ezt a feladatok a Széchenyi István Egyetem Modern szoftverfejlesztési eszköz
 - Takó István
 - Tárnok Ákos
 
+Futtatható állomány megtalálható ByteBusters/x64/Release alatt. Mappa összes tartalma szükséges a futtatáshoz.
+
+A program Visual Studio segítségével készült, .sln fájl a ByteBusters mappában.
+CMake használatához a CMakeLists.txt megtalálható ByteBusters/Game mappában.
+
 DoxyGen dokumentációnk HTML formában itt elérhető: 
 [DoxyGen](https://drive.google.com/drive/folders/1n-S2a2zvf04htJDZbIBGGr6EFYUs_8BC?usp=sharing)
 
