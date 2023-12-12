@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/Build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "F:/SZE/5/Mosze/mosze-2023-hw-pacman-bytebusters/ByteBusters/Game/CMakeBuild/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -44,8 +44,3 @@ add_custom_command(TARGET DeerGame POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        "${CMAKE_SOURCE_DIR}/Assets"
                        $<TARGET_FILE_DIR:DeerGame>/Assets)
-
-add_custom_command(TARGET DeerGame POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       "${CMAKE_SOURCE_DIR}/Fields"
-                       $<TARGET_FILE_DIR:DeerGame>/Fields)
